@@ -1,0 +1,103 @@
+<html><head><title>R: E-statistic (Energy Statistic) for Testing Univariate Normality</title>
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for normal.e {energy}"><tr><td>normal.e {energy}</td><td align="right">R Documentation</td></tr></table>
+<h2>E-statistic (Energy Statistic) for Testing Univariate Normality</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Computes the E-statistic for testing univariate normality 
+when parameters are estimated.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+normal.e(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+vector of univariate sample data</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The
+data will be standardized to zero mean and unit variance
+using the sample mean and sample variance. If the data contains
+missing values or the sample variance is zero, NA is
+returned.
+</p>
+<p>
+The 
+<i>E</i>-test of multivariate (and univariate)
+normality was proposed and implemented by Szekely and Rizzo 
+(2004). The univariate test statistic
+is given by
+</p><p align="center"><i>n((2/n) sum[1:n] E|y_i-Z| - E|Z-Z'| - (1/n^2) sum[1:n,1:n]
+|y_i-y_j|),</i></p><p>
+where <i>y_1,...,y_n</i> is the standardized sample and
+<i>Z, Z'</i> are iid standard normal variables. See 
+<code><a href="mvnorm.e.html">mvnorm.e</a></code> for the multivariate statistic.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+The value of the <i>E</i>-statistic for univariate
+normality is returned.</p>
+
+<h3>Author(s)</h3>
+
+<p>
+Maria Rizzo <a href="mailto:rizzo@math.ohiou.edu">rizzo@math.ohiou.edu</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>
+Szekely, G. J. and Rizzo, M. L. (2004) A New Test for 
+Multivariate Normality, <EM>Journal of Multivariate Analysis</EM>,
+to appear.
+</p>
+<p>
+Rizzo, M. L. (2002). A New Rotation Invariant Goodness-of-Fit Test,
+Ph.D. dissertation, Bowling Green State University.
+</p>
+<p>
+Szekely, G. J. (1989) Potential and Kinetic Energy in Statistics, 
+Lecture Notes, Budapest Institute of Technology (Technical University).
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="mvnorm.e.html">mvnorm.e</a> <a href="mvnorm.etest.html">mvnorm.etest</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ x &lt;- rnorm(30)
+ normal.e(x)
+</pre>
+
+
+
+<hr><div align="center"><a href="00Index.html">[Package Contents]</a></div>
+
+</body></html>

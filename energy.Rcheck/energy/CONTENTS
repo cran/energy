@@ -1,0 +1,71 @@
+Entry: edist
+Aliases: edist
+Keywords: multivariate  cluster  nonparametric 
+Description: E-distance
+URL: ../../../library/energy/html/edist.html
+
+Entry: energy.hclust
+Aliases: energy.hclust
+Keywords: multivariate  cluster 
+Description: Hierarchical Clustering by Minimum (Energy) E-distance
+URL: ../../../library/energy/html/energy.hclust.html
+
+Entry: eqdist.etest
+Aliases: eqdist.etest
+Keywords: multivariate  htest  nonparametric 
+Description: Multisample E-statistic (Energy) Test of Equal Distributions
+URL: ../../../library/energy/html/eqdist.etest.html
+
+Entry: ksample.e
+Aliases: ksample.e
+Keywords: multivariate  htest  nonparametric 
+Description: E-statistic (Energy Statistic) for Multivariate k-sample Test of Equal Distributions
+URL: ../../../library/energy/html/ksample.e.html
+
+Entry: mvnorm.e
+Aliases: mvnorm.e
+Keywords: multivariate  htest 
+Description: E-statistic (Energy Statistic) for Testing Multivariate Normality
+URL: ../../../library/energy/html/mvnorm.e.html
+
+Entry: mvnorm.etest
+Aliases: mvnorm.etest
+Keywords: multivariate  htest 
+Description: E-statistic (Energy) Test of Multivariate Normality
+URL: ../../../library/energy/html/mvnorm.etest.html
+
+Entry: normal.e
+Aliases: normal.e
+Keywords: htest 
+Description: E-statistic (Energy Statistic) for Testing Univariate Normality
+URL: ../../../library/energy/html/normal.e.html
+
+Entry: poisson.m
+Aliases: poisson.m
+Keywords: htest 
+Description: Mean Distance Statistic for Testing Poisson Distribution
+URL: ../../../library/energy/html/poisson.m.html
+
+Entry: poisson.mtest
+Aliases: poisson.mtest
+Keywords: htest 
+Description: Mean Distance Test for Poisson Distribution
+URL: ../../../library/energy/html/poisson.mtest.html
+
+Entry: print.etest.eqdist
+Aliases: print.etest.eqdist
+Keywords: print 
+Description: Print Multisample E-test (Energy Test) for Equal Distributions
+URL: ../../../library/energy/html/print.etest.eqdist.html
+
+Entry: print.etest.mvnorm
+Aliases: print.etest.mvnorm
+Keywords: print 
+Description: Print E-test (Energy Test) of Multivariate Normality
+URL: ../../../library/energy/html/print.etest.mvnorm.html
+
+Entry: print.etest.poisson
+Aliases: print.etest.poisson
+Keywords: print 
+Description: Print Mean Distance Test for Poisson Distribution
+URL: ../../../library/energy/html/print.etest.poisson.html

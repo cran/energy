@@ -1,0 +1,21 @@
+* using log directory 'C:/R/R-1.8.1/energy/energy.Rcheck'
+* checking for file 'energy/DESCRIPTION' ... OK
+* checking if this is a source package ... OK
+* checking package directory ... OK
+* checking for portable file names ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for syntax errors ... OK
+* checking R files for library.dynam ... OK
+* checking S3 generic/method consistency ... OK
+* checking for replacement functions with final arg not named 'value' ... OK
+* checking Rd files ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking for CRLF line endings in C sources/headers ... OK
+* creating energy-Ex.R ... OK
+* checking examples ... OK
+* creating energy-manual.tex ... OK
+* checking energy-manual.tex ... OK

@@ -1,0 +1,12 @@
+edist	edist
+energy.hclust	energy.hclust
+eqdist.etest	eqdist.etest
+ksample.e	ksample.e
+mvnorm.e	mvnorm.e
+mvnorm.etest	mvnorm.etest
+normal.e	normal.e
+poisson.m	poisson.m
+poisson.mtest	poisson.mtest
+print.etest.eqdist	print.etest.eqdist
+print.etest.mvnorm	print.etest.mvnorm
+print.etest.poisson	print.etest.poisson

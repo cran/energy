@@ -1,0 +1,121 @@
+<html><head><title>R: E-statistic (Energy) Test of Multivariate Normality</title>
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for mvnorm.etest {energy}"><tr><td>mvnorm.etest {energy}</td><td align="right">R Documentation</td></tr></table>
+<h2>E-statistic (Energy) Test of Multivariate Normality</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Performs the E-statistic (energy) test of multivariate or univariate normality.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ mvnorm.etest(x, R = 999)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+data matrix of multivariate sample, or univariate data vector</td></tr>
+<tr valign="top"><td><code>R</code></td>
+<td>
+number of bootstrap replicates </td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The <i>E</i>-test of multivariate (univariate) normality
+is performed. The test is implemented by parametric bootstrap with 
+<code>R</code> replicates. 
+</p>
+<p>
+The definition of the <i>E</i>-statistic is given in the 
+<code><a href="mvnorm.e.html">mvnorm.e</a></code> documentation.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+A list with class <code>etest.mvnorm</code> containing
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>method</code></td>
+<td>
+Description of test</td></tr>
+<tr valign="top"><td><code>statistic</code></td>
+<td>
+Observed value of the test statistic</td></tr>
+<tr valign="top"><td><code>p.value</code></td>
+<td>
+Approximate p-value of the test</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+Sample size</td></tr>
+<tr valign="top"><td><code>R</code></td>
+<td>
+Number of replicates</td></tr>
+<tr valign="top"><td><code>replicates</code></td>
+<td>
+Vector of replicates of the statistic</td></tr>
+</table>
+
+<h3>Author(s)</h3>
+
+<p>
+Maria Rizzo <a href="mailto:rizzo@math.ohiou.edu">rizzo@math.ohiou.edu</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>
+Szekely, G. J. and Rizzo, M. L. (2004) A New Test for 
+Multivariate Normality, <EM>Journal of Multivariate Analysis</EM>,
+to appear.
+</p>
+<p>
+Rizzo, M. L. (2002). A New Rotation Invariant Goodness-of-Fit Test,
+Ph.D. dissertation, Bowling Green State University.
+</p>
+<p>
+Szekely, G. J. (1989) Potential and Kinetic Energy in Statistics, 
+Lecture Notes, Budapest Institute of Technology (Technical University).
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="mvnorm.e.html">mvnorm.e</a></code>,
+<code><a href="print.etest.mvnorm.html">print.etest.mvnorm</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ ## test if the iris Setosa data has multivariate normal distribution
+ data(iris)
+ mvnorm.etest(iris[1:50,1:4])
+ 
+ ## test a univariate sample for normality
+ x &lt;- runif(50, 0, 10)
+ mvnorm.etest(x)
+ </pre>
+
+
+
+<hr><div align="center"><a href="00Index.html">[Package Contents]</a></div>
+
+</body></html>

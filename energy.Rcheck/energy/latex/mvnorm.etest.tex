@@ -1,0 +1,64 @@
+\Header{mvnorm.etest}{E-statistic (Energy) Test of Multivariate Normality}
+\keyword{multivariate}{mvnorm.etest}
+\keyword{htest}{mvnorm.etest}
+\begin{Description}\relax
+Performs the E-statistic (energy) test of multivariate or univariate normality.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+ mvnorm.etest(x, R = 999)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] data matrix of multivariate sample, or univariate data vector
+\item[\code{R}] number of bootstrap replicates 
+\end{ldescription}
+\end{Arguments}
+\begin{Details}\relax
+The \eqn{\mathcal{E}}{E}-test of multivariate (univariate) normality
+is performed. The test is implemented by parametric bootstrap with 
+\code{R} replicates. 
+
+The definition of the \eqn{\mathcal{E}}{E}-statistic is given in the 
+\code{\Link{mvnorm.e}} documentation.\end{Details}
+\begin{Value}
+A list with class \code{etest.mvnorm} containing
+\begin{ldescription}
+\item[\code{method}] Description of test
+\item[\code{statistic}] Observed value of the test statistic
+\item[\code{p.value}] Approximate p-value of the test
+\item[\code{n}] Sample size
+\item[\code{R}] Number of replicates
+\item[\code{replicates}] Vector of replicates of the statistic
+\end{ldescription}
+\end{Value}
+\begin{Author}\relax
+Maria Rizzo \email{rizzo@math.ohiou.edu}
+\end{Author}
+\begin{References}\relax
+Szekely, G. J. and Rizzo, M. L. (2004) A New Test for 
+Multivariate Normality, \emph{Journal of Multivariate Analysis},
+to appear.
+
+Rizzo, M. L. (2002). A New Rotation Invariant Goodness-of-Fit Test,
+Ph.D. dissertation, Bowling Green State University.
+
+Szekely, G. J. (1989) Potential and Kinetic Energy in Statistics, 
+Lecture Notes, Budapest Institute of Technology (Technical University).\end{References}
+\begin{SeeAlso}\relax
+\code{\Link{mvnorm.e}},
+\code{\Link{print.etest.mvnorm}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+ ## test if the iris Setosa data has multivariate normal distribution
+ data(iris)
+ mvnorm.etest(iris[1:50,1:4])
+ 
+ ## test a univariate sample for normality
+ x <- runif(50, 0, 10)
+ mvnorm.etest(x)
+ \end{ExampleCode}
+\end{Examples}
+

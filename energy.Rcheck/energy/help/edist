@@ -1,0 +1,88 @@
+edist                 package:energy                 R Documentation
+
+_E-_d_i_s_t_a_n_c_e
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Returns the E-distances (energy statistics) between clusters.
+
+_U_s_a_g_e:
+
+      edist(x, sizes, distance=FALSE, ix = 1:sum(sizes))
+
+_A_r_g_u_m_e_n_t_s:
+
+       x: data matrix of pooled sample or Euclidean distances
+
+   sizes: vector of sample sizes
+
+distance: logical: if TRUE, x is a distance matrix
+
+      ix: a permutation of the row indices of x 
+
+_D_e_t_a_i_l_s:
+
+     A vector containing the pairwise two-sample multivariate 
+     E-statistics for comparing clusters or samples is returned.  The
+     e-distance between clusters is computed from the original pooled
+     data,  stacked in matrix 'x' where each row is a multivariate
+     observation, or  from the distance matrix 'x' of the original
+     data, or distance object  returned by 'dist'. The first 'sizes[1]'
+     rows of the original data  matrix are the first sample, the next
+     'sizes[2]' rows are the second  sample, etc. The permutation
+     vector 'ix' may be used to obtain e-distances corresponding to a
+     clustering solution at a given level in the hierarchy.
+
+     The e-distance between two clusters C_i, C_j of size n_i, n_j 
+     proposed by Szekely and Rizzo (2003ab) is the e-distance
+     e(C_i,C_j), defined by
+
+       e(S_i, S_j) = (n_i n_j)(n_i+n_j)[2M_(ij)-M_(ii)-M_(jj)],
+
+     where
+
+     M_{ij} = 1/(n_i n_j) sum[1:n_i, 1:n_j] ||X_(ip) - X_(jq)||,
+
+     || || denotes Euclidean norm, and X_(ip) denotes the p-th
+     observation in the i-th cluster.
+
+_V_a_l_u_e:
+
+     A object of class 'dist' containing the lower triangle of the
+     e-distance matrix of cluster distances corresponding to the
+     permutation  of indices 'ix' is returned.
+
+_A_u_t_h_o_r(_s):
+
+     Maria Rizzo rizzo@math.ohiou.edu
+
+_R_e_f_e_r_e_n_c_e_s:
+
+     Szekely, G. J. and Rizzo, M. L. (2003a) Hierarchical Clustering
+     via Joint Between-Within Distances, submitted.
+
+     Szekely, G. J. and Rizzo, M. L. (2003b) Testing for Equal
+     Distributions in High Dimension, submitted.
+
+     Szekely, G. J. (2000) E-statistics: Energy of  Statistical
+     Samples, preprint.
+
+_S_e_e _A_l_s_o:
+
+     'energy.hclust' 'eqdist.etest' 'ksample.e'
+
+_E_x_a_m_p_l_e_s:
+
+      ## compute e-distances for 3 samples of iris data
+      data(iris)
+      edist(iris[,1:4], c(50,50,50))
+
+      ## compute e-distances from a distance object
+      data(iris)
+      edist(dist(iris[,1:4]), c(50, 50, 50), distance=TRUE)
+
+      ## compute e-distances from a distance matrix
+      data(iris)
+      d <- as.matrix(dist(iris[,1:4]))
+      edist(d, c(50, 50, 50), distance=TRUE) 
+

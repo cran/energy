@@ -1,0 +1,35 @@
+print.etest.eqdist          package:energy          R Documentation
+
+_P_r_i_n_t _M_u_l_t_i_s_a_m_p_l_e _E-_t_e_s_t (_E_n_e_r_g_y _T_e_s_t) _f_o_r _E_q_u_a_l _D_i_s_t_r_i_b_u_t_i_o_n_s
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Print method for 'etest.eqdist' object returned by the 
+     'eqdist.test' function.
+
+_U_s_a_g_e:
+
+     print.etest.eqdist(x, ...)
+
+_A_r_g_u_m_e_n_t_s:
+
+       x: an object of class 'etest.eqdist' 
+
+     ...: extra arguments passed to or from other methods 
+
+_A_u_t_h_o_r(_s):
+
+     Maria Rizzo rizzo@math.ohiou.edu
+
+_S_e_e _A_l_s_o:
+
+     'eqdist.etest'
+
+_E_x_a_m_p_l_e_s:
+
+     ## print test if the 3 varieties of iris data (d=4) have equal distributions
+      data(iris)
+      e <- eqdist.etest(iris[,1:4], c(50,50,50))
+      print.etest.eqdist(e)
+      
+

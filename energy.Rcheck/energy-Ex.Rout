@@ -1,0 +1,452 @@
+
+R : Copyright 2003, The R Foundation for Statistical Computing
+Version 1.8.1  (2003-11-21), ISBN 3-900051-00-3
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for a HTML browser interface to help.
+Type 'q()' to quit R.
+
+> ### * <HEADER>
+> ###
+> attach(NULL, name = "CheckExEnv")
+> assign(".CheckExEnv", as.environment(2), pos = length(search())) # base
+> ## This plot.new() patch has no effect yet for persp();
+> ## layout() & filled.contour() are now ok
+> assign("plot.new",
++        function() {
++ 	   .Internal(plot.new())
++ 	   pp <- par(c("mfg","mfcol","oma","mar"))
++ 	   if(all(pp$mfg[1:2] == c(1, pp$mfcol[2]))) {
++                outer <- (oma4 <- pp$oma[4]) > 0; mar4 <- pp$mar[4]
++                mtext(paste("help(", ..nameEx, ")"), side = 4,
++                      line = if(outer)max(1, oma4 - 1) else min(1, mar4 - 1),
++                      outer = outer, adj = 1, cex = .8, col = "orchid")
++ 	   }
++        },
++        env = environment(plot))
+> assign("cleanEx",
++        function(env = .GlobalEnv) {
++ 	   rm(list = ls(envir = env, all.names = TRUE), envir = env)
++            RNGkind("Wichmann-Hill", "default")
++ 	   assign(".Random.seed", c(0, rep(7654, 3)), pos = 1)
++ 	   assign("T", delay(stop("T used instead of TRUE")),
++ 		  pos = .CheckExEnv)
++ 	   assign("F", delay(stop("F used instead of FALSE")),
++ 		  pos = .CheckExEnv)
++        },
++        env = .CheckExEnv)
+> assign("..nameEx", "__{must remake R-ex/*.R}__", env = .CheckExEnv) # for now
+> assign("ptime", proc.time(), env = .CheckExEnv)
+> postscript("energy-Examples.ps")
+> assign("par.postscript", par(no.readonly = TRUE), env = .CheckExEnv)
+> options(contrasts = c(unordered = "contr.treatment", ordered = "contr.poly"), pager="console")
+> library('energy')
+Loading required package: boot 
+> 
+> cleanEx(); ..nameEx <- "edist"
+> 
+> ### * edist
+> 
+> ### Name: edist
+> ### Title: E-distance
+> ### Aliases: edist
+> ### Keywords: multivariate cluster nonparametric
+> 
+> ### ** Examples
+> 
+>  ## compute e-distances for 3 samples of iris data
+>  data(iris)
+>  edist(iris[,1:4], c(50,50,50))
+          1         2
+2 123.55381          
+3 195.30396  38.85415
+> 
+>  ## compute e-distances from a distance object
+>  data(iris)
+>  edist(dist(iris[,1:4]), c(50, 50, 50), distance=TRUE)
+          1         2
+2 123.55381          
+3 195.30396  38.85415
+> 
+>  ## compute e-distances from a distance matrix
+>  data(iris)
+>  d <- as.matrix(dist(iris[,1:4]))
+>  edist(d, c(50, 50, 50), distance=TRUE) 
+          1         2
+2 123.55381          
+3 195.30396  38.85415
+> 
+> 
+> 
+> cleanEx(); ..nameEx <- "energy.hclust"
+> 
+> ### * energy.hclust
+> 
+> ### Name: energy.hclust
+> ### Title: Hierarchical Clustering by Minimum (Energy) E-distance
+> ### Aliases: energy.hclust
+> ### Keywords: multivariate cluster
+> 
+> ### ** Examples
+> 
+>    ## Not run: 
+> ##D    
+> ##D    library(cluster)
+> ##D    data(animals)
+> ##D    plot(energy.hclust(dist(animals)))
+> ##D    
+> ## End(Not run)
+>    
+>    library(mva)
+>    data(USArrests)
+>    ecl <- energy.hclust(dist(USArrests))
+>    print(ecl)    
+
+Call:
+energy.hclust(dst = dist(USArrests))
+
+Cluster method   : e-distance 
+Distance         : euclidean 
+Number of objects: 50 
+
+>    plot(ecl)
+>    cutree(ecl, k=3)
+       Alabama         Alaska        Arizona       Arkansas     California 
+             1              1              1              2              1 
+      Colorado    Connecticut       Delaware        Florida        Georgia 
+             2              3              1              1              2 
+        Hawaii          Idaho       Illinois        Indiana           Iowa 
+             3              3              1              3              3 
+        Kansas       Kentucky      Louisiana          Maine       Maryland 
+             3              3              1              3              1 
+ Massachusetts       Michigan      Minnesota    Mississippi       Missouri 
+             2              1              3              1              2 
+       Montana       Nebraska         Nevada  New Hampshire     New Jersey 
+             3              3              1              3              2 
+    New Mexico       New York North Carolina   North Dakota           Ohio 
+             1              1              1              3              3 
+      Oklahoma         Oregon   Pennsylvania   Rhode Island South Carolina 
+             2              2              3              2              1 
+  South Dakota      Tennessee          Texas           Utah        Vermont 
+             3              2              2              3              3 
+      Virginia     Washington  West Virginia      Wisconsin        Wyoming 
+             2              2              3              3              2 
+>    cutree(ecl, h=150)
+       Alabama         Alaska        Arizona       Arkansas     California 
+             1              2              3              4              3 
+      Colorado    Connecticut       Delaware        Florida        Georgia 
+             4              5              1              6              4 
+        Hawaii          Idaho       Illinois        Indiana           Iowa 
+             7              5              1              5              7 
+        Kansas       Kentucky      Louisiana          Maine       Maryland 
+             5              5              1              8              3 
+ Massachusetts       Michigan      Minnesota    Mississippi       Missouri 
+             9              1              7              2              4 
+       Montana       Nebraska         Nevada  New Hampshire     New Jersey 
+             5              5              1              7              9 
+    New Mexico       New York North Carolina   North Dakota           Ohio 
+             3              1              6              7              5 
+      Oklahoma         Oregon   Pennsylvania   Rhode Island South Carolina 
+             9              9              5              9              2 
+  South Dakota      Tennessee          Texas           Utah        Vermont 
+             8              4              4              5              7 
+      Virginia     Washington  West Virginia      Wisconsin        Wyoming 
+             9              9              8              7              9 
+>    
+>    ## compare performance of e-clustering, Ward's method, group average method
+>    ## when sampled populations have equal means: n=200, d=5, two groups
+>    z <- rbind(matrix(rnorm(1000), nrow=200), matrix(rnorm(1000, 0, 5), nrow=200))
+>    g <- c(rep(1, 200), rep(2, 200))
+>    d <- dist(z)
+>    e <- energy.hclust(d)
+>    a <- hclust(d, method="average")
+>    w <- hclust(d^2, method="ward")
+>    list("E" = table(cutree(e, k=2) == g), "Ward" = table(cutree(w, k=2) == g),
++         "Avg" = table(cutree(a, k=2) == g))
+$E
+
+FALSE  TRUE 
+    7   393 
+
+$Ward
+
+FALSE  TRUE 
+  101   299 
+
+$Avg
+
+FALSE  TRUE 
+  198   202 
+
+>  
+> 
+> 
+> cleanEx(); ..nameEx <- "eqdist.etest"
+> 
+> ### * eqdist.etest
+> 
+> ### Name: eqdist.etest
+> ### Title: Multisample E-statistic (Energy) Test of Equal Distributions
+> ### Aliases: eqdist.etest
+> ### Keywords: multivariate htest nonparametric
+> 
+> ### ** Examples
+> 
+>  ## test if the 3 varieties of iris data (d=4) have equal distributions
+>  data(iris)
+>  eqdist.etest(iris[,1:4], c(50,50,50))
+
+ Multivariate 3-sample E-test of equal distributions 
+	Sample sizes:        50 50 50 
+	Test statistic:     357.7 
+	Approx. p-value:    < 2.22e-16 
+	999 replicates, resampling method = permutation
+>  
+>  ## univariate two-sample test using incomplete E-statistics
+>  x1 <- rnorm(200)
+>  x2 <- rnorm(300, .5)
+>  eqdist.etest(c(x1, x2), c(200, 300), incomplete=TRUE, N=100)
+
+ Multivariate 2-sample E-test of equal distributions 
+	Sample sizes:        200 300 
+	Test statistic:     5.55 
+	Approx. p-value:    0.002002 
+	999 replicates, resampling method = permutation
+	Incomplete E-statistic, max. sample size 100 
+
+> 
+> 
+> 
+> cleanEx(); ..nameEx <- "ksample.e"
+> 
+> ### * ksample.e
+> 
+> ### Name: ksample.e
+> ### Title: E-statistic (Energy Statistic) for Multivariate k-sample Test of
+> ###   Equal Distributions
+> ### Aliases: ksample.e
+> ### Keywords: multivariate htest nonparametric
+> 
+> ### ** Examples
+> 
+> ## compute 3-sample E-statistic for 4-dimensional iris data
+>  data(iris)
+>  ksample.e(iris[,1:4], c(50,50,50))
+[1] 357.7119
+> 
+> ## compute univariate two-sample incomplete E-statistic
+>  x1 <- rnorm(200)
+>  x2 <- rnorm(300, .5)
+>  x <- c(x1, x2)
+>  ksample.e(x, c(200, 300), incomplete=TRUE, N=100)
+[1] 8.680664
+>  
+> 
+> 
+> 
+> cleanEx(); ..nameEx <- "mvnorm.e"
+> 
+> ### * mvnorm.e
+> 
+> ### Name: mvnorm.e
+> ### Title: E-statistic (Energy Statistic) for Testing Multivariate
+> ###   Normality
+> ### Aliases: mvnorm.e
+> ### Keywords: multivariate htest
+> 
+> ### ** Examples
+> 
+>  
+>  ## compute multivariate normality test statistic for iris Setosa data
+>  data(iris)
+>  mvnorm.e(iris[1:50, 1:4])
+[1] 1.203397
+>  
+> 
+> 
+> cleanEx(); ..nameEx <- "mvnorm.etest"
+> 
+> ### * mvnorm.etest
+> 
+> ### Name: mvnorm.etest
+> ### Title: E-statistic (Energy) Test of Multivariate Normality
+> ### Aliases: mvnorm.etest
+> ### Keywords: multivariate htest
+> 
+> ### ** Examples
+> 
+>  ## test if the iris Setosa data has multivariate normal distribution
+>  data(iris)
+>  mvnorm.etest(iris[1:50,1:4])
+
+ E-test of multivariate normality 
+	Sample size:        50 
+	Dimension:          4 
+	Test statistic:     1.203 
+	Approx. p-value:    0.035035 
+	999 replicates
+>  
+>  ## test a univariate sample for normality
+>  x <- runif(50, 0, 10)
+>  mvnorm.etest(x)
+
+ E-test of multivariate normality 
+	Sample size:        50 
+	Dimension:          1 
+	Test statistic:     1.27 
+	Approx. p-value:    0.004004 
+	999 replicates
+>  
+> 
+> 
+> cleanEx(); ..nameEx <- "normal.e"
+> 
+> ### * normal.e
+> 
+> ### Name: normal.e
+> ### Title: E-statistic (Energy Statistic) for Testing Univariate Normality
+> ### Aliases: normal.e
+> ### Keywords: htest
+> 
+> ### ** Examples
+> 
+>  x <- rnorm(30)
+>  normal.e(x)
+[1] 0.3288401
+> 
+> 
+> 
+> cleanEx(); ..nameEx <- "poisson.m"
+> 
+> ### * poisson.m
+> 
+> ### Name: poisson.m
+> ### Title: Mean Distance Statistic for Testing Poisson Distribution
+> ### Aliases: poisson.m
+> ### Keywords: htest
+> 
+> ### ** Examples
+> 
+>  x <- rpois(20, 1)
+> poisson.m(x)
+[1] 0.0001690301
+>  
+> 
+> 
+> cleanEx(); ..nameEx <- "poisson.mtest"
+> 
+> ### * poisson.mtest
+> 
+> ### Name: poisson.mtest
+> ### Title: Mean Distance Test for Poisson Distribution
+> ### Aliases: poisson.mtest
+> ### Keywords: htest
+> 
+> ### ** Examples
+> 
+>  x <- rpois(20, 1)
+>  poisson.mtest(x)
+
+ Mean distance test of Poisson distribution 
+	Sample size:        20 
+	Sample mean:        0.8 
+	Test statistic:     0.0001690 
+	Approx. p-value:    1 
+	999 replicates
+>  
+> 
+> 
+> cleanEx(); ..nameEx <- "print.etest.eqdist"
+> 
+> ### * print.etest.eqdist
+> 
+> ### Name: print.etest.eqdist
+> ### Title: Print Multisample E-test (Energy Test) for Equal Distributions
+> ### Aliases: print.etest.eqdist
+> ### Keywords: print
+> 
+> ### ** Examples
+> 
+> ## print test if the 3 varieties of iris data (d=4) have equal distributions
+>  data(iris)
+>  e <- eqdist.etest(iris[,1:4], c(50,50,50))
+>  print.etest.eqdist(e)
+
+ Multivariate 3-sample E-test of equal distributions 
+	Sample sizes:        50 50 50 
+	Test statistic:     357.7 
+	Approx. p-value:    < 2.22e-16 
+	999 replicates, resampling method = permutation
+>  
+> 
+> 
+> cleanEx(); ..nameEx <- "print.etest.mvnorm"
+> 
+> ### * print.etest.mvnorm
+> 
+> ### Name: print.etest.mvnorm
+> ### Title: Print E-test (Energy Test) of Multivariate Normality
+> ### Aliases: print.etest.mvnorm
+> ### Keywords: print
+> 
+> ### ** Examples
+> 
+>  ## print E-test for 5-dimensional data
+>  x <- matrix(rnorm(100), nrow=20, ncol=5)
+>  e <- mvnorm.etest(x)
+>  print.etest.mvnorm(e)
+
+ E-test of multivariate normality 
+	Sample size:        20 
+	Dimension:          5 
+	Test statistic:     1.164 
+	Approx. p-value:    0.17117 
+	999 replicates
+>  
+> 
+> 
+> cleanEx(); ..nameEx <- "print.etest.poisson"
+> 
+> ### * print.etest.poisson
+> 
+> ### Name: print.etest.poisson
+> ### Title: Print Mean Distance Test for Poisson Distribution
+> ### Aliases: print.etest.poisson
+> ### Keywords: print
+> 
+> ### ** Examples
+> 
+>  x <- rpois(20, 1)
+>  e <- poisson.mtest(x)
+>  print.etest.poisson(e)
+
+ Mean distance test of Poisson distribution 
+	Sample size:        20 
+	Sample mean:        0.8 
+	Test statistic:     0.0001690 
+	Approx. p-value:    1 
+	999 replicates
+>  
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cat("Time elapsed: ", proc.time() - get("ptime", env = .CheckExEnv),"\n")
+Time elapsed:  21.35 0.15 22.11 NA NA 
+> dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

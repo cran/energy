@@ -1,0 +1,23 @@
+edist                   E-distance
+energy.hclust           Hierarchical Clustering by Minimum (Energy)
+                        E-distance
+eqdist.etest            Multisample E-statistic (Energy) Test of Equal
+                        Distributions
+ksample.e               E-statistic (Energy Statistic) for
+                        Multivariate k-sample Test of Equal
+                        Distributions
+mvnorm.e                E-statistic (Energy Statistic) for Testing
+                        Multivariate Normality
+mvnorm.etest            E-statistic (Energy) Test of Multivariate
+                        Normality
+normal.e                E-statistic (Energy Statistic) for Testing
+                        Univariate Normality
+poisson.m               Mean Distance Statistic for Testing Poisson
+                        Distribution
+poisson.mtest           Mean Distance Test for Poisson Distribution
+print.etest.eqdist      Print Multisample E-test (Energy Test) for
+                        Equal Distributions
+print.etest.mvnorm      Print E-test (Energy Test) of Multivariate
+                        Normality
+print.etest.poisson     Print Mean Distance Test for Poisson
+                        Distribution

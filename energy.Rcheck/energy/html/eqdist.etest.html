@@ -1,0 +1,150 @@
+<html><head><title>R: Multisample E-statistic (Energy) Test of Equal Distributions</title>
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for eqdist.etest {energy}"><tr><td>eqdist.etest {energy}</td><td align="right">R Documentation</td></tr></table>
+<h2>Multisample E-statistic (Energy) Test of Equal Distributions</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Performs the nonparametric multisample E-statistic (energy) test
+for equality of multivariate distributions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ eqdist.etest(x, sizes, distance = FALSE, 
+              incomplete = FALSE, N = 100, R = 999)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+data matrix of pooled sample</td></tr>
+<tr valign="top"><td><code>sizes</code></td>
+<td>
+vector of sample sizes</td></tr>
+<tr valign="top"><td><code>distance</code></td>
+<td>
+logical: if TRUE, first argument is a distance matrix</td></tr>
+<tr valign="top"><td><code>incomplete</code></td>
+<td>
+logical: if TRUE, compute incomplete <i>E</i>-statistics</td></tr>
+<tr valign="top"><td><code>N</code></td>
+<td>
+incomplete sample size</td></tr>
+<tr valign="top"><td><code>R</code></td>
+<td>
+number of bootstrap replicates </td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The k-sample multivariate <i>E</i>-test of equal distributions
+is performed. The statistic is computed from the original
+pooled samples, stacked in matrix <code>x</code> where each row
+is a multivariate observation, or the corresponding distance matrix. The
+first <code>sizes[1]</code> rows of <code>x</code> are the first sample, the next
+<code>sizes[2]</code> rows of <code>x</code> are the second sample, etc.
+</p>
+<p>
+The test is implemented by nonparametric bootstrap, an approximate 
+permutation test with <code>R</code> replicates.
+</p>
+<p>
+The definition of the multisample <i>E</i>-statistic is given in the 
+<code><a href="ksample.e.html">ksample.e</a></code> documentation.
+</p>
+<p>
+If <code>incomplete==TRUE</code>, incomplete <i>E</i>-statistics (which are
+incomplete V-statistics) are computed. That is, at most
+<code>N</code> observations from each sample are used, by sampling without replacement 
+as needed.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+A list with class <code>etest.eqdist</code> containing
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>method</code></td>
+<td>
+Description of test</td></tr>
+<tr valign="top"><td><code>statistic</code></td>
+<td>
+Observed value of the test statistic</td></tr>
+<tr valign="top"><td><code>p.value</code></td>
+<td>
+Approximate p-value of the test</td></tr>
+<tr valign="top"><td><code>sizes</code></td>
+<td>
+Vector of sample sizes</td></tr>
+<tr valign="top"><td><code>R</code></td>
+<td>
+Number of replicates</td></tr>
+<tr valign="top"><td><code>incomplete</code></td>
+<td>
+Argument <code>incomplete</code></td></tr>
+<tr valign="top"><td><code>N</code></td>
+<td>
+Argument <code>N</code></td></tr>
+<tr valign="top"><td><code>replicates</code></td>
+<td>
+Vector of replicates of the statistic</td></tr>
+</table>
+
+<h3>Author(s)</h3>
+
+<p>
+Maria Rizzo <a href="mailto:rizzo@math.ohiou.edu">rizzo@math.ohiou.edu</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>
+Szekely, G. J. and Rizzo, M. L. (2003) Testing for Equal
+Distributions in High Dimension, submitted.
+</p>
+<p>
+Szekely, G. J. (2000) <i>E</i>-statistics: Energy of 
+Statistical Samples, preprint.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="ksample.e.html">ksample.e</a></code>,
+<code><a href="print.etest.eqdist.html">print.etest.eqdist</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ ## test if the 3 varieties of iris data (d=4) have equal distributions
+ data(iris)
+ eqdist.etest(iris[,1:4], c(50,50,50))
+ 
+ ## univariate two-sample test using incomplete E-statistics
+ x1 &lt;- rnorm(200)
+ x2 &lt;- rnorm(300, .5)
+ eqdist.etest(c(x1, x2), c(200, 300), incomplete=TRUE, N=100)
+</pre>
+
+
+
+<hr><div align="center"><a href="00Index.html">[Package Contents]</a></div>
+
+</body></html>

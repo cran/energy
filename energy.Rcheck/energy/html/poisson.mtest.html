@@ -1,0 +1,98 @@
+<html><head><title>R: Mean Distance Test for Poisson Distribution</title>
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for poisson.mtest {energy}"><tr><td>poisson.mtest {energy}</td><td align="right">R Documentation</td></tr></table>
+<h2>Mean Distance Test for Poisson Distribution</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Performs the mean distance goodness-of-fit test of Poisson distribution
+with unknown parameter.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+poisson.mtest(x, R=999)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+vector of nonnegative integers, the sample data </td></tr>
+<tr valign="top"><td><code>R</code></td>
+<td>
+number of bootstrap replicates </td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The mean distance test of Poissonity was proposed and implemented by Szekely and Rizzo (2004). The test is based on the result that the sequence of expected values E|X-j|, j=0,1,2,... characterizes the distribution of the random  variable X. As an application of this characterization one can get an estimator <i>hat F(j)</i> of the CDF. The test statistic (see <code><a href="poisson.m.html">poisson.m</a></code>) is a Cramer-von Mises type of distance, with M-estimates replacing the usual EDF estimates of the CDF:
+</p><p align="center"><i>M_n = n sum [j&gt;=0] (hat F(j) - F(j; hat &lambda;))^2
+f(j; hat &lambda;).</i></p><p> The test is implemented by parametric bootstrap with <code>R</code> replicates.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+A list with class <code>etest.poisson</code> containing
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>method</code></td>
+<td>
+Description of test</td></tr>
+<tr valign="top"><td><code>statistic</code></td>
+<td>
+Observed value of the test statistic</td></tr>
+<tr valign="top"><td><code>p.value</code></td>
+<td>
+Approximate p-value of the test</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+Sample size</td></tr>
+<tr valign="top"><td><code>lambda</code></td>
+<td>
+Sample mean</td></tr>
+<tr valign="top"><td><code>R</code></td>
+<td>
+Number of replicates</td></tr>
+<tr valign="top"><td><code>replicates</code></td>
+<td>
+Vector of replicates of the statistic</td></tr>
+</table>
+
+<h3>Author(s)</h3>
+
+<p>
+Maria Rizzo <a href="mailto:rizzo@math.ohiou.edu">rizzo@math.ohiou.edu</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="poisson.m.html">poisson.m</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ x &lt;- rpois(20, 1)
+ poisson.mtest(x)
+ </pre>
+
+
+
+<hr><div align="center"><a href="00Index.html">[Package Contents]</a></div>
+
+</body></html>

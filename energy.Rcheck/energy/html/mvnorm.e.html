@@ -1,0 +1,104 @@
+<html><head><title>R: E-statistic (Energy Statistic) for Testing Multivariate Normality</title>
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for mvnorm.e {energy}"><tr><td>mvnorm.e {energy}</td><td align="right">R Documentation</td></tr></table>
+<h2>E-statistic (Energy Statistic) for Testing Multivariate Normality</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Computes the E-statistic (energy statistic) for testing multivariate 
+or univariate normality when parameters are estimated.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mvnorm.e(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+matrix or vector of sample data</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+If <code>x</code> is a matrix, each row is a multivariate observation. The
+data will be standardized to zero mean and identity covariance matrix
+using the sample mean vector and sample covariance matrix. If <code>x</code>
+is a vector, the univariate statistic <code>normal.e(x)</code> is returned. 
+If the data contains missing values or the sample covariance matrix is 
+singular, NA is returned.
+</p>
+<p>
+The <i>E</i>-test of multivariate normality was proposed
+and implemented by Szekely and Rizzo (2004). The test statistic for 
+d-variate normality is given by
+</p><p align="center"><i>E = n((2/n) sum[1:n] E||y_i-Z|| - E||Z-Z'|| - (1/n^2) sum[1:n,1:n]
+||y_i-y_j||),</i></p><p>
+where <i>y_1,...,y_n</i> is the standardized sample, 
+<i>Z, Z'</i> are iid standard d-variate normal, and
+<i>|| ||</i> denotes Euclidean norm.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+The value of the <i>E</i>-statistic for multivariate
+(univariate) normality is returned.</p>
+
+<h3>Author(s)</h3>
+
+<p>
+Maria Rizzo <a href="mailto:rizzo@math.ohiou.edu">rizzo@math.ohiou.edu</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>
+Szekely, G. J. and Rizzo, M. L. (2004) A New Test for 
+Multivariate Normality, <EM>Journal of Multivariate Analysis</EM>,
+to appear.
+</p>
+<p>
+Rizzo, M. L. (2002). A New Rotation Invariant Goodness-of-Fit Test,
+Ph.D. dissertation, Bowling Green State University.
+</p>
+<p>
+Szekely, G. J. (1989) Potential and Kinetic Energy in Statistics, 
+Lecture Notes, Budapest Institute of Technology (Technical University).
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="normal.e.html">normal.e</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ 
+ ## compute multivariate normality test statistic for iris Setosa data
+ data(iris)
+ mvnorm.e(iris[1:50, 1:4])
+ </pre>
+
+
+
+<hr><div align="center"><a href="00Index.html">[Package Contents]</a></div>
+
+</body></html>

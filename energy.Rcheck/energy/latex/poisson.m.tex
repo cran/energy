@@ -1,0 +1,40 @@
+\Header{poisson.m}{Mean Distance Statistic for Testing Poisson Distribution}
+\keyword{htest}{poisson.m}
+\begin{Description}\relax
+Returns the mean distance statistic for a goodness-of-fit test of Poisson distribution with unknown parameter.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+poisson.m(x)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] vector of nonnegative integers, the sample data 
+\end{ldescription}
+\end{Arguments}
+\begin{Details}\relax
+The mean distance test of Poissonity was proposed and implemented by Szekely and Rizzo (2004). The test is based on the result that the sequence of expected values E|X-j|, j=0,1,2,... characterizes the distribution of the random variable X. As an application of this characterization one can get an estimator \eqn{\hat F(j)}{} of the CDF. The test statistic is a Cramer-von Mises type of distance, with M-estimates replacing the usual EDF estimates of the CDF: 
+\deqn{M_n = n\sum_{j=0}^\infty (\hat F(j) - F(j\;; \hat \lambda))^2
+f(j\;; \hat \lambda).}{M_n = n sum [j>=0] (\hat F(j) - F(j; \hat \lambda))^2
+f(j; \hat \lambda).} See Szekely and Rizzo (2004) for the computing formula.
+\end{Details}
+\begin{Value}
+The value of the \eqn{M}{}-statistic for testing Poisson distribution is returned.\end{Value}
+\begin{Author}\relax
+Maria Rizzo \email{rizzo@math.ohiou.edu}
+\end{Author}
+\begin{References}\relax
+Szekely, G. J. and Rizzo, M. L. (2004) Mean Distance Test
+of Poisson Distribution, \emph{Statistics and Probability Letters}, to appear.
+\end{References}
+\begin{SeeAlso}\relax
+\code{\Link{poisson.mtest}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+ x <- rpois(20, 1)
+poisson.m(x)
+ \end{ExampleCode}
+\end{Examples}
+

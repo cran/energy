@@ -5,7 +5,7 @@
  Returns the E-distances (energy statistics) between clusters. 
 }
 \usage{
- edist(x, sizes, distance=FALSE, ix = 1:sum(sizes))
+ edist(x, sizes, distance = FALSE, ix = 1:sum(sizes))
 }
 \arguments{
   \item{x}{ data matrix of pooled sample or Euclidean distances}
@@ -27,7 +27,7 @@
  
   The e-distance between two clusters \eqn{C_i, C_j}
   of size \eqn{n_i, n_j} 
-  proposed by Szekely and Rizzo (2003ab)
+  proposed by Szekely and Rizzo (2003)
   is the e-distance \eqn{e(C_i,C_j)}, defined by
   \deqn{e(C_i,C_j)=\frac{n_i n_j}{n_i+n_j}[2M_{ij}-M_{ii}-M_{jj}],
   }{e(S_i, S_j) = (n_i n_j)(n_i+n_j)[2M_(ij)-M_(ii)-M_(jj)],}
@@ -44,14 +44,16 @@
  of indices \code{ix} is returned.
 }
 \references{ 
- Szekely, G. J. and Rizzo, M. L. (2003a) Hierarchical Clustering
+ Szekely, G. J. and Rizzo, M. L. (2003) Hierarchical Clustering
  via Joint Between-Within Distances, submitted.
  
- Szekely, G. J. and Rizzo, M. L. (2003b) Testing for Equal
- Distributions in High Dimension, submitted.
+ Szekely, G. J. and Rizzo, M. L. (2004) Testing for Equal
+ Distributions in High Dimension, InterStat, November.
  
- Szekely, G. J. (2000) \eqn{\mathcal{E}}{E}-statistics: Energy of 
- Statistical Samples, preprint.
+ Szekely, G. J. (2000) Technical Report 03-05,
+ \eqn{\mathcal{E}}{E}-statistics: Energy of 
+ Statistical Samples, Department of Mathematics and Statistics,
+ Bowling Green State University.
 } 
 \author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
 Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}

@@ -20,7 +20,7 @@ mvnorm.e(x)
  singular, NA is returned.
  
  The \eqn{\mathcal{E}}{E}-test of multivariate normality was proposed
- and implemented by Szekely and Rizzo (2004). The test statistic for 
+ and implemented by Szekely and Rizzo (2005). The test statistic for 
  d-variate normality is given by
  \deqn{\mathcal{E} = n (\frac{2}{n} \sum_{i=1}^n E\|y_i-Z\| - 
  E\|Z-Z'\| - \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1}^n \|y_i-y_j\|),
@@ -35,8 +35,9 @@ mvnorm.e(x)
  (univariate) normality is returned.
 }
 \references{
- Szekely, G. J. and Rizzo, M. L. (2004) A New Test for 
+ Szekely, G. J. and Rizzo, M. L. (2005) A New Test for 
  Multivariate Normality, \emph{Journal of Multivariate Analysis},
+ 93/1, 58-80,
  \url{http://dx.doi.org/10.1016/j.jmva.2003.12.002}.
 
  Rizzo, M. L. (2002). A New Rotation Invariant Goodness-of-Fit Test,

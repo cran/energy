@@ -33,10 +33,10 @@ mvnorm.e <-
 function(x) 
 {
     # E-statistic for multivariate normality
-    if (is.vector(x)) return(E.norm(x))
+    if (is.vector(x)) return(normal.e(x))
     n <- nrow(x)
     d <- ncol(x)
-    if (n < 2) return(E.norm(x))
+    if (n < 2) return(normal.e(x))
     z <- scale(x, scale = FALSE)    #subtract column means and 
     ev <- eigen(var(x), symmetric = TRUE)    #compute S^(-1/2)
     P <- ev$vectors

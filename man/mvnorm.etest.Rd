@@ -30,8 +30,9 @@
 }
 
 \references{ 
- Szekely, G. J. and Rizzo, M. L. (2004) A New Test for 
+ Szekely, G. J. and Rizzo, M. L. (2005) A New Test for 
  Multivariate Normality, \emph{Journal of Multivariate Analysis},
+ 93/1, 58-80,
  \url{http://dx.doi.org/10.1016/j.jmva.2003.12.002}.
  
  Rizzo, M. L. (2002). A New Rotation Invariant Goodness-of-Fit Test,
@@ -42,7 +43,6 @@
 } 
 \author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
 Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
-
 \seealso{
  \code{\link{mvnorm.e}},
  \code{\link{print.etest.mvnorm}}

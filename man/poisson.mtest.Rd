@@ -6,7 +6,7 @@
  with unknown parameter.
 }
 \usage{
-poisson.mtest(x, R=999)
+poisson.mtest(x, R = 999)
 }
 \arguments{
   \item{x}{ vector of nonnegative integers, the sample data }

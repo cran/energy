@@ -65,12 +65,14 @@
      Szekely, G. J. and Rizzo, M. L. (2003) Hierarchical Clustering
      via Joint Between-Within Distances, submitted.
 
-     Szekely, G. J. and Rizzo, M. L. (2003) Testing for Equal
-     Distributions in High Dimension, submitted.
+     Szekely, G. J. and Rizzo, M. L. (2004) Testing for Equal
+     Distributions in High Dimension, \emph{InterStat}, November, 5.
 
-     Szekely, G. J. (2000) \eqn{\mathcal E}{E}-statistics: Energy of
-     Statistical Samples, preprint.
-}
+ Szekely, G. J. (2000) Technical Report 03-05:
+ \eqn{\mathcal{E}}{E}-statistics: Energy of 
+ Statistical Samples, Department of Mathematics and Statistics, Bowling
+ Green State University.
+} 
 \author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
 Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
 \seealso{ \code{\link{edist}} \code{\link{ksample.e}} \code{hclust}} }
@@ -81,7 +83,6 @@ Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
    plot(energy.hclust(dist(animals)))
    }
    
-   library(mva)
    data(USArrests)
    ecl <- energy.hclust(dist(USArrests))
    print(ecl)    

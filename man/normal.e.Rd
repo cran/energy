@@ -21,7 +21,7 @@ normal.e(x)
  The 
  \eqn{\mathcal{E}}{E}-test of multivariate (and univariate)
   normality was proposed and implemented by Szekely and Rizzo 
-  (2004). The univariate test statistic
+  (2005). The univariate test statistic
  is given by
  \deqn{\mathcal{E} = n (\frac{2}{n} \sum_{i=1}^n E|y_i-Z| - E|Z-Z'| -
  \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1}^n |y_i-y_j|),
@@ -36,8 +36,9 @@ normal.e(x)
  normality is returned.
 }
 \references{
- Szekely, G. J. and Rizzo, M. L. (2004) A New Test for 
+ Szekely, G. J. and Rizzo, M. L. (2005) A New Test for 
  Multivariate Normality, \emph{Journal of Multivariate Analysis},
+ 93/1, 58-80, 
  \url{http://dx.doi.org/10.1016/j.jmva.2003.12.002}.
 
  Rizzo, M. L. (2002). A New Rotation Invariant Goodness-of-Fit Test,
@@ -48,7 +49,6 @@ normal.e(x)
  }
 \author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
 Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
-
 \seealso{ \code{\link{mvnorm.e}}, \code{\link{mvnorm.etest}}}
 
 \examples{

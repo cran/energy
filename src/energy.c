@@ -4,6 +4,7 @@
    Author:  Maria Rizzo <rizzo@math.ohiou.edu>
    Created: 4 Jan 2004 for R-1.8.1
    Revised: 20 March 2004 (E2, twosampleIEtest added)
+   Revised: 13 June 2004 (distance() changed, some utilities added)
 
    mvnEstat()     computes the E-test of multivariate normality
    ksampleEtest() performs the multivariate E-test for equal distributions,
@@ -34,7 +35,9 @@ void   distance(double **bxy, double **D, int N, int d);
 void   sumdist(double *x, int *byrow, int *nrow, int *ncol, double *lowersum);
 
 double **alloc_matrix(int r, int c);
+int    **alloc_int_matrix(int r, int c);
 void   free_matrix(double **matrix, int r, int c);
+void   free_int_matrix(int **matrix, int r, int c);
 void   permute(int *J, int n);
 void   roworder(double *x, int *byrow, int r, int c);
 void   vector2matrix(double *x, double **y, int N, int d, int isroworder);
@@ -495,9 +498,29 @@ double **alloc_matrix(int r, int c)
     return matrix;
 }
 
+
+int **alloc_int_matrix(int r, int c)
+{
+    /* allocate an integer matrix with r rows and c columns */
+    int i;
+    int **matrix;
+    matrix = Calloc(r, int *);
+    for (i = 0; i < r; i++)
+    matrix[i] = Calloc(c, int);
+    return matrix;
+}
+
 void free_matrix(double **matrix, int r, int c)
 {
     /* free a matrix with r rows and c columns */
+    int i;
+    for (i = 0; i < r; i++) Free(matrix[i]);
+    Free(matrix);
+}
+
+void free_int_matrix(int **matrix, int r, int c)
+{
+    /* free an integer matrix with r rows and c columns */
     int i;
     for (i = 0; i < r; i++) Free(matrix[i]);
     Free(matrix);
@@ -539,7 +562,7 @@ void vector2matrix(double *x, double **y, int N, int d, int isroworder) {
 void distance(double **data, double **D, int N, int d) {
     /*
        compute the distance matrix of sample in N by d matrix data
-       like D <- as.matrix(dist(data)) in R
+       equivalent R code is:  D <- as.matrix(dist(data))
     */
     int    i, j, k;
     double dif;
@@ -580,4 +603,3 @@ void roworder(double *x, int *byrow, int r, int c) {
     *byrow = TRUE;
     return;
 }
-

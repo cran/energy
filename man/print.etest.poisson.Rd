@@ -12,7 +12,6 @@ print.etest.poisson(x, ...)
   \item{x}{ an object of class \code{etest.poisson} }
   \item{...}{ extra arguments passed to or from other methods }  
 }
-\author{ Maria Rizzo \email{rizzo@math.ohiou.edu} }
 \seealso{ \code{\link{poisson.mtest}} }
 \examples{
  x <- rpois(20, 1)

@@ -17,8 +17,8 @@ for equality of multivariate distributions.
 \item[\code{x}] data matrix of pooled sample
 \item[\code{sizes}] vector of sample sizes
 \item[\code{distance}] logical: if TRUE, first argument is a distance matrix
-\item[\code{incomplete}] logical: if TRUE, compute incomplete \eqn{\mathcal{E}}{E}-statistics
-\item[\code{N}] incomplete sample size
+\item[\code{incomplete}] logical: if TRUE, compute incomplete E-statistics
+\item[\code{N}] sample size for incomplete statistics
 \item[\code{R}] number of bootstrap replicates 
 \end{ldescription}
 \end{Arguments}
@@ -31,15 +31,15 @@ first \code{sizes[1]} rows of \code{x} are the first sample, the next
 \code{sizes[2]} rows of \code{x} are the second sample, etc.
 
 The test is implemented by nonparametric bootstrap, an approximate 
-permutation test with \code{R} replicates.
+permutation test with \code{R} replicates. For large samples it is
+more efficient if \code{x} contains the data matrix rather than the
+distances. Incomplete statistics are supported for the two-sample test. If
+\code{incomplete==TRUE}, at most \code{N} observations from each sample 
+(by sampling without replacement) are used in the calculation of the statistic.
+If \code{distance==TRUE} complete statistics are always computed.
 
 The definition of the multisample \eqn{\mathcal{E}}{E}-statistic is given in the 
-\code{\Link{ksample.e}} documentation.
-
-If \code{incomplete==TRUE}, incomplete \eqn{\mathcal{E}}{E}-statistics (which are
-incomplete V-statistics) are computed. That is, at most
-\code{N} observations from each sample are used, by sampling without replacement 
-as needed.\end{Details}
+\code{\Link{ksample.e}} documentation.\end{Details}
 \begin{Value}
 A list with class \code{etest.eqdist} containing
 \begin{ldescription}
@@ -48,13 +48,12 @@ A list with class \code{etest.eqdist} containing
 \item[\code{p.value}] Approximate p-value of the test
 \item[\code{sizes}] Vector of sample sizes
 \item[\code{R}] Number of replicates
-\item[\code{incomplete}] Argument \code{incomplete}
-\item[\code{N}] Argument \code{N}
 \item[\code{replicates}] Vector of replicates of the statistic
 \end{ldescription}
 \end{Value}
 \begin{Author}\relax
-Maria Rizzo \email{rizzo@math.ohiou.edu}
+Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}
 \end{Author}
 \begin{References}\relax
 Szekely, G. J. and Rizzo, M. L. (2003) Testing for Equal
@@ -65,17 +64,22 @@ Statistical Samples, preprint.\end{References}
 \begin{SeeAlso}\relax
 \code{\Link{ksample.e}},
 \code{\Link{print.etest.eqdist}}
+\code{\Link{edist}}
+\code{\Link{energy.hclust}}
 \end{SeeAlso}
 \begin{Examples}
 \begin{ExampleCode}
- ## test if the 3 varieties of iris data (d=4) have equal distributions
  data(iris)
- eqdist.etest(iris[,1:4], c(50,50,50))
  
- ## univariate two-sample test using incomplete E-statistics
- x1 <- rnorm(200)
- x2 <- rnorm(300, .5)
- eqdist.etest(c(x1, x2), c(200, 300), incomplete=TRUE, N=100)
+ ## test if the 3 varieties of iris data (d=4) have equal distributions
+ eqdist.etest(iris[,1:4], c(50,50,50))
+
+ ## compare incomplete versions of two sample test
+ x <- c(rpois(400, 2), rnbinom(600, size=1, mu=2))
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=100)
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=200)
+  
+
 \end{ExampleCode}
 \end{Examples}
 

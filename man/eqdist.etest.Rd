@@ -13,8 +13,8 @@
   \item{x}{ data matrix of pooled sample}
   \item{sizes}{ vector of sample sizes}
   \item{distance}{logical: if TRUE, first argument is a distance matrix}
-  \item{incomplete}{ logical: if TRUE, compute incomplete \eqn{\mathcal{E}}{E}-statistics}
-  \item{N}{ incomplete sample size}
+  \item{incomplete}{logical: if TRUE, compute incomplete E-statistics}
+  \item{N}{sample size for incomplete statistics}
   \item{R}{ number of bootstrap replicates }
 }
 \details{
@@ -26,15 +26,15 @@
   \code{sizes[2]} rows of \code{x} are the second sample, etc.
  
   The test is implemented by nonparametric bootstrap, an approximate 
-  permutation test with \code{R} replicates.
+  permutation test with \code{R} replicates. For large samples it is
+  more efficient if \code{x} contains the data matrix rather than the
+  distances. Incomplete statistics are supported for the two-sample test. If
+  \code{incomplete==TRUE}, at most \code{N} observations from each sample 
+  (by sampling without replacement) are used in the calculation of the statistic.
+  If \code{distance==TRUE} complete statistics are always computed.
   
   The definition of the multisample \eqn{\mathcal{E}}{E}-statistic is given in the 
   \code{\link{ksample.e}} documentation.
-
-  If \code{incomplete==TRUE}, incomplete \eqn{\mathcal{E}}{E}-statistics (which are
-  incomplete V-statistics) are computed. That is, at most
-  \code{N} observations from each sample are used, by sampling without replacement 
-  as needed. 
 }
 \value{
  A list with class \code{etest.eqdist} containing
@@ -43,8 +43,6 @@
  \item{p.value}{Approximate p-value of the test}
  \item{sizes}{Vector of sample sizes}
  \item{R}{Number of replicates}
- \item{incomplete}{Argument \code{incomplete}}
- \item{N}{Argument \code{N}}
  \item{replicates}{Vector of replicates of the statistic}
 }
 
@@ -56,22 +54,35 @@
  Statistical Samples, preprint.
 
 } 
-\author{ Maria Rizzo \email{rizzo@math.ohiou.edu}}
+\author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
 
 \seealso{
  \code{\link{ksample.e}},
  \code{\link{print.etest.eqdist}}
+ \code{\link{edist}}
+ \code{\link{energy.hclust}}
  }
 \examples{
- ## test if the 3 varieties of iris data (d=4) have equal distributions
  data(iris)
- eqdist.etest(iris[,1:4], c(50,50,50))
  
- ## univariate two-sample test using incomplete E-statistics
- x1 <- rnorm(200)
- x2 <- rnorm(300, .5)
- eqdist.etest(c(x1, x2), c(200, 300), incomplete=TRUE, N=100)
+ ## test if the 3 varieties of iris data (d=4) have equal distributions
+ eqdist.etest(iris[,1:4], c(50,50,50))
+
+ ## compare incomplete versions of two sample test
+ x <- c(rpois(400, 2), rnbinom(600, size=1, mu=2))
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=100)
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=200)
+  
+\dontshow{
+  x <- matrix(rnorm(500), nrow=100)
+  y <- matrix(rnorm(500, mean=5), nrow=100)
+  x <- rbind(x, y)
+  eqdist.etest(dist(x), sizes=c(100, 100), distance=TRUE)
+  eqdist.etest(x, sizes=c(100, 100), incomplete=TRUE, N=50, R=100)
+}
 }
 \keyword{ multivariate }
 \keyword{ htest }
 \keyword{ nonparametric }
+\concept{ energy statistics}

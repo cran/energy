@@ -12,7 +12,6 @@ print.etest.mvnorm(x, ...)
   \item{x}{ an object of class \code{etest.mvnorm} }
   \item{...}{ extra arguments passed to or from other methods }  
 }
-\author{ Maria Rizzo \email{rizzo@math.ohiou.edu} }
 \seealso{ \code{\link{mvnorm.etest}} }
 \examples{
  ## print E-test for 5-dimensional data

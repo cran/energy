@@ -22,7 +22,7 @@ distance: logical: if TRUE, first argument is a distance matrix
 
 incomplete: logical: if TRUE, compute incomplete E-statistics
 
-       N: incomplete sample size
+       N: sample size for incomplete statistics
 
        R: number of bootstrap replicates 
 
@@ -36,15 +36,16 @@ _D_e_t_a_i_l_s:
      rows of 'x' are the second sample, etc.
 
      The test is implemented by nonparametric bootstrap, an approximate
-      permutation test with 'R' replicates.
+      permutation test with 'R' replicates. For large samples it is
+     more efficient if 'x' contains the data matrix rather than the
+     distances. Incomplete statistics are supported for the two-sample
+     test. If 'incomplete==TRUE', at most 'N' observations from each
+     sample  (by sampling without replacement) are used in the
+     calculation of the statistic. If 'distance==TRUE' complete
+     statistics are always computed.
 
      The definition of the multisample E-statistic is given in the 
      'ksample.e' documentation.
-
-     If 'incomplete==TRUE', incomplete E-statistics (which are
-     incomplete V-statistics) are computed. That is, at most 'N'
-     observations from each sample are used, by sampling without
-     replacement  as needed.
 
 _V_a_l_u_e:
 
@@ -60,15 +61,12 @@ statistic: Observed value of the test statistic
 
        R: Number of replicates
 
-incomplete: Argument 'incomplete'
-
-       N: Argument 'N'
-
 replicates: Vector of replicates of the statistic
 
 _A_u_t_h_o_r(_s):
 
-     Maria Rizzo rizzo@math.ohiou.edu
+     Maria L. Rizzo rizzo@math.ohiou.edu and Gabor J. Szekely
+     gabors@bgnet.bgsu.edu
 
 _R_e_f_e_r_e_n_c_e_s:
 
@@ -80,16 +78,18 @@ _R_e_f_e_r_e_n_c_e_s:
 
 _S_e_e _A_l_s_o:
 
-     'ksample.e', 'print.etest.eqdist'
+     'ksample.e', 'print.etest.eqdist' 'edist' 'energy.hclust'
 
 _E_x_a_m_p_l_e_s:
 
-      ## test if the 3 varieties of iris data (d=4) have equal distributions
       data(iris)
-      eqdist.etest(iris[,1:4], c(50,50,50))
       
-      ## univariate two-sample test using incomplete E-statistics
-      x1 <- rnorm(200)
-      x2 <- rnorm(300, .5)
-      eqdist.etest(c(x1, x2), c(200, 300), incomplete=TRUE, N=100)
+      ## test if the 3 varieties of iris data (d=4) have equal distributions
+      eqdist.etest(iris[,1:4], c(50,50,50))
+
+      ## compare incomplete versions of two sample test
+      x <- c(rpois(400, 2), rnbinom(600, size=1, mu=2))
+      eqdist.etest(x, c(400, 600), incomplete=TRUE, N=100)
+      eqdist.etest(x, c(400, 600), incomplete=TRUE, N=200)
+       
 

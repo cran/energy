@@ -12,7 +12,6 @@ print.etest.eqdist(x, ...)
   \item{x}{ an object of class \code{etest.eqdist} }
   \item{...}{ extra arguments passed to or from other methods }
 }
-\author{ Maria Rizzo \email{rizzo@math.ohiou.edu} }
 \seealso{ \code{\link{eqdist.etest}} }
 \examples{
 ## print test if the 3 varieties of iris data (d=4) have equal distributions

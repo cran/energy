@@ -35,9 +35,16 @@ number of bootstrap replicates </td></tr>
 <h3>Details</h3>
 
 <p>
-The mean distance test of Poissonity was proposed and implemented by Szekely and Rizzo (2004). The test is based on the result that the sequence of expected values E|X-j|, j=0,1,2,... characterizes the distribution of the random  variable X. As an application of this characterization one can get an estimator <i>hat F(j)</i> of the CDF. The test statistic (see <code><a href="poisson.m.html">poisson.m</a></code>) is a Cramer-von Mises type of distance, with M-estimates replacing the usual EDF estimates of the CDF:
+The mean distance test of Poissonity was proposed and implemented by 
+Szekely and Rizzo (2004). The test is based on the result that the sequence 
+of expected values E|X-j|, j=0,1,2,... characterizes the distribution of 
+the random  variable X. As an application of this characterization one can 
+get an estimator <i>hat F(j)</i> of the CDF. The test statistic 
+(see <code><a href="poisson.m.html">poisson.m</a></code>) is a Cramer-von Mises type of distance, with 
+M-estimates replacing the usual EDF estimates of the CDF:
 </p><p align="center"><i>M_n = n sum [j&gt;=0] (hat F(j) - F(j; hat &lambda;))^2
-f(j; hat &lambda;).</i></p><p> The test is implemented by parametric bootstrap with <code>R</code> replicates.
+f(j; hat &lambda;).</i></p><p> The test is implemented by parametric bootstrap with 
+<code>R</code> replicates.
 </p>
 
 
@@ -73,7 +80,16 @@ Vector of replicates of the statistic</td></tr>
 <h3>Author(s)</h3>
 
 <p>
-Maria Rizzo <a href="mailto:rizzo@math.ohiou.edu">rizzo@math.ohiou.edu</a>
+Maria L. Rizzo <a href="mailto:rizzo@math.ohiou.edu">rizzo@math.ohiou.edu</a> and
+Gabor J. Szekely <a href="mailto:gabors@bgnet.bgsu.edu">gabors@bgnet.bgsu.edu</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>
+Szekely, G. J. and Rizzo, M. L. (2004) Mean Distance Test of Poisson Distribution, <EM>Statistics and Probability Letters</EM>, 
+67/3, 241-247. <a href="http://dx.doi.org/10.1016/j.spl.2004.01.005">http://dx.doi.org/10.1016/j.spl.2004.01.005</a>.
 </p>
 
 

@@ -54,7 +54,8 @@ _V_a_l_u_e:
 
 _A_u_t_h_o_r(_s):
 
-     Maria Rizzo rizzo@math.ohiou.edu
+     Maria L. Rizzo rizzo@math.ohiou.edu and Gabor J. Szekely
+     gabors@bgnet.bgsu.edu
 
 _R_e_f_e_r_e_n_c_e_s:
 
@@ -77,12 +78,10 @@ _E_x_a_m_p_l_e_s:
       data(iris)
       edist(iris[,1:4], c(50,50,50))
 
-      ## compute e-distances from a distance object
-      data(iris)
-      edist(dist(iris[,1:4]), c(50, 50, 50), distance=TRUE)
 
-      ## compute e-distances from a distance matrix
-      data(iris)
-      d <- as.matrix(dist(iris[,1:4]))
-      edist(d, c(50, 50, 50), distance=TRUE) 
+      ## compute e-distances from vector of group labels
+      d <- dist(matrix(rnorm(100), nrow=50))
+      g <- cutree(energy.hclust(d), k=4)
+      edist(d, sizes=table(g), ix=rank(g, ties.method="first"))
+      
 

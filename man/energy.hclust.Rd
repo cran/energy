@@ -71,7 +71,8 @@
      Szekely, G. J. (2000) \eqn{\mathcal E}{E}-statistics: Energy of
      Statistical Samples, preprint.
 }
-\author{ Maria Rizzo }
+\author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
 \seealso{ \code{\link{edist}} \code{\link{ksample.e}} \code{hclust}} }
 \examples{
    \dontrun{   
@@ -101,3 +102,4 @@
  }
 \keyword{ multivariate }
 \keyword{ cluster }
+\concept{ energy statistics }

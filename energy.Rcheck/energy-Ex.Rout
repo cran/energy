@@ -69,21 +69,32 @@ Loading required package: boot
 2 123.55381          
 3 195.30396  38.85415
 > 
->  ## compute e-distances from a distance object
->  data(iris)
->  edist(dist(iris[,1:4]), c(50, 50, 50), distance=TRUE)
+> ## Don't show: 
+>      ## compute e-distances from a distance object
+>      data(iris)
+>      edist(dist(iris[,1:4]), c(50, 50, 50), distance=TRUE)
           1         2
 2 123.55381          
 3 195.30396  38.85415
-> 
->  ## compute e-distances from a distance matrix
->  data(iris)
->  d <- as.matrix(dist(iris[,1:4]))
->  edist(d, c(50, 50, 50), distance=TRUE) 
+>     
+>      ## compute e-distances from a distance matrix
+>      data(iris)
+>      d <- as.matrix(dist(iris[,1:4]))
+>      edist(d, c(50, 50, 50), distance=TRUE) 
           1         2
 2 123.55381          
 3 195.30396  38.85415
-> 
+>      
+> ## End Don't show
+>  ## compute e-distances from vector of group labels
+>  d <- dist(matrix(rnorm(100), nrow=50))
+>  g <- cutree(energy.hclust(d), k=4)
+>  edist(d, sizes=table(g), ix=rank(g, ties.method="first"))
+         1        2        3
+2 4.194266                  
+3 9.101729 6.768683         
+4 5.399126 5.135709 4.323048
+>  
 > 
 > 
 > cleanEx(); ..nameEx <- "energy.hclust"
@@ -200,8 +211,9 @@ FALSE  TRUE
 > 
 > ### ** Examples
 > 
->  ## test if the 3 varieties of iris data (d=4) have equal distributions
 >  data(iris)
+>  
+>  ## test if the 3 varieties of iris data (d=4) have equal distributions
 >  eqdist.etest(iris[,1:4], c(50,50,50))
 
  Multivariate 3-sample E-test of equal distributions 
@@ -209,19 +221,43 @@ FALSE  TRUE
 	Test statistic:     357.7 
 	Approx. p-value:    < 2.22e-16 
 	999 replicates, resampling method = permutation
->  
->  ## univariate two-sample test using incomplete E-statistics
->  x1 <- rnorm(200)
->  x2 <- rnorm(300, .5)
->  eqdist.etest(c(x1, x2), c(200, 300), incomplete=TRUE, N=100)
+> 
+>  ## compare incomplete versions of two sample test
+>  x <- c(rpois(400, 2), rnbinom(600, size=1, mu=2))
+>  eqdist.etest(x, c(400, 600), incomplete=TRUE, N=100)
 
- Multivariate 2-sample E-test of equal distributions 
-	Sample sizes:        200 300 
-	Test statistic:     5.55 
-	Approx. p-value:    0.002002 
+ Univariate 2-sample E-test of equal distributions, incomplete version with max size 100 
+	Sample sizes:        400 600 
+	Test statistic:     11.85 
+	Approx. p-value:    0.003003 
 	999 replicates, resampling method = permutation
-	Incomplete E-statistic, max. sample size 100 
+>  eqdist.etest(x, c(400, 600), incomplete=TRUE, N=200)
 
+ Univariate 2-sample E-test of equal distributions, incomplete version with max size 200 
+	Sample sizes:        400 600 
+	Test statistic:     11.88 
+	Approx. p-value:    0.001001 
+	999 replicates, resampling method = permutation
+>   
+> ## Don't show: 
+>   x <- matrix(rnorm(500), nrow=100)
+>   y <- matrix(rnorm(500, mean=5), nrow=100)
+>   x <- rbind(x, y)
+>   eqdist.etest(dist(x), sizes=c(100, 100), distance=TRUE)
+
+ 2-sample E-test of equal distributions 
+	Sample sizes:        100 100 
+	Test statistic:     840.9 
+	Approx. p-value:    < 2.22e-16 
+	999 replicates, resampling method = permutation
+>   eqdist.etest(x, sizes=c(100, 100), incomplete=TRUE, N=50, R=100)
+
+ Multivariate 2-sample E-test of equal distributions, incomplete version with max size 50 
+	Sample sizes:        100 100 
+	Test statistic:     423.7 
+	Approx. p-value:    < 2.22e-16 
+	100 replicates, resampling method = permutation
+> ## End Don't show
 > 
 > 
 > 
@@ -242,13 +278,9 @@ FALSE  TRUE
 >  ksample.e(iris[,1:4], c(50,50,50))
 [1] 357.7119
 > 
-> ## compute univariate two-sample incomplete E-statistic
->  x1 <- rnorm(200)
->  x2 <- rnorm(300, .5)
->  x <- c(x1, x2)
->  ksample.e(x, c(200, 300), incomplete=TRUE, N=100)
-[1] 8.680664
->  
+> ## compute a 3-sample univariate E-statistic
+>  ksample.e(rnorm(150), c(25,75,50))
+[1] 2.290252
 > 
 > 
 > 
@@ -440,7 +472,7 @@ FALSE  TRUE
 > ### * <FOOTER>
 > ###
 > cat("Time elapsed: ", proc.time() - get("ptime", env = .CheckExEnv),"\n")
-Time elapsed:  21.35 0.15 22.11 NA NA 
+Time elapsed:  14.92 0.11 15.45 NA NA 
 > dev.off()
 null device 
           1 

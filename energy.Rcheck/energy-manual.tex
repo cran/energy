@@ -48,7 +48,8 @@ A object of class \code{dist} containing the lower triangle of the
 e-distance matrix of cluster distances corresponding to the permutation 
 of indices \code{ix} is returned.\end{Value}
 \begin{Author}\relax
-Maria Rizzo \email{rizzo@math.ohiou.edu}
+Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}
 \end{Author}
 \begin{References}\relax
 Szekely, G. J. and Rizzo, M. L. (2003a) Hierarchical Clustering
@@ -69,15 +70,12 @@ Statistical Samples, preprint.\end{References}
  data(iris)
  edist(iris[,1:4], c(50,50,50))
 
- ## compute e-distances from a distance object
- data(iris)
- edist(dist(iris[,1:4]), c(50, 50, 50), distance=TRUE)
 
- ## compute e-distances from a distance matrix
- data(iris)
- d <- as.matrix(dist(iris[,1:4]))
- edist(d, c(50, 50, 50), distance=TRUE) 
-\end{ExampleCode}
+ ## compute e-distances from vector of group labels
+ d <- dist(matrix(rnorm(100), nrow=50))
+ g <- cutree(energy.hclust(d), k=4)
+ edist(d, sizes=table(g), ix=rank(g, ties.method="first"))
+ \end{ExampleCode}
 \end{Examples}
 
 \Header{energy.hclust}{Hierarchical Clustering by Minimum (Energy) E-distance}
@@ -146,7 +144,8 @@ crossings of the branches.
 \end{ldescription}
 \end{Value}
 \begin{Author}\relax
-Maria Rizzo
+Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}
 \end{Author}
 \begin{References}\relax
 Szekely, G. J. and Rizzo, M. L. (2003) Hierarchical Clustering
@@ -210,8 +209,8 @@ for equality of multivariate distributions.
 \item[\code{x}] data matrix of pooled sample
 \item[\code{sizes}] vector of sample sizes
 \item[\code{distance}] logical: if TRUE, first argument is a distance matrix
-\item[\code{incomplete}] logical: if TRUE, compute incomplete \eqn{\mathcal{E}}{E}-statistics
-\item[\code{N}] incomplete sample size
+\item[\code{incomplete}] logical: if TRUE, compute incomplete E-statistics
+\item[\code{N}] sample size for incomplete statistics
 \item[\code{R}] number of bootstrap replicates 
 \end{ldescription}
 \end{Arguments}
@@ -224,15 +223,15 @@ first \code{sizes[1]} rows of \code{x} are the first sample, the next
 \code{sizes[2]} rows of \code{x} are the second sample, etc.
 
 The test is implemented by nonparametric bootstrap, an approximate 
-permutation test with \code{R} replicates.
+permutation test with \code{R} replicates. For large samples it is
+more efficient if \code{x} contains the data matrix rather than the
+distances. Incomplete statistics are supported for the two-sample test. If
+\code{incomplete==TRUE}, at most \code{N} observations from each sample 
+(by sampling without replacement) are used in the calculation of the statistic.
+If \code{distance==TRUE} complete statistics are always computed.
 
 The definition of the multisample \eqn{\mathcal{E}}{E}-statistic is given in the 
-\code{\Link{ksample.e}} documentation.
-
-If \code{incomplete==TRUE}, incomplete \eqn{\mathcal{E}}{E}-statistics (which are
-incomplete V-statistics) are computed. That is, at most
-\code{N} observations from each sample are used, by sampling without replacement 
-as needed.\end{Details}
+\code{\Link{ksample.e}} documentation.\end{Details}
 \begin{Value}
 A list with class \code{etest.eqdist} containing
 \begin{ldescription}
@@ -241,13 +240,12 @@ A list with class \code{etest.eqdist} containing
 \item[\code{p.value}] Approximate p-value of the test
 \item[\code{sizes}] Vector of sample sizes
 \item[\code{R}] Number of replicates
-\item[\code{incomplete}] Argument \code{incomplete}
-\item[\code{N}] Argument \code{N}
 \item[\code{replicates}] Vector of replicates of the statistic
 \end{ldescription}
 \end{Value}
 \begin{Author}\relax
-Maria Rizzo \email{rizzo@math.ohiou.edu}
+Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}
 \end{Author}
 \begin{References}\relax
 Szekely, G. J. and Rizzo, M. L. (2003) Testing for Equal
@@ -258,17 +256,22 @@ Statistical Samples, preprint.\end{References}
 \begin{SeeAlso}\relax
 \code{\Link{ksample.e}},
 \code{\Link{print.etest.eqdist}}
+\code{\Link{edist}}
+\code{\Link{energy.hclust}}
 \end{SeeAlso}
 \begin{Examples}
 \begin{ExampleCode}
- ## test if the 3 varieties of iris data (d=4) have equal distributions
  data(iris)
- eqdist.etest(iris[,1:4], c(50,50,50))
  
- ## univariate two-sample test using incomplete E-statistics
- x1 <- rnorm(200)
- x2 <- rnorm(300, .5)
- eqdist.etest(c(x1, x2), c(200, 300), incomplete=TRUE, N=100)
+ ## test if the 3 varieties of iris data (d=4) have equal distributions
+ eqdist.etest(iris[,1:4], c(50,50,50))
+
+ ## compare incomplete versions of two sample test
+ x <- c(rpois(400, 2), rnbinom(600, size=1, mu=2))
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=100)
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=200)
+  
+
 \end{ExampleCode}
 \end{Examples}
 
@@ -302,7 +305,11 @@ is returned. The statistic is computed from the original pooled samples, stacked
 matrix \code{x} where each row is a multivariate observation, or from the distance 
 matrix \code{x} of the original data. The
 first \code{sizes[1]} rows of \code{x} are the first sample, the next
-\code{sizes[2]} rows of \code{x} are the second sample, etc.
+\code{sizes[2]} rows of \code{x} are the second sample, etc. Incomplete statistics are 
+supported for the two-sample case. If
+\code{incomplete==TRUE}, at most \code{N} observations from each sample 
+(by sampling without replacement) are used in the calculation of the statistic.
+If \code{distance==TRUE} complete statistics are always computed.
 
 The two-sample \eqn{\mathcal{E}}{E}-statistic proposed by Szekely and Rizzo (2003)
 is the e-distance \eqn{e(S_i,S_j)}{}, defined for two samples \eqn{S_i, S_j}{}
@@ -319,12 +326,7 @@ all \eqn{k(k-1)/2}{} pairs
 of samples:
 \deqn{\mathcal{E}=\sum_{1 \leq i < j \leq k} e(S_i,S_j).
 }{\emph{E} = sum[i<j] e(S_i,S_j).}  
-Large values of \eqn{\mathcal{E}}{\emph{E}} are significant.
-
-If \code{incomplete==TRUE}, an incomplete \eqn{\mathcal{E}}{E}-statistic (which is an
-incomplete V-statistic) is computed. That is, at most
-\code{N} observations from each sample are used, 
-by sampling without replacement as needed.\end{Details}
+Large values of \eqn{\mathcal{E}}{\emph{E}} are significant.\end{Details}
 \begin{Value}
 The value of the multisample \eqn{\mathcal{E}}{E}-statistic corresponding to
 the permutation \code{ix} is returned.\end{Value}
@@ -335,7 +337,8 @@ a nonparametric bootstrap test (approximate permutation test)
 is provided by the function \code{\Link{eqdist.etest}}.
 \end{Note}
 \begin{Author}\relax
-Maria Rizzo \email{rizzo@math.ohiou.edu}
+Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}
 \end{Author}
 \begin{References}\relax
 Szekely, G. J. and Rizzo, M. L. (2003) Testing for Equal
@@ -345,6 +348,8 @@ Szekely, G. J. (2000) \eqn{\mathcal{E}}{E}-statistics: Energy of
 Statistical Samples, preprint.\end{References}
 \begin{SeeAlso}\relax
 \code{\Link{eqdist.etest}}
+\code{\Link{edist}}
+\code{\Link{energy.hclust}}
 \end{SeeAlso}
 \begin{Examples}
 \begin{ExampleCode}
@@ -352,12 +357,8 @@ Statistical Samples, preprint.\end{References}
  data(iris)
  ksample.e(iris[,1:4], c(50,50,50))
 
-## compute univariate two-sample incomplete E-statistic
- x1 <- rnorm(200)
- x2 <- rnorm(300, .5)
- x <- c(x1, x2)
- ksample.e(x, c(200, 300), incomplete=TRUE, N=100)
- 
+## compute a 3-sample univariate E-statistic
+ ksample.e(rnorm(150), c(25,75,50))
 \end{ExampleCode}
 \end{Examples}
 
@@ -400,12 +401,13 @@ where \eqn{y_1,\ldots,y_n}{} is the standardized sample,
 The value of the \eqn{\mathcal{E}}{E}-statistic for multivariate
 (univariate) normality is returned.\end{Value}
 \begin{Author}\relax
-Maria Rizzo \email{rizzo@math.ohiou.edu}
+Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}
 \end{Author}
 \begin{References}\relax
 Szekely, G. J. and Rizzo, M. L. (2004) A New Test for 
 Multivariate Normality, \emph{Journal of Multivariate Analysis},
-to appear.
+\url{http://dx.doi.org/10.1016/j.jmva.2003.12.002}.
 
 Rizzo, M. L. (2002). A New Rotation Invariant Goodness-of-Fit Test,
 Ph.D. dissertation, Bowling Green State University.
@@ -413,7 +415,7 @@ Ph.D. dissertation, Bowling Green State University.
 Szekely, G. J. (1989) Potential and Kinetic Energy in Statistics, 
 Lecture Notes, Budapest Institute of Technology (Technical University).\end{References}
 \begin{SeeAlso}\relax
-\code{\Link{normal.e}}
+\code{\Link{mvnorm.etest}}, \code{\Link{normal.e}}
 \end{SeeAlso}
 \begin{Examples}
 \begin{ExampleCode}
@@ -460,12 +462,13 @@ A list with class \code{etest.mvnorm} containing
 \end{ldescription}
 \end{Value}
 \begin{Author}\relax
-Maria Rizzo \email{rizzo@math.ohiou.edu}
+Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}
 \end{Author}
 \begin{References}\relax
 Szekely, G. J. and Rizzo, M. L. (2004) A New Test for 
 Multivariate Normality, \emph{Journal of Multivariate Analysis},
-to appear.
+\url{http://dx.doi.org/10.1016/j.jmva.2003.12.002}.
 
 Rizzo, M. L. (2002). A New Rotation Invariant Goodness-of-Fit Test,
 Ph.D. dissertation, Bowling Green State University.
@@ -527,12 +530,13 @@ where \eqn{y_1,\ldots,y_n}{} is the standardized sample and
 The value of the \eqn{\mathcal{E}}{E}-statistic for univariate
 normality is returned.\end{Value}
 \begin{Author}\relax
-Maria Rizzo \email{rizzo@math.ohiou.edu}
+Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}
 \end{Author}
 \begin{References}\relax
 Szekely, G. J. and Rizzo, M. L. (2004) A New Test for 
 Multivariate Normality, \emph{Journal of Multivariate Analysis},
-to appear.
+\url{http://dx.doi.org/10.1016/j.jmva.2003.12.002}.
 
 Rizzo, M. L. (2002). A New Rotation Invariant Goodness-of-Fit Test,
 Ph.D. dissertation, Bowling Green State University.
@@ -540,7 +544,7 @@ Ph.D. dissertation, Bowling Green State University.
 Szekely, G. J. (1989) Potential and Kinetic Energy in Statistics, 
 Lecture Notes, Budapest Institute of Technology (Technical University).\end{References}
 \begin{SeeAlso}\relax
-\code{\Link{mvnorm.e} \Link{mvnorm.e}}
+\code{\Link{mvnorm.e}}, \code{\Link{mvnorm.etest}}
 \end{SeeAlso}
 \begin{Examples}
 \begin{ExampleCode}
@@ -573,11 +577,12 @@ f(j; \hat \lambda).} See Szekely and Rizzo (2004) for the computing formula.
 \begin{Value}
 The value of the \eqn{M}{}-statistic for testing Poisson distribution is returned.\end{Value}
 \begin{Author}\relax
-Maria Rizzo \email{rizzo@math.ohiou.edu}
+Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}
 \end{Author}
 \begin{References}\relax
-Szekely, G. J. and Rizzo, M. L. (2004) Mean Distance Test
-of Poisson Distribution, \emph{Statistics and Probability Letters}, to appear.
+Szekely, G. J. and Rizzo, M. L. (2004) Mean Distance Test of Poisson Distribution, \emph{Statistics and Probability Letters}, 
+67/3, 241-247. \url{http://dx.doi.org/10.1016/j.spl.2004.01.005}.
 \end{References}
 \begin{SeeAlso}\relax
 \code{\Link{poisson.mtest}}
@@ -607,10 +612,17 @@ poisson.mtest(x, R=999)
 \end{ldescription}
 \end{Arguments}
 \begin{Details}\relax
-The mean distance test of Poissonity was proposed and implemented by Szekely and Rizzo (2004). The test is based on the result that the sequence of expected values E|X-j|, j=0,1,2,... characterizes the distribution of the random  variable X. As an application of this characterization one can get an estimator \eqn{\hat F(j)}{} of the CDF. The test statistic (see \code{\Link{poisson.m}}) is a Cramer-von Mises type of distance, with M-estimates replacing the usual EDF estimates of the CDF:
+The mean distance test of Poissonity was proposed and implemented by 
+Szekely and Rizzo (2004). The test is based on the result that the sequence 
+of expected values E|X-j|, j=0,1,2,... characterizes the distribution of 
+the random  variable X. As an application of this characterization one can 
+get an estimator \eqn{\hat F(j)}{} of the CDF. The test statistic 
+(see \code{\Link{poisson.m}}) is a Cramer-von Mises type of distance, with 
+M-estimates replacing the usual EDF estimates of the CDF:
 \deqn{M_n = n\sum_{j=0}^\infty (\hat F(j) - F(j\;; \hat \lambda))^2
 f(j\;; \hat \lambda).}{M_n = n sum [j>=0] (\hat F(j) - F(j; \hat \lambda))^2
-f(j; \hat \lambda).} The test is implemented by parametric bootstrap with \code{R} replicates.
+f(j; \hat \lambda).} The test is implemented by parametric bootstrap with 
+\code{R} replicates.
 \end{Details}
 \begin{Value}
 A list with class \code{etest.poisson} containing
@@ -625,8 +637,13 @@ A list with class \code{etest.poisson} containing
 \end{ldescription}
 \end{Value}
 \begin{Author}\relax
-Maria Rizzo \email{rizzo@math.ohiou.edu}
+Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}
 \end{Author}
+\begin{References}\relax
+Szekely, G. J. and Rizzo, M. L. (2004) Mean Distance Test of Poisson Distribution, \emph{Statistics and Probability Letters}, 
+67/3, 241-247. \url{http://dx.doi.org/10.1016/j.spl.2004.01.005}.
+\end{References}
 \begin{SeeAlso}\relax
 \code{\Link{poisson.m}}
 \end{SeeAlso}
@@ -654,9 +671,6 @@ print.etest.eqdist(x, ...)
 \item[\code{...}] extra arguments passed to or from other methods 
 \end{ldescription}
 \end{Arguments}
-\begin{Author}\relax
-Maria Rizzo \email{rizzo@math.ohiou.edu}
-\end{Author}
 \begin{SeeAlso}\relax
 \code{\Link{eqdist.etest}}
 \end{SeeAlso}
@@ -686,9 +700,6 @@ print.etest.mvnorm(x, ...)
 \item[\code{...}] extra arguments passed to or from other methods 
 \end{ldescription}
 \end{Arguments}
-\begin{Author}\relax
-Maria Rizzo \email{rizzo@math.ohiou.edu}
-\end{Author}
 \begin{SeeAlso}\relax
 \code{\Link{mvnorm.etest}}
 \end{SeeAlso}
@@ -718,9 +729,6 @@ print.etest.poisson(x, ...)
 \item[\code{...}] extra arguments passed to or from other methods 
 \end{ldescription}
 \end{Arguments}
-\begin{Author}\relax
-Maria Rizzo \email{rizzo@math.ohiou.edu}
-\end{Author}
 \begin{SeeAlso}\relax
 \code{\Link{poisson.mtest}}
 \end{SeeAlso}

@@ -5,14 +5,23 @@
 
 ### ** Examples
 
- ## test if the 3 varieties of iris data (d=4) have equal distributions
  data(iris)
- eqdist.etest(iris[,1:4], c(50,50,50))
  
- ## univariate two-sample test using incomplete E-statistics
- x1 <- rnorm(200)
- x2 <- rnorm(300, .5)
- eqdist.etest(c(x1, x2), c(200, 300), incomplete=TRUE, N=100)
+ ## test if the 3 varieties of iris data (d=4) have equal distributions
+ eqdist.etest(iris[,1:4], c(50,50,50))
+
+ ## compare incomplete versions of two sample test
+ x <- c(rpois(400, 2), rnbinom(600, size=1, mu=2))
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=100)
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=200)
+  
+## Don't show: 
+  x <- matrix(rnorm(500), nrow=100)
+  y <- matrix(rnorm(500, mean=5), nrow=100)
+  x <- rbind(x, y)
+  eqdist.etest(dist(x), sizes=c(100, 100), distance=TRUE)
+  eqdist.etest(x, sizes=c(100, 100), incomplete=TRUE, N=50, R=100)
+## End Don't show
 
 
 

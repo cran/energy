@@ -23,7 +23,11 @@
   matrix \code{x} where each row is a multivariate observation, or from the distance 
   matrix \code{x} of the original data. The
   first \code{sizes[1]} rows of \code{x} are the first sample, the next
-  \code{sizes[2]} rows of \code{x} are the second sample, etc.
+  \code{sizes[2]} rows of \code{x} are the second sample, etc. Incomplete statistics are 
+  supported for the two-sample case. If
+  \code{incomplete==TRUE}, at most \code{N} observations from each sample 
+  (by sampling without replacement) are used in the calculation of the statistic.
+  If \code{distance==TRUE} complete statistics are always computed.
  
   The two-sample \eqn{\mathcal{E}}{E}-statistic proposed by Szekely and Rizzo (2003)
   is the e-distance \eqn{e(S_i,S_j)}, defined for two samples \eqn{S_i, S_j}
@@ -43,11 +47,6 @@
   \deqn{\mathcal{E}=\sum_{1 \leq i < j \leq k} e(S_i,S_j).
   }{\emph{E} = sum[i<j] e(S_i,S_j).}  
   Large values of \eqn{\mathcal{E}}{\emph{E}} are significant.
-
-  If \code{incomplete==TRUE}, an incomplete \eqn{\mathcal{E}}{E}-statistic (which is an
-  incomplete V-statistic) is computed. That is, at most
-  \code{N} observations from each sample are used, 
-  by sampling without replacement as needed. 
 }
 \value{
  The value of the multisample \eqn{\mathcal{E}}{E}-statistic corresponding to
@@ -60,7 +59,8 @@
  Szekely, G. J. (2000) \eqn{\mathcal{E}}{E}-statistics: Energy of 
  Statistical Samples, preprint.
 } 
-\author{ Maria Rizzo \email{rizzo@math.ohiou.edu}}
+\author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
 \note{  This function computes the \eqn{\mathcal{E}}{E}-statistic only. 
  For the test decision,
  a nonparametric bootstrap test (approximate permutation test)
@@ -68,19 +68,19 @@
  }
 \seealso{
  \code{\link{eqdist.etest}}
+ \code{\link{edist}}
+ \code{\link{energy.hclust}} 
  }
 \examples{
 ## compute 3-sample E-statistic for 4-dimensional iris data
  data(iris)
  ksample.e(iris[,1:4], c(50,50,50))
 
-## compute univariate two-sample incomplete E-statistic
- x1 <- rnorm(200)
- x2 <- rnorm(300, .5)
- x <- c(x1, x2)
- ksample.e(x, c(200, 300), incomplete=TRUE, N=100)
- 
+## compute a 3-sample univariate E-statistic
+ ksample.e(rnorm(150), c(25,75,50))
 }
+
 \keyword{ multivariate }
 \keyword{ htest }
 \keyword{ nonparametric }
+\concept{ energy statistics }

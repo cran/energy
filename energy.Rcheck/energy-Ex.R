@@ -49,15 +49,22 @@ cleanEx(); ..nameEx <- "edist"
  data(iris)
  edist(iris[,1:4], c(50,50,50))
 
- ## compute e-distances from a distance object
- data(iris)
- edist(dist(iris[,1:4]), c(50, 50, 50), distance=TRUE)
-
- ## compute e-distances from a distance matrix
- data(iris)
- d <- as.matrix(dist(iris[,1:4]))
- edist(d, c(50, 50, 50), distance=TRUE) 
-
+## Don't show: 
+     ## compute e-distances from a distance object
+     data(iris)
+     edist(dist(iris[,1:4]), c(50, 50, 50), distance=TRUE)
+    
+     ## compute e-distances from a distance matrix
+     data(iris)
+     d <- as.matrix(dist(iris[,1:4]))
+     edist(d, c(50, 50, 50), distance=TRUE) 
+     
+## End Don't show
+ ## compute e-distances from vector of group labels
+ d <- dist(matrix(rnorm(100), nrow=50))
+ g <- cutree(energy.hclust(d), k=4)
+ edist(d, sizes=table(g), ix=rank(g, ties.method="first"))
+ 
 
 
 cleanEx(); ..nameEx <- "energy.hclust"
@@ -111,14 +118,23 @@ cleanEx(); ..nameEx <- "eqdist.etest"
 
 ### ** Examples
 
- ## test if the 3 varieties of iris data (d=4) have equal distributions
  data(iris)
- eqdist.etest(iris[,1:4], c(50,50,50))
  
- ## univariate two-sample test using incomplete E-statistics
- x1 <- rnorm(200)
- x2 <- rnorm(300, .5)
- eqdist.etest(c(x1, x2), c(200, 300), incomplete=TRUE, N=100)
+ ## test if the 3 varieties of iris data (d=4) have equal distributions
+ eqdist.etest(iris[,1:4], c(50,50,50))
+
+ ## compare incomplete versions of two sample test
+ x <- c(rpois(400, 2), rnbinom(600, size=1, mu=2))
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=100)
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=200)
+  
+## Don't show: 
+  x <- matrix(rnorm(500), nrow=100)
+  y <- matrix(rnorm(500, mean=5), nrow=100)
+  x <- rbind(x, y)
+  eqdist.etest(dist(x), sizes=c(100, 100), distance=TRUE)
+  eqdist.etest(x, sizes=c(100, 100), incomplete=TRUE, N=50, R=100)
+## End Don't show
 
 
 
@@ -138,12 +154,8 @@ cleanEx(); ..nameEx <- "ksample.e"
  data(iris)
  ksample.e(iris[,1:4], c(50,50,50))
 
-## compute univariate two-sample incomplete E-statistic
- x1 <- rnorm(200)
- x2 <- rnorm(300, .5)
- x <- c(x1, x2)
- ksample.e(x, c(200, 300), incomplete=TRUE, N=100)
- 
+## compute a 3-sample univariate E-statistic
+ ksample.e(rnorm(150), c(25,75,50))
 
 
 

@@ -34,7 +34,11 @@ _D_e_t_a_i_l_s:
      a multivariate observation, or from the distance  matrix 'x' of
      the original data. The first 'sizes[1]' rows of 'x' are the first
      sample, the next 'sizes[2]' rows of 'x' are the second sample,
-     etc.
+     etc. Incomplete statistics are  supported for the two-sample case.
+     If 'incomplete==TRUE', at most 'N' observations from each sample 
+     (by sampling without replacement) are used in the calculation of
+     the statistic. If 'distance==TRUE' complete statistics are always
+     computed.
 
      The two-sample E-statistic proposed by Szekely and Rizzo (2003) is
      the e-distance e(S_i,S_j), defined for two samples S_i, S_j of
@@ -55,11 +59,6 @@ _D_e_t_a_i_l_s:
 
      Large values of _E_ are significant.
 
-     If 'incomplete==TRUE', an incomplete E-statistic (which is an
-     incomplete V-statistic) is computed. That is, at most 'N'
-     observations from each sample are used,  by sampling without
-     replacement as needed.
-
 _V_a_l_u_e:
 
      The value of the multisample E-statistic corresponding to the
@@ -73,7 +72,8 @@ _N_o_t_e:
 
 _A_u_t_h_o_r(_s):
 
-     Maria Rizzo rizzo@math.ohiou.edu
+     Maria L. Rizzo rizzo@math.ohiou.edu and Gabor J. Szekely
+     gabors@bgnet.bgsu.edu
 
 _R_e_f_e_r_e_n_c_e_s:
 
@@ -85,7 +85,7 @@ _R_e_f_e_r_e_n_c_e_s:
 
 _S_e_e _A_l_s_o:
 
-     'eqdist.etest'
+     'eqdist.etest' 'edist' 'energy.hclust'
 
 _E_x_a_m_p_l_e_s:
 
@@ -93,10 +93,6 @@ _E_x_a_m_p_l_e_s:
       data(iris)
       ksample.e(iris[,1:4], c(50,50,50))
 
-     ## compute univariate two-sample incomplete E-statistic
-      x1 <- rnorm(200)
-      x2 <- rnorm(300, .5)
-      x <- c(x1, x2)
-      ksample.e(x, c(200, 300), incomplete=TRUE, N=100)
-      
+     ## compute a 3-sample univariate E-statistic
+      ksample.e(rnorm(150), c(25,75,50))
 

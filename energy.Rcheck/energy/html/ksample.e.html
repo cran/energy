@@ -53,7 +53,11 @@ is returned. The statistic is computed from the original pooled samples, stacked
 matrix <code>x</code> where each row is a multivariate observation, or from the distance 
 matrix <code>x</code> of the original data. The
 first <code>sizes[1]</code> rows of <code>x</code> are the first sample, the next
-<code>sizes[2]</code> rows of <code>x</code> are the second sample, etc.
+<code>sizes[2]</code> rows of <code>x</code> are the second sample, etc. Incomplete statistics are 
+supported for the two-sample case. If
+<code>incomplete==TRUE</code>, at most <code>N</code> observations from each sample 
+(by sampling without replacement) are used in the calculation of the statistic.
+If <code>distance==TRUE</code> complete statistics are always computed.
 </p>
 <p>
 The two-sample <i>E</i>-statistic proposed by Szekely and Rizzo (2003)
@@ -69,12 +73,6 @@ all <i>k(k-1)/2</i> pairs
 of samples:
 </p><p align="center"><i><EM>E</EM> = sum[i&lt;j] e(S_i,S_j).</i></p><p>  
 Large values of <i><EM>E</EM></i> are significant.
-</p>
-<p>
-If <code>incomplete==TRUE</code>, an incomplete <i>E</i>-statistic (which is an
-incomplete V-statistic) is computed. That is, at most
-<code>N</code> observations from each sample are used, 
-by sampling without replacement as needed.
 </p>
 
 
@@ -97,7 +95,8 @@ is provided by the function <code><a href="eqdist.etest.html">eqdist.etest</a></
 <h3>Author(s)</h3>
 
 <p>
-Maria Rizzo <a href="mailto:rizzo@math.ohiou.edu">rizzo@math.ohiou.edu</a>
+Maria L. Rizzo <a href="mailto:rizzo@math.ohiou.edu">rizzo@math.ohiou.edu</a> and
+Gabor J. Szekely <a href="mailto:gabors@bgnet.bgsu.edu">gabors@bgnet.bgsu.edu</a>
 </p>
 
 
@@ -117,6 +116,8 @@ Statistical Samples, preprint.
 
 <p>
 <code><a href="eqdist.etest.html">eqdist.etest</a></code>
+<code><a href="edist.html">edist</a></code>
+<code><a href="energy.hclust.html">energy.hclust</a></code>
 </p>
 
 
@@ -127,12 +128,8 @@ Statistical Samples, preprint.
  data(iris)
  ksample.e(iris[,1:4], c(50,50,50))
 
-## compute univariate two-sample incomplete E-statistic
- x1 &lt;- rnorm(200)
- x2 &lt;- rnorm(300, .5)
- x &lt;- c(x1, x2)
- ksample.e(x, c(200, 300), incomplete=TRUE, N=100)
- 
+## compute a 3-sample univariate E-statistic
+ ksample.e(rnorm(150), c(25,75,50))
 </pre>
 
 

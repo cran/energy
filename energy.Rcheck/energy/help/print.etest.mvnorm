@@ -17,10 +17,6 @@ _A_r_g_u_m_e_n_t_s:
 
      ...: extra arguments passed to or from other methods 
 
-_A_u_t_h_o_r(_s):
-
-     Maria Rizzo rizzo@math.ohiou.edu
-
 _S_e_e _A_l_s_o:
 
      'mvnorm.etest'

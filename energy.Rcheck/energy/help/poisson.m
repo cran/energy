@@ -36,13 +36,14 @@ _V_a_l_u_e:
 
 _A_u_t_h_o_r(_s):
 
-     Maria Rizzo rizzo@math.ohiou.edu
+     Maria L. Rizzo rizzo@math.ohiou.edu and Gabor J. Szekely
+     gabors@bgnet.bgsu.edu
 
 _R_e_f_e_r_e_n_c_e_s:
 
      Szekely, G. J. and Rizzo, M. L. (2004) Mean Distance Test of
-     Poisson Distribution, _Statistics and Probability Letters_, to
-     appear.
+     Poisson Distribution, _Statistics and Probability Letters_,  67/3,
+     241-247. <URL: http://dx.doi.org/10.1016/j.spl.2004.01.005>.
 
 _S_e_e _A_l_s_o:
 

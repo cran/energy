@@ -13,10 +13,17 @@ poisson.mtest(x, R=999)
   \item{R}{ number of bootstrap replicates }
 }
 \details{
- The mean distance test of Poissonity was proposed and implemented by Szekely and Rizzo (2004). The test is based on the result that the sequence of expected values E|X-j|, j=0,1,2,... characterizes the distribution of the random  variable X. As an application of this characterization one can get an estimator \eqn{\hat F(j)} of the CDF. The test statistic (see \code{\link{poisson.m}}) is a Cramer-von Mises type of distance, with M-estimates replacing the usual EDF estimates of the CDF:
+ The mean distance test of Poissonity was proposed and implemented by 
+ Szekely and Rizzo (2004). The test is based on the result that the sequence 
+ of expected values E|X-j|, j=0,1,2,... characterizes the distribution of 
+ the random  variable X. As an application of this characterization one can 
+ get an estimator \eqn{\hat F(j)} of the CDF. The test statistic 
+ (see \code{\link{poisson.m}}) is a Cramer-von Mises type of distance, with 
+ M-estimates replacing the usual EDF estimates of the CDF:
   \deqn{M_n = n\sum_{j=0}^\infty (\hat F(j) - F(j\;; \hat \lambda))^2
  f(j\;; \hat \lambda).}{M_n = n sum [j>=0] (\hat F(j) - F(j; \hat \lambda))^2
- f(j; \hat \lambda).} The test is implemented by parametric bootstrap with \code{R} replicates. 
+ f(j; \hat \lambda).} The test is implemented by parametric bootstrap with 
+ \code{R} replicates. 
 }
 \value{
  A list with class \code{etest.poisson} containing
@@ -28,10 +35,12 @@ poisson.mtest(x, R=999)
  \item{R}{Number of replicates}
  \item{replicates}{Vector of replicates of the statistic}
 }
-\references
-{ Szekely, G. J. and Rizzo, M. L. (2004) Mean Distance Test of Poisson Distribution, \emph{Statistics and Probability Letters}, to appear.
+\references{ 
+Szekely, G. J. and Rizzo, M. L. (2004) Mean Distance Test of Poisson Distribution, \emph{Statistics and Probability Letters}, 
+67/3, 241-247. \url{http://dx.doi.org/10.1016/j.spl.2004.01.005}.
 }
-\author{ Maria Rizzo \email{rizzo@math.ohiou.edu} }
+\author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
 \seealso{ \code{\link{poisson.m}}}
 \examples{
  x <- rpois(20, 1)

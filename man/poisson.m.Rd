@@ -20,10 +20,12 @@ f(j; \hat \lambda).} See Szekely and Rizzo (2004) for the computing formula.
 \value{
  The value of the \eqn{M}-statistic for testing Poisson distribution is returned.
 }
-\references{ Szekely, G. J. and Rizzo, M. L. (2004) Mean Distance Test
- of Poisson Distribution, \emph{Statistics and Probability Letters}, to appear.
+\references{ 
+Szekely, G. J. and Rizzo, M. L. (2004) Mean Distance Test of Poisson Distribution, \emph{Statistics and Probability Letters}, 
+67/3, 241-247. \url{http://dx.doi.org/10.1016/j.spl.2004.01.005}.
 }
-\author{ Maria Rizzo \email{rizzo@math.ohiou.edu} }
+\author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
 \seealso{ \code{\link{poisson.mtest}}}
 \examples{
  x <- rpois(20, 1)

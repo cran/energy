@@ -36,10 +36,10 @@ vector of sample sizes</td></tr>
 logical: if TRUE, first argument is a distance matrix</td></tr>
 <tr valign="top"><td><code>incomplete</code></td>
 <td>
-logical: if TRUE, compute incomplete <i>E</i>-statistics</td></tr>
+logical: if TRUE, compute incomplete E-statistics</td></tr>
 <tr valign="top"><td><code>N</code></td>
 <td>
-incomplete sample size</td></tr>
+sample size for incomplete statistics</td></tr>
 <tr valign="top"><td><code>R</code></td>
 <td>
 number of bootstrap replicates </td></tr>
@@ -57,17 +57,16 @@ first <code>sizes[1]</code> rows of <code>x</code> are the first sample, the nex
 </p>
 <p>
 The test is implemented by nonparametric bootstrap, an approximate 
-permutation test with <code>R</code> replicates.
+permutation test with <code>R</code> replicates. For large samples it is
+more efficient if <code>x</code> contains the data matrix rather than the
+distances. Incomplete statistics are supported for the two-sample test. If
+<code>incomplete==TRUE</code>, at most <code>N</code> observations from each sample 
+(by sampling without replacement) are used in the calculation of the statistic.
+If <code>distance==TRUE</code> complete statistics are always computed.
 </p>
 <p>
 The definition of the multisample <i>E</i>-statistic is given in the 
 <code><a href="ksample.e.html">ksample.e</a></code> documentation.
-</p>
-<p>
-If <code>incomplete==TRUE</code>, incomplete <i>E</i>-statistics (which are
-incomplete V-statistics) are computed. That is, at most
-<code>N</code> observations from each sample are used, by sampling without replacement 
-as needed.
 </p>
 
 
@@ -92,12 +91,6 @@ Vector of sample sizes</td></tr>
 <tr valign="top"><td><code>R</code></td>
 <td>
 Number of replicates</td></tr>
-<tr valign="top"><td><code>incomplete</code></td>
-<td>
-Argument <code>incomplete</code></td></tr>
-<tr valign="top"><td><code>N</code></td>
-<td>
-Argument <code>N</code></td></tr>
 <tr valign="top"><td><code>replicates</code></td>
 <td>
 Vector of replicates of the statistic</td></tr>
@@ -106,7 +99,8 @@ Vector of replicates of the statistic</td></tr>
 <h3>Author(s)</h3>
 
 <p>
-Maria Rizzo <a href="mailto:rizzo@math.ohiou.edu">rizzo@math.ohiou.edu</a>
+Maria L. Rizzo <a href="mailto:rizzo@math.ohiou.edu">rizzo@math.ohiou.edu</a> and
+Gabor J. Szekely <a href="mailto:gabors@bgnet.bgsu.edu">gabors@bgnet.bgsu.edu</a>
 </p>
 
 
@@ -127,20 +121,25 @@ Statistical Samples, preprint.
 <p>
 <code><a href="ksample.e.html">ksample.e</a></code>,
 <code><a href="print.etest.eqdist.html">print.etest.eqdist</a></code>
+<code><a href="edist.html">edist</a></code>
+<code><a href="energy.hclust.html">energy.hclust</a></code>
 </p>
 
 
 <h3>Examples</h3>
 
 <pre>
- ## test if the 3 varieties of iris data (d=4) have equal distributions
  data(iris)
- eqdist.etest(iris[,1:4], c(50,50,50))
  
- ## univariate two-sample test using incomplete E-statistics
- x1 &lt;- rnorm(200)
- x2 &lt;- rnorm(300, .5)
- eqdist.etest(c(x1, x2), c(200, 300), incomplete=TRUE, N=100)
+ ## test if the 3 varieties of iris data (d=4) have equal distributions
+ eqdist.etest(iris[,1:4], c(50,50,50))
+
+ ## compare incomplete versions of two sample test
+ x &lt;- c(rpois(400, 2), rnbinom(600, size=1, mu=2))
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=100)
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=200)
+  
+
 </pre>
 
 

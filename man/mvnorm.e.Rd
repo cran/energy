@@ -37,7 +37,7 @@ mvnorm.e(x)
 \references{
  Szekely, G. J. and Rizzo, M. L. (2004) A New Test for 
  Multivariate Normality, \emph{Journal of Multivariate Analysis},
- to appear.
+ \url{http://dx.doi.org/10.1016/j.jmva.2003.12.002}.
 
  Rizzo, M. L. (2002). A New Rotation Invariant Goodness-of-Fit Test,
  Ph.D. dissertation, Bowling Green State University.
@@ -45,9 +45,11 @@ mvnorm.e(x)
  Szekely, G. J. (1989) Potential and Kinetic Energy in Statistics, 
  Lecture Notes, Budapest Institute of Technology (Technical University). 
  }
-\author{ Maria Rizzo \email{rizzo@math.ohiou.edu} }
+\author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
 
-\seealso{ \code{\link{normal.e}}}
+\seealso{ \code{\link{mvnorm.etest}}, \code{\link{normal.e}}}
+
 \examples{
  
  ## compute multivariate normality test statistic for iris Setosa data
@@ -56,3 +58,4 @@ mvnorm.e(x)
  }
 \keyword{ multivariate }
 \keyword{ htest }
+\concept{ energy statistics }

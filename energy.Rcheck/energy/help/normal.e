@@ -37,13 +37,14 @@ _V_a_l_u_e:
 
 _A_u_t_h_o_r(_s):
 
-     Maria Rizzo rizzo@math.ohiou.edu
+     Maria L. Rizzo rizzo@math.ohiou.edu and Gabor J. Szekely
+     gabors@bgnet.bgsu.edu
 
 _R_e_f_e_r_e_n_c_e_s:
 
      Szekely, G. J. and Rizzo, M. L. (2004) A New Test for 
-     Multivariate Normality, _Journal of Multivariate Analysis_, to
-     appear.
+     Multivariate Normality, _Journal of Multivariate Analysis_, <URL:
+     http://dx.doi.org/10.1016/j.jmva.2003.12.002>.
 
      Rizzo, M. L. (2002). A New Rotation Invariant Goodness-of-Fit
      Test, Ph.D. dissertation, Bowling Green State University.
@@ -54,7 +55,7 @@ _R_e_f_e_r_e_n_c_e_s:
 
 _S_e_e _A_l_s_o:
 
-     'mvnorm.e mvnorm.etest'
+     'mvnorm.e', 'mvnorm.etest'
 
 _E_x_a_m_p_l_e_s:
 

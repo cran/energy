@@ -53,7 +53,8 @@
  Szekely, G. J. (2000) \eqn{\mathcal{E}}{E}-statistics: Energy of 
  Statistical Samples, preprint.
 } 
-\author{ Maria Rizzo \email{rizzo@math.ohiou.edu}}
+\author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
 \seealso{
  \code{\link{energy.hclust}}
  \code{\link{eqdist.etest}} \code{\link{ksample.e}}
@@ -63,15 +64,22 @@
  data(iris)
  edist(iris[,1:4], c(50,50,50))
 
- ## compute e-distances from a distance object
- data(iris)
- edist(dist(iris[,1:4]), c(50, 50, 50), distance=TRUE)
-
- ## compute e-distances from a distance matrix
- data(iris)
- d <- as.matrix(dist(iris[,1:4]))
- edist(d, c(50, 50, 50), distance=TRUE) 
-}
+\dontshow{
+     ## compute e-distances from a distance object
+     data(iris)
+     edist(dist(iris[,1:4]), c(50, 50, 50), distance=TRUE)
+    
+     ## compute e-distances from a distance matrix
+     data(iris)
+     d <- as.matrix(dist(iris[,1:4]))
+     edist(d, c(50, 50, 50), distance=TRUE) 
+     }
+ ## compute e-distances from vector of group labels
+ d <- dist(matrix(rnorm(100), nrow=50))
+ g <- cutree(energy.hclust(d), k=4)
+ edist(d, sizes=table(g), ix=rank(g, ties.method="first"))
+ }
 \keyword{ multivariate }
 \keyword{ cluster }
 \keyword{ nonparametric }
+\concept{ energy statistics }

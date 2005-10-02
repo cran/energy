@@ -2,22 +2,24 @@
 \alias{energy.hclust}
 \title{ Hierarchical Clustering by Minimum (Energy) E-distance }
 \description{
-  Performs hierarchical clustering on a set of Euclidean distance 
-  dissimilarities by minimum (energy) E-distance method.
+  Performs hierarchical clustering by minimum (energy) E-distance method.
 }
 \usage{
-    energy.hclust(dst)
+    energy.hclust(dst, alpha = 1)
 }
 \arguments{
-  \item{dst}{dissimilarity object produced by \code{dist} with
-        \code{method=euclidean}, or lower triangle of distance
-        matrix as vector in column order. If \code{dst} is a square
+  \item{dst}{Euclidean distances in a \code{dist} object, or a 
+  distance matrix produced by \code{dist}, 
+  or lower triangle 
+  of distance matrix as vector in column order. If \code{dst} is a square
         matrix, the lower triangle is interpreted as a vector of
         distances.}
+  \item{alpha}{distance exponent}
 }
 \details{
-  This function performs agglomerative hierarchical cluster analysis
-  based on the pairwise distances between sample elements in \code{dst}.
+  Dissimilarities are \eqn{d(x,y) = \|x-y\|^\alpha}{||x-y||^a},
+  where the exponent \eqn{\alpha}{a} is in the interval (0,2].
+  This function performs agglomerative hierarchical clustering.
   Initially, each of the n singletons is a cluster. At each of n-1 steps, the 
   procedure merges the pair of clusters with minimum e-distance. 
   The e-distance
@@ -26,8 +28,8 @@
     }
     where
     \deqn{M_{ij}=\frac{1}{n_i n_j}\sum_{p=1}^{n_i} \sum_{q=1}^{n_j}
-       \|X_{ip}-X_{jq}\|,}{
-       M_{ij} = 1/(n_i n_j) sum[1:n_i, 1:n_j] ||X_(ip) - X_(jq)||,}
+       \|X_{ip}-X_{jq}\|^\alpha,}{
+       M_{ij} = 1/(n_i n_j) sum[1:n_i, 1:n_j] ||X_(ip) - X_(jq)||^a,}
        \eqn{\|\cdot\|}{|| ||} denotes Euclidean norm, and \eqn{X_{ip}}{
        X_(ip)} denotes the p-th observation in the i-th cluster.  
 
@@ -36,11 +38,11 @@
   are available. See the documentation for \code{hclust}.
   
   The e-distance measures both the heterogeneity between clusters and the
-  homogeneity within clusters. E-clustering is particularly effective in
+  homogeneity within clusters. \eqn{\mathcal E}{E}-clustering 
+  (\eqn{\alpha=1}{a=1}) is particularly effective in
   high dimension, and is more effective than some standard hierarchical
   methods when clusters have equal means (see example below).
   For other advantages see the references.
-
 }
 \value{
      An object of class \code{hclust} which describes the tree produced by
@@ -62,11 +64,12 @@
 \item{dist.method:}{ the distance that has been used to create \code{dst}.}
 }
 \references{ 
-     Szekely, G. J. and Rizzo, M. L. (2003) Hierarchical Clustering
-     via Joint Between-Within Distances, submitted.
+     Szekely, G. J. and Rizzo, M. L. (2005) Hierarchical Clustering
+     via Joint Between-Within Distances: Extending Ward's Minimum
+     Variance Method, \emph{Journal of Classification} 22(2) (in press).
 
      Szekely, G. J. and Rizzo, M. L. (2004) Testing for Equal
-     Distributions in High Dimension, \emph{InterStat}, November, 5.
+     Distributions in High Dimension, \emph{InterStat}, November (5).
 
  Szekely, G. J. (2000) Technical Report 03-05:
  \eqn{\mathcal{E}}{E}-statistics: Energy of 
@@ -75,7 +78,7 @@
 } 
 \author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
 Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
-\seealso{ \code{\link{edist}} \code{\link{ksample.e}} \code{hclust}} }
+\seealso{ \code{\link{edist}} \code{\link{ksample.e}} \code{\link{eqdist.etest}} \code{hclust}} }
 \examples{
    \dontrun{   
    library(cluster)

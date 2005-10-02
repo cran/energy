@@ -1,10 +1,11 @@
 edist <- 
-function(x, sizes, distance = FALSE, ix = 1:sum(sizes)) {
+function(x, sizes, distance = FALSE, ix = 1:sum(sizes), alpha = 1) {
     #  computes the e-dissimilarity matrix between k samples or clusters
-    #  x:          pooled sample or distances
+    #  x:          pooled sample or Euclidean distances
     #  sizes:      vector of sample (cluster) sizes
     #  distance:   TRUE if x is a distance matrix, otherwise FALSE
     #  ix:         a permutation of row indices of x 
+    #  alpha:      distance exponent
     #    
     k <- length(sizes)
     if (k == 1) return (as.dist(0.0))
@@ -17,6 +18,11 @@ function(x, sizes, distance = FALSE, ix = 1:sum(sizes)) {
         dst <- as.matrix(dist(x))
         }
     else dst <- as.matrix(x)
+    if (alpha != 1) {
+    	if (alpha <= 0 || alpha > 2)
+    	    warning("exponent alpha should be in (0,2]")
+    	dst <- dst^alpha  
+    	}
     for (i in 1:(k - 1)) {
         e[i, i] <- 0.0
         for (j in (i + 1):k) {
@@ -36,7 +42,7 @@ function(x, sizes, distance = FALSE, ix = 1:sum(sizes)) {
 
 
 energy.hclust <- 
-function(dst) {
+function(dst, alpha = 1) {
     d <- dst
     if (is.matrix(dst)) {
         if (nrow(dst) != ncol(dst) || sum(dst != t(dst)) > 0)
@@ -47,6 +53,11 @@ function(dst) {
     n <- attr(d, "Size")
     if (is.null(n))
         stop("dst argument must be square matrix or dist object")
+    if (alpha != 1) {
+    	if (alpha <= 0 || alpha > 2)
+    	    warning("exponent alpha should be in (0,2]")
+    	d <- d^alpha  
+    }
     labels <- attr(d, "Labels")
     if (is.null(labels))
         labels <- paste(1:n)  

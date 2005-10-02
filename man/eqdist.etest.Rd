@@ -37,29 +37,32 @@
   \code{\link{ksample.e}} documentation.
 }
 \value{
- A list with class \code{etest.eqdist} containing
- \item{method}{Description of test}
- \item{statistic}{Observed value of the test statistic}
- \item{p.value}{Approximate p-value of the test}
- \item{sizes}{Vector of sample sizes}
- \item{R}{Number of replicates}
- \item{replicates}{Vector of replicates of the statistic}
+ A list with class \code{htest} containing
+ \item{method}{description of test}
+ \item{statistic}{observed value of the test statistic}
+ \item{p.value}{approximate p-value of the test}
+ \item{data.name}{description of data}
 }
-
+\note{
+The pairwise e-distances between samples can be conveniently
+computed by the \code{edist} function, which returns a \code{dist} object.
+The function \code{ksample.e} computes the test statistic without storing
+the distances, which is more efficient than calling \code{eqdist.etest} 
+with \code{R = 0}.
+}
 \references{ 
  Szekely, G. J. and Rizzo, M. L. (2004) Testing for Equal
- Distributions in High Dimension, \emph{InterStat}, November.
+ Distributions in High Dimension, \emph{InterStat}, November (5).
  
  Szekely, G. J. (2000) Technical Report 03-05:
- \eqn{\mathcal{E}}{E}-statistics: Energy of 
+ \eqn{\mathcal{E}}{E}-statistics: Energy of  
  Statistical Samples, Department of Mathematics and Statistics, Bowling
  Green State University.
-}  
+}
 \author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
 Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
 \seealso{
  \code{\link{ksample.e}},
- \code{\link{print.etest.eqdist}}
  \code{\link{edist}}
  \code{\link{energy.hclust}}
  }
@@ -67,19 +70,19 @@ Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
  data(iris)
  
  ## test if the 3 varieties of iris data (d=4) have equal distributions
- eqdist.etest(iris[,1:4], c(50,50,50))
+ eqdist.etest(iris[,1:4], c(50,50,50), R = 199)
 
  ## compare incomplete versions of two sample test
  x <- c(rpois(400, 2), rnbinom(600, size=1, mu=2))
- eqdist.etest(x, c(400, 600), incomplete=TRUE, N=100)
- eqdist.etest(x, c(400, 600), incomplete=TRUE, N=200)
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=100, R = 199)
+ eqdist.etest(x, c(400, 600), incomplete=TRUE, N=200, R = 199)
   
 \dontshow{
-  x <- matrix(rnorm(500), nrow=100)
-  y <- matrix(rnorm(500, mean=5), nrow=100)
+  x <- matrix(rnorm(200), nrow=40)
+  y <- matrix(rnorm(250, mean=5), nrow=50)
   x <- rbind(x, y)
-  eqdist.etest(dist(x), sizes=c(100, 100), distance=TRUE)
-  eqdist.etest(x, sizes=c(100, 100), incomplete=TRUE, N=50, R=100)
+  eqdist.etest(dist(x), sizes=c(40, 50), distance=TRUE, R = 19)
+  eqdist.etest(x, sizes=c(40, 50), incomplete=TRUE, N=50, R = 19)
 }
 }
 \keyword{ multivariate }

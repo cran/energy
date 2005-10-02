@@ -1,15 +1,16 @@
 ksample.e <- 
-function(x, sizes, distance = FALSE, ix = 1:sum(sizes), incomplete = FALSE, N = 100) {
-    #computes the k-sample E-statistic for equal distributions
-    #  x:          pooled sample or distance matrix
-    #  sizes:      vector of sample sizes
-    #  distance:   TRUE if x is a distance matrix, otherwise FALSE
-    #  ix:         a permutation of row indices of x
-    #  incomplete: if TRUE compute incomplete E-statistic
-    #  N:          incomplete sample size
-    #  
-    #  NOT much error checking here: for test use eqdist.etest
-    #
+function(x, sizes, distance = FALSE, ix = 1:sum(sizes), 
+         incomplete = FALSE, N = 100) {
+    ## computes the k-sample E-statistic for equal distributions
+    ##   x:          pooled sample or distance matrix
+    ##   sizes:      vector of sample sizes
+    ##   distance:   TRUE if x is a distance matrix, otherwise FALSE
+    ##   ix:         a permutation of row indices of x
+    ##   incomplete: if TRUE compute incomplete E-statistic
+    ##   N:          incomplete sample size
+    ##   
+    ##   NOT much error checking here: for test use eqdist.etest
+    ## 
     k <- length(sizes)
     if (k == 1) return (0.0)
     if (k < 2) return (NA)
@@ -20,22 +21,22 @@ function(x, sizes, distance = FALSE, ix = 1:sum(sizes), incomplete = FALSE, N = 
         return(.incomplete.etest(x, sizes=sizes, R=0, N=N)$statistic)  
     
     if (distance == TRUE) {
-        # same as test with 0 replicates
+        ##  same as test with 0 replicates
         b <- .C("ksampleEtest", 
-            x = as.double(t(x)), 
-            byrow = as.integer(1),
-            nsamples = as.integer(length(sizes)), 
-            sizes = as.integer(sizes),
-            dim = as.integer(0), 
-            R = as.integer(0), 
-            e0 = as.double(e),
-            e = as.double(e), 
-            pval = as.double(e), 
-            PACKAGE = "energy")           
+	    x = as.double(t(x)), 
+	    byrow = as.integer(1),
+	    nsamples = as.integer(length(sizes)), 
+	    sizes = as.integer(sizes),
+	    dim = as.integer(0), 
+	    R = as.integer(0), 
+	    e0 = as.double(e),
+	    e = as.double(e), 
+	    pval = as.double(e), 
+	    PACKAGE = "energy")           
         return (b$e0)
     }
 
-    # compute e directly, without storing distances
+    ##  compute e directly, without storing distances
     d <- ncol(x)
     n <- cumsum(sizes)
     m <- 1 + c(0, n[1:(k-1)])
@@ -60,14 +61,14 @@ function(x, sizes, distance = FALSE, ix = 1:sum(sizes), incomplete = FALSE, N = 
 
 eqdist.etest <- 
 function(x, sizes, distance = FALSE, incomplete = FALSE, N = 100, R = 999) {
-    #multivariate E-test of the multisample hypothesis of equal distributions
-    #  x:          matrix of pooled sample or distance matrix
-    #  sizes:      vector of sample sizes
-    #  distance:   logical, TRUE if x is a distance matrix, otherwise false
-    #  R:          number of replicates
-    #  incomplete: logical, TRUE if incomplete E statistics
-    #  N:          sample size for incomplete version
-    #  
+    ## multivariate E-test of the multisample hypothesis of equal distributions
+    ##   x:          matrix of pooled sample or distance matrix
+    ##   sizes:      vector of sample sizes
+    ##   distance:   logical, TRUE if x is a distance matrix, otherwise false
+    ##   R:          number of replicates
+    ##   incomplete: logical, TRUE if incomplete E statistics
+    ##   N:          sample size for incomplete version
+    ##   
     
     nsamples <- length(sizes)
     if (nsamples < 2) return (NA)
@@ -102,31 +103,36 @@ function(x, sizes, distance = FALSE, incomplete = FALSE, N = 100, R = 999) {
         e0 = as.double(e0),
         e = as.double(repl), 
         pval = as.double(pval), 
-        PACKAGE = "energy")           
+        PACKAGE = "energy")       
+    
+    names(b$e0) <- "E-statistic"
+    sz <- paste(sizes, collapse = " ", sep = "")
+    methodname <- paste(str, length(sizes), 
+                  "-sample E-test of equal distributions", sep = "")
+    dataname <- paste("sample sizes ", sz, ", replicates ", R, sep="")
     e <- list(
-        method = paste(str, length(sizes), "-sample E-test of equal distributions", sep = ""),
+        method = methodname,
         statistic = b$e0,
         p.value = b$pval,
-        n = sizes,
-        R = R,
-        replicates = b$e)
+        data.name = dataname)
 
-    class(e) <- "etest.eqdist"        
+    class(e) <- "htest"        
     e
 }
  
 
 .incomplete.etest <- 
 function(x, sizes, N = 100, R = 999) {
-    #  intended to be called from eqdist.etest, not much error checking
-    #
-    #  multivariate E-test of the multisample hypothesis of equal distributions, incomplete E-statistic
-    #  C library currently supports two sample test only
-    #  x:          matrix of pooled sample or distance matrix
-    #  sizes:      vector of sample sizes
-    #  N:          max sample size for estimation of pairwise E
-    #  R:          number of replicates
-    #  
+    ##   intended to be called from eqdist.etest, not much error checking
+    ## 
+    ##   multivariate E-test of the multisample hypothesis of equal 
+    ##   distributions, incomplete E-statistic
+    ##   C library currently supports two sample test only
+    ##   x:          matrix of pooled sample or distance matrix
+    ##   sizes:      vector of sample sizes
+    ##   N:          max sample size for estimation of pairwise E
+    ##   R:          number of replicates
+    ##   
     
     k <- length(sizes)
     if (k != 2) return (NA);
@@ -153,23 +159,19 @@ function(x, sizes, N = 100, R = 999) {
         pval = as.double(pval),
         PACKAGE = "energy")           
 
+    methodname <- paste(str, length(sizes), 
+                    "-sample E-test of equal distributions", sep = "") 
+    sz <- paste(sizes, collapse = " ", sep = "")
+    dataname <- paste("sample sizes ", sz, ", replicates ", 
+                  R, ", N ", N, sep="")
+    names(b$e0) <- "(Incomplete) E-statistic"
     e <- list(
-    method = paste(str, length(sizes), "-sample E-test of equal distributions, incomplete version with max size ", N, sep = ""),
-    statistic = b$e0,
-    p.value = b$pval,
-    n = sizes,
-    R = R,
-    replicates = b$e)
-    class(e) <- "etest.eqdist"        
+        method = methodname,
+        statistic = b$e0,
+        p.value = b$pval,
+        data.name = dataname)
+
+    class(e) <- "htest"        
     e
 }
-    
-print.etest.eqdist <- 
-function(x, ...) {
-    cat("\n", x$method, "\n")
-    cat("\tSample sizes:       ", x$n, "\n")
-    cat("\tTest statistic:    ", format(x$statistic, digits = 4), "\n")
-    cat("\tApprox. p-value:   ", format.pval(x$p.value), "\n")
-    cat("\t", x$R, " replicates, resampling method = permutation\n", sep = "")
-}
-            
+

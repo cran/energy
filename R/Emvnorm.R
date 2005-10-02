@@ -1,31 +1,27 @@
 mvnorm.etest <- 
-function(x, R=999) 
+function(x, R = 999) 
 {
     # parametric bootstrap E-test for multivariate normality
-    e <- list(
-        method = paste("E-test of multivariate normality", sep = ""),
-        statistic = 0, 
-        p.value = 0, 
-        n = nrow(x), 
-        d = ncol(x), 
-        R = R, 
-        replicates = NULL)
     if (is.vector(x)) {
-        e$n <- length(x)
-        e$d <- 1
+        n <- length(x)
+        d <- 1
         bootobj <- boot(x, statistic = normal.e, R = R, sim = "parametric", 
-            ran.gen = function(x, y) {return(rnorm(e$n)) })
+            ran.gen = function(x, y) {return(rnorm(n)) })
         }
         else {
+        n <- nrow(x)
+        d <- ncol(x)
         bootobj <- boot(x, statistic = mvnorm.e, R = R, sim = "parametric", 
             ran.gen = function(x, y) {
-                return(matrix(rnorm(e$n * e$d), nrow=e$n, ncol=e$d)) })
+                return(matrix(rnorm(n * d), nrow = n, ncol = d)) })
         }
     p <- 1 - mean(bootobj$t < bootobj$t0)
-    e$statistic = bootobj$t0
-    e$p.value = p
-    e$replicates <- bootobj$t
-    class(e) <- "etest.mvnorm"        
+    names(bootobj$t0) <- "E-statistic"
+    e <- list(statistic = bootobj$t0,
+              p.value = p,
+              method = "Energy test of multivariate normality: estimated parameters",
+              data.name = paste("x, sample size ", n, ", dimension ", d, ", replicates ", R, sep = ""))
+    class(e) <- "htest"        
     e                 
 }
 
@@ -63,14 +59,3 @@ function(x)
    e
 }
    
-print.etest.mvnorm <- 
-function(x, ...) 
-{
-    cat("\n", x$method, "\n")
-    cat("\tSample size:       ", x$n, "\n")
-    cat("\tDimension:         ", x$d, "\n")
-    cat("\tTest statistic:    ", format(x$statistic, digits = 4), "\n")
-    cat("\tApprox. p-value:   ", format.pval(x$p.value), "\n")
-    cat("\t", x$R, " replicates\n", sep="")
-}
-            

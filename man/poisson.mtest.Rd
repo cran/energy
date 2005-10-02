@@ -1,5 +1,6 @@
 \name{poisson.mtest}
 \alias{poisson.mtest}
+\alias{poisson.m}
 \title{ Mean Distance Test for Poisson Distribution}
 \description{
  Performs the mean distance goodness-of-fit test of Poisson distribution
@@ -7,6 +8,7 @@
 }
 \usage{
 poisson.mtest(x, R = 999)
+poisson.m(x)
 }
 \arguments{
   \item{x}{ vector of nonnegative integers, the sample data }
@@ -26,14 +28,13 @@ poisson.mtest(x, R = 999)
  \code{R} replicates. 
 }
 \value{
- A list with class \code{etest.poisson} containing
+The function \code{poisson.m} returns the test statistic. The function
+\code{poisson.mtest} returns a list with class \code{htest} containing
  \item{method}{Description of test}
- \item{statistic}{Observed value of the test statistic}
- \item{p.value}{Approximate p-value of the test}
- \item{n}{Sample size}
- \item{lambda}{Sample mean}
- \item{R}{Number of replicates}
- \item{replicates}{Vector of replicates of the statistic}
+ \item{statistic}{observed value of the test statistic}
+ \item{p.value}{approximate p-value of the test}
+ \item{data.name}{description of data}
+ \item{estimate}{sample mean}
 }
 \references{ 
 Szekely, G. J. and Rizzo, M. L. (2004) Mean Distance Test of Poisson Distribution, \emph{Statistics and Probability Letters}, 
@@ -41,9 +42,9 @@ Szekely, G. J. and Rizzo, M. L. (2004) Mean Distance Test of Poisson Distributio
 }
 \author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
 Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
-\seealso{ \code{\link{poisson.m}}}
 \examples{
  x <- rpois(20, 1)
- poisson.mtest(x)
+ poisson.m(x)
+ poisson.mtest(x, R = 199)
  }
 \keyword{ htest }

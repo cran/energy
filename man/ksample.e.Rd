@@ -52,9 +52,18 @@
  The value of the multisample \eqn{\mathcal{E}}{E}-statistic corresponding to
  the permutation \code{ix} is returned.
 }
+\note{
+The pairwise e-distances between samples can be conveniently
+computed by the \code{edist} function, which returns a \code{dist} object.
+The function \code{ksample.e} computes the \eqn{\mathcal{E}}{E}-statistic only. 
+ For the test decision, a nonparametric bootstrap test (approximate permutation test)
+ is provided by the function \code{\link{eqdist.etest}}. With the default arguments,
+ \code{ksample.e} computes the statistic without storing the distance matrix, which
+ is more efficient than calling \code{eqdist.etest} with \code{R = 0}.
+}
 \references{ 
  Szekely, G. J. and Rizzo, M. L. (2004) Testing for Equal
- Distributions in High Dimension, \emph{InterStat}, November.
+ Distributions in High Dimension, \emph{InterStat}, November (5).
  
  Szekely, G. J. (2000) Technical Report 03-05:
  \eqn{\mathcal{E}}{E}-statistics: Energy of 
@@ -63,12 +72,7 @@
 } 
 \author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
 Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
-\note{  This function computes the \eqn{\mathcal{E}}{E}-statistic only. 
- For the test decision,
- a nonparametric bootstrap test (approximate permutation test)
- is provided by the function \code{\link{eqdist.etest}}.
- }
-\seealso{
+\seealso{ 
  \code{\link{eqdist.etest}}
  \code{\link{edist}}
  \code{\link{energy.hclust}} 

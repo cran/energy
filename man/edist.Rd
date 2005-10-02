@@ -5,13 +5,14 @@
  Returns the E-distances (energy statistics) between clusters. 
 }
 \usage{
- edist(x, sizes, distance = FALSE, ix = 1:sum(sizes))
+ edist(x, sizes, distance = FALSE, ix = 1:sum(sizes), alpha = 1)
 }
 \arguments{
   \item{x}{ data matrix of pooled sample or Euclidean distances}
   \item{sizes}{ vector of sample sizes}
   \item{distance}{ logical: if TRUE, x is a distance matrix}
   \item{ix}{ a permutation of the row indices of x }
+  \item{alpha}{ distance exponent }
 }
 \details{
   A vector containing the pairwise two-sample multivariate 
@@ -33,10 +34,12 @@
   }{e(S_i, S_j) = (n_i n_j)(n_i+n_j)[2M_(ij)-M_(ii)-M_(jj)],}
   where
   \deqn{M_{ij}=\frac{1}{n_i n_j}\sum_{p=1}^{n_i} \sum_{q=1}^{n_j}
-     \|X_{ip}-X_{jq}\|,}{
-     M_{ij} = 1/(n_i n_j) sum[1:n_i, 1:n_j] ||X_(ip) - X_(jq)||,}
-     \eqn{\|\cdot\|}{|| ||} denotes Euclidean norm, and \eqn{X_{ip}}{
-     X_(ip)} denotes the p-th observation in the i-th cluster.  
+     \|X_{ip}-X_{jq}\|^\alpha,}{
+     M_{ij} = 1/(n_i n_j) sum[1:n_i, 1:n_j] ||X_(ip) - X_(jq)||^a,}
+     \eqn{\|\cdot\|}{|| ||} denotes Euclidean norm, \eqn{\alpha=}{a=}
+     \code{alpha}, and \eqn{X_{ip}}{
+     X_(ip)} denotes the p-th observation in the i-th cluster.  The
+     exponent \code{alpha} should be in the interval (0,2].
 }
 \value{
  A object of class \code{dist} containing the lower triangle of the
@@ -44,11 +47,12 @@
  of indices \code{ix} is returned.
 }
 \references{ 
- Szekely, G. J. and Rizzo, M. L. (2003) Hierarchical Clustering
- via Joint Between-Within Distances, submitted.
+ Szekely, G. J. and Rizzo, M. L. (2005) Hierarchical Clustering
+ via Joint Between-Within Distances: Extending Ward's Minimum
+ Variance Method, \emph{Journal of Classification} 22(2) (in press).
  
  Szekely, G. J. and Rizzo, M. L. (2004) Testing for Equal
- Distributions in High Dimension, InterStat, November.
+ Distributions in High Dimension, InterStat, November (5).
  
  Szekely, G. J. (2000) Technical Report 03-05,
  \eqn{\mathcal{E}}{E}-statistics: Energy of 
@@ -59,7 +63,8 @@
 Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
 \seealso{
  \code{\link{energy.hclust}}
- \code{\link{eqdist.etest}} \code{\link{ksample.e}}
+ \code{\link{eqdist.etest}} 
+ \code{\link{ksample.e}}
  }
 \examples{
  ## compute e-distances for 3 samples of iris data
@@ -69,12 +74,12 @@ Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
 \dontshow{
      ## compute e-distances from a distance object
      data(iris)
-     edist(dist(iris[,1:4]), c(50, 50, 50), distance=TRUE)
+     edist(dist(iris[,1:4]), c(50, 50, 50), distance=TRUE, alpha = .5)
     
      ## compute e-distances from a distance matrix
      data(iris)
      d <- as.matrix(dist(iris[,1:4]))
-     edist(d, c(50, 50, 50), distance=TRUE) 
+     edist(d, c(50, 50, 50), distance=TRUE, alpha = .5) 
      }
  ## compute e-distances from vector of group labels
  d <- dist(matrix(rnorm(100), nrow=50))

@@ -70,8 +70,8 @@ The function \code{ksample.e} computes the \eqn{\mathcal{E}}{E}-statistic only.
  Statistical Samples, Department of Mathematics and Statistics, Bowling
  Green State University.
 } 
-\author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
-Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
+\author{ Maria L. Rizzo \email{mrizzo @ bgnet.bgsu.edu} and
+Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}}
 \seealso{ 
  \code{\link{eqdist.etest}}
  \code{\link{edist}}

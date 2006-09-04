@@ -11,17 +11,7 @@ function(x, y) {
     
     stat <- 0
     dims <- c(n, ncol(x), ncol(y))
-
-    if (ncol(x) == 1 && ncol(y) == 1) {
-    e <- .C("indep", 
-            x = as.double(t(x)),
-            y = as.double(t(y)),
-            size = as.integer(n), 
-            stat = as.double(stat), 
-            PACKAGE = "energy")
-    print(e$stat)
-    }
-    
+   
     e <- .C("indepE", 
             x = as.double(t(x)),
             y = as.double(t(y)),
@@ -70,4 +60,5 @@ function(x, y, R=199) {
     e
 }
   
-            
+  
+                        

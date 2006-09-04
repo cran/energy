@@ -40,8 +40,8 @@ The function \code{poisson.m} returns the test statistic. The function
 Szekely, G. J. and Rizzo, M. L. (2004) Mean Distance Test of Poisson Distribution, \emph{Statistics and Probability Letters}, 
 67/3, 241-247. \url{http://dx.doi.org/10.1016/j.spl.2004.01.005}.
 }
-\author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
-Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
+\author{ Maria L. Rizzo \email{mrizzo @ bgnet.bgsu.edu} and
+Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}}
 \examples{
  x <- rpois(20, 1)
  poisson.m(x)

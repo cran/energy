@@ -59,8 +59,8 @@ with \code{R = 0}.
  Statistical Samples, Department of Mathematics and Statistics, Bowling
  Green State University.
 }
-\author{ Maria L. Rizzo \email{rizzo@math.ohiou.edu} and
-Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}}
+\author{ Maria L. Rizzo \email{mrizzo @ bgnet.bgsu.edu} and
+Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}}
 \seealso{
  \code{\link{ksample.e}},
  \code{\link{edist}}

@@ -1,7 +1,7 @@
 /*
    energy.c: energy package
 
-   Author:  Maria Rizzo <rizzo@math.ohiou.edu>
+   Author:  Maria Rizzo <mrizzo @ bgnet.bgsu.edu>
    Created: 4 Jan 2004 for R-1.8.1
    Revised: 20 March 2004 (E2, twosampleIEtest added)
    Revised: 13 June 2004 (distance() changed, some utilities added)
@@ -22,7 +22,7 @@ void   mvnEstat(double *y, int *byrow, int *nobs, int *dim, double *stat);
 void   poisMstat(int *x, int *nx, double *stat);
 void   ksampleEtest(double *x, int *byrow, int *nsamples, int *sizes, int *dim,
             int *R, double *e0, double *e, double *pval);
-void   twosampleIEtest(double *x, int *byrow, int *sizes, int *dim, int *iN, 
+void   twosampleIEtest(double *x, int *byrow, int *sizes, int *dim, int *iN,
                      int *R, double *e0, double *e, double *pval);
 void   E2sample(double *x, int *sizes, int *dim, double *stat);
 
@@ -273,15 +273,15 @@ void ksampleEtest(double *x, int *byrow,
 
 }
 
-void twosampleIEtest(double *x, int *byrow, int *sizes, int *dim, int *iN, 
+void twosampleIEtest(double *x, int *byrow, int *sizes, int *dim, int *iN,
                    int *R, double *e0, double *e, double *pval)
 {
     /*
       exported for R energy package: incomplete E test for equal distributions
-      x         the pooled sample 
+      x         the pooled sample
       *byrow    logical, TRUE if x is stored by row
                 pass x=as.double(t(x)) if *byrow==TRUE
-      sizes     vector of original sample sizes 
+      sizes     vector of original sample sizes
       *dim      dimension of data in x
       *iN       incomplete sample size
       *R        number of replicates for permutation test
@@ -293,11 +293,11 @@ void twosampleIEtest(double *x, int *byrow, int *sizes, int *dim, int *iN,
     int    i, b, B = (*R), ek, nrow, ncol = (*dim), N = (*iN);
     int    *perm;
     double **data;
-    
+
     nrow = sizes[0] + sizes[1];
     I[0] = sizes[0] > N ? N : sizes[0];
     I[1] = sizes[1] > N ? N : sizes[1];
-    
+
     if (*byrow == FALSE)
         roworder(x, byrow, nrow, ncol);
     data = alloc_matrix(nrow, ncol);
@@ -306,7 +306,7 @@ void twosampleIEtest(double *x, int *byrow, int *sizes, int *dim, int *iN,
     for (i=0; i<nrow; i++) perm[i] = i;
     start[0] = 0;
     start[1] = sizes[0];
-    permute(perm + start[0], sizes[0]);    
+    permute(perm + start[0], sizes[0]);
     permute(perm + start[1], sizes[1]);
 
     *e0 = E2(data, I, start, ncol, perm);
@@ -321,7 +321,7 @@ void twosampleIEtest(double *x, int *byrow, int *sizes, int *dim, int *iN,
     }
     Free(data);
     Free(perm);
-    return;       
+    return;
 }
 
 void sumdist(double *x, int *byrow, int *nrow, int *ncol, double *lowersum)
@@ -352,7 +352,7 @@ void sumdist(double *x, int *byrow, int *nrow, int *ncol, double *lowersum)
     (*lowersum) = sum;
 }
 
-double E2(double **x, int *sizes, int *start, int ncol, int *perm) 
+double E2(double **x, int *sizes, int *start, int ncol, int *perm)
 {
     int    m=sizes[0], n=sizes[1];
     int    row1=start[0], row2=start[1];

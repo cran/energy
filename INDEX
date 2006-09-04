@@ -3,10 +3,9 @@ energy.hclust           Hierarchical Clustering by Minimum (Energy)
                         E-distance
 eqdist.etest            Multisample E-statistic (Energy) Test of Equal
                         Distributions
-indep.e                 Energy Statistic Test of Independence
-ksample.e               E-statistic (Energy Statistic) for
-                        Multivariate k-sample Test of Equal
-                        Distributions
+indep.e                 Energy Statistic Tests of Independence
+ksample.e               E-statistic (Energy Statistic) for Multivariate
+                        k-sample Test of Equal Distributions
 mvnorm.etest            E-statistic (Energy) Test of Multivariate
                         Normality
 poisson.mtest           Mean Distance Test for Poisson Distribution

@@ -7,6 +7,7 @@
    Modified: July 28, 2004  (local use)
    Updated:  March 26, 2005 (energy 1.0-3)
              Sept 06, 2006  (energy 1.0-4)
+             Sept 07, 2006  (energy 1.0-5)
 */
 
 #include <R.h>

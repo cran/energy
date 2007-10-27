@@ -78,8 +78,9 @@
  Green State University.
 } 
 \author{ Maria L. Rizzo \email{mrizzo @ bgnet.bgsu.edu} and
-Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}}
-\seealso{ \code{\link{edist}} \code{\link{ksample.e}} \code{\link{eqdist.etest}} \code{hclust}} }
+  Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}}
+\seealso{
+  \code{\link{edist}} \code{\link{ksample.e}} \code{\link{eqdist.etest}} \code{hclust}}
 \examples{
    \dontrun{   
    library(cluster)
@@ -103,7 +104,7 @@ Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}}
    a <- hclust(d, method="average")
    w <- hclust(d^2, method="ward")
    list("E" = table(cutree(e, k=2) == g), "Ward" = table(cutree(w, k=2) == g),
- 	"Avg" = table(cutree(a, k=2) == g))
+    "Avg" = table(cutree(a, k=2) == g))
  }
 \keyword{ multivariate }
 \keyword{ cluster }

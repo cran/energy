@@ -1,7 +1,7 @@
 Package: energy
 Title: E-statistics (energy statistics) tests of fit, independence, clustering
-Version: 1.0-7
-Date: 2007-10-27
+Version: 1.0-8
+Date: 2007-11-03
 Author: Maria L. Rizzo <mrizzo @ bgnet.bgsu.edu> and 
  Gabor J. Szekely <gabors @ bgnet.bgsu.edu>
 Description: E-statistics (energy) tests for comparing distributions: 
@@ -12,4 +12,4 @@ Description: E-statistics (energy) tests for comparing distributions:
 Maintainer: Maria Rizzo <mrizzo @ bgnet.bgsu.edu>
 Depends: boot
 License: GPL (>= 2)
-Packaged: Sat Oct 27 17:29:11 2007; rizzo
+Packaged: Sat Nov  3 20:32:51 2007; rizzo

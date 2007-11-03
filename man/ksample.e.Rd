@@ -6,16 +6,13 @@
  for the multivariate k-sample test of equal distributions. 
 }
 \usage{
- ksample.e(x, sizes, distance = FALSE, ix = 1:sum(sizes), 
-           incomplete = FALSE, N = 100)
+ ksample.e(x, sizes, distance = FALSE, ix = 1:sum(sizes))
 }
 \arguments{
   \item{x}{ data matrix of pooled sample}
   \item{sizes}{ vector of sample sizes}
   \item{distance}{ logical: if TRUE, x is a distance matrix}
   \item{ix}{ a permutation of the row indices of x }
-  \item{incomplete}{ logical: if TRUE, compute incomplete \eqn{\mathcal{E}}{E}-statistics}
-  \item{N}{ incomplete sample size}
 }
 \details{
   The k-sample multivariate \eqn{\mathcal{E}}{E}-statistic for testing equal distributions
@@ -24,10 +21,7 @@
   matrix \code{x} of the original data. The
   first \code{sizes[1]} rows of \code{x} are the first sample, the next
   \code{sizes[2]} rows of \code{x} are the second sample, etc. Incomplete statistics are 
-  supported for the two-sample case. If
-  \code{incomplete==TRUE}, at most \code{N} observations from each sample 
-  (by sampling without replacement) are used in the calculation of the statistic.
-  If \code{distance==TRUE} complete statistics are always computed.
+  supported for the two-sample case. 
  
   The two-sample \eqn{\mathcal{E}}{E}-statistic proposed by Szekely and Rizzo (2004)
   is the e-distance \eqn{e(S_i,S_j)}, defined for two samples \eqn{S_i, S_j}
@@ -58,8 +52,10 @@ computed by the \code{edist} function, which returns a \code{dist} object.
 The function \code{ksample.e} computes the \eqn{\mathcal{E}}{E}-statistic only. 
  For the test decision, a nonparametric bootstrap test (approximate permutation test)
  is provided by the function \code{\link{eqdist.etest}}. With the default arguments,
- \code{ksample.e} computes the statistic without storing the distance matrix, which
- is more efficient than calling \code{eqdist.etest} with \code{R = 0}.
+ \code{ksample.e} computes the statistic without storing the distance matrix. 
+For the test statistic only, \code{ksample.e} is usually faster than calling 
+\code{eqdist.e}, but for a permutation test the method of calculation in 
+\code{eqdist.etest} computes the replicates much faster.
 }
 \references{ 
  Szekely, G. J. and Rizzo, M. L. (2004) Testing for Equal

@@ -5,11 +5,12 @@
    Created: 4 Jan 2004 for R-1.8.1
    Revised: 20 March 2004 (E2, twosampleIEtest added)
    Revised: 13 June 2004 (distance() changed, some utilities added)
+   Revised: 04 Sept 2006
+   Revised: 05 March 2008 (removed unused twosampleIEtest)
 
    mvnEstat()     computes the E-test of multivariate normality
    ksampleEtest() performs the multivariate E-test for equal distributions,
                   complete version, from data matrix
-   twosampleIEtest()  incomplete version
    E2sample()     computes the 2-sample E-statistic without creating distance
    poisMstat()    computes the mean distance test of Poissonity
    sumdist()      sums the distance matrix without creating the matrix
@@ -22,8 +23,6 @@ void   mvnEstat(double *y, int *byrow, int *nobs, int *dim, double *stat);
 void   poisMstat(int *x, int *nx, double *stat);
 void   ksampleEtest(double *x, int *byrow, int *nsamples, int *sizes, int *dim,
             int *R, double *e0, double *e, double *pval);
-void   twosampleIEtest(double *x, int *byrow, int *sizes, int *dim, int *iN,
-                     int *R, double *e0, double *e, double *pval);
 void   E2sample(double *x, int *sizes, int *dim, double *stat);
 
 double edist(double **D, int m, int n);
@@ -273,56 +272,6 @@ void ksampleEtest(double *x, int *byrow,
 
 }
 
-void twosampleIEtest(double *x, int *byrow, int *sizes, int *dim, int *iN,
-                   int *R, double *e0, double *e, double *pval)
-{
-    /*
-      exported for R energy package: incomplete E test for equal distributions
-      x         the pooled sample
-      *byrow    logical, TRUE if x is stored by row
-                pass x=as.double(t(x)) if *byrow==TRUE
-      sizes     vector of original sample sizes
-      *dim      dimension of data in x
-      *iN       incomplete sample size
-      *R        number of replicates for permutation test
-      *e0       observed E test statistic
-      e         vector of replicates of E statistic
-      *pval     approximate p-value
-    */
-    int    I[2], start[2];
-    int    i, b, B = (*R), ek, nrow, ncol = (*dim), N = (*iN);
-    int    *perm;
-    double **data;
-
-    nrow = sizes[0] + sizes[1];
-    I[0] = sizes[0] > N ? N : sizes[0];
-    I[1] = sizes[1] > N ? N : sizes[1];
-
-    if (*byrow == FALSE)
-        roworder(x, byrow, nrow, ncol);
-    data = alloc_matrix(nrow, ncol);
-    vector2matrix(x, data, nrow, ncol, *byrow);
-    perm = Calloc(nrow, int);
-    for (i=0; i<nrow; i++) perm[i] = i;
-    start[0] = 0;
-    start[1] = sizes[0];
-    permute(perm + start[0], sizes[0]);
-    permute(perm + start[1], sizes[1]);
-
-    *e0 = E2(data, I, start, ncol, perm);
-    if (B > 0) {
-        ek = 0;
-        for (b = 0; b < B; b++) {
-            permute(perm, nrow);
-            e[b] = E2(data, I, start, ncol, perm);
-            if ((*e0) < e[b]) ek++;
-        }
-        *pval = (double) ek / (double) B;
-    }
-    Free(data);
-    Free(perm);
-    return;
-}
 
 void sumdist(double *x, int *byrow, int *nrow, int *ncol, double *lowersum)
 {

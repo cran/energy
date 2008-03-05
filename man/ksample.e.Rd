@@ -20,8 +20,7 @@
   matrix \code{x} where each row is a multivariate observation, or from the distance 
   matrix \code{x} of the original data. The
   first \code{sizes[1]} rows of \code{x} are the first sample, the next
-  \code{sizes[2]} rows of \code{x} are the second sample, etc. Incomplete statistics are 
-  supported for the two-sample case. 
+  \code{sizes[2]} rows of \code{x} are the second sample, etc. 
  
   The two-sample \eqn{\mathcal{E}}{E}-statistic proposed by Szekely and Rizzo (2004)
   is the e-distance \eqn{e(S_i,S_j)}, defined for two samples \eqn{S_i, S_j}

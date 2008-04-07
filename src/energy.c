@@ -2,18 +2,15 @@
    energy.c: energy package
 
    Author:  Maria Rizzo <mrizzo @ bgnet.bgsu.edu>
-   Created: 4 Jan 2004 for R-1.8.1
-   Revised: 20 March 2004 (E2, twosampleIEtest added)
-   Revised: 13 June 2004 (distance() changed, some utilities added)
-   Revised: 04 Sept 2006
-   Revised: 05 March 2008 (removed unused twosampleIEtest)
+   Created: 4 Jan 2004
+   Last Updated: 2 April 2008
+   some functions moved to utilities.c
 
    mvnEstat()     computes the E-test of multivariate normality
    ksampleEtest() performs the multivariate E-test for equal distributions,
                   complete version, from data matrix
    E2sample()     computes the 2-sample E-statistic without creating distance
    poisMstat()    computes the mean distance test of Poissonity
-   sumdist()      sums the distance matrix without creating the matrix
 */
 
 #include <R.h>
@@ -31,16 +28,21 @@ double twosampleE(double **D, int m, int n, int *xrows, int *yrows);
 double E2(double **x, int *sizes, int *start, int ncol, int *perm);
 double Eksample(double *x, int *byrow, int r, int d, int K, int *sizes, int *ix);
 void   distance(double **bxy, double **D, int N, int d);
-void   sumdist(double *x, int *byrow, int *nrow, int *ncol, double *lowersum);
 
-double **alloc_matrix(int r, int c);
-int    **alloc_int_matrix(int r, int c);
-void   free_matrix(double **matrix, int r, int c);
-void   free_int_matrix(int **matrix, int r, int c);
-void   permute(int *J, int n);
-void   roworder(double *x, int *byrow, int r, int c);
-void   vector2matrix(double *x, double **y, int N, int d, int isroworder);
+/* utilities.c */
+extern double **alloc_matrix(int r, int c);
+extern int    **alloc_int_matrix(int r, int c);
+extern void   free_matrix(double **matrix, int r, int c);
+extern void   free_int_matrix(int **matrix, int r, int c);
 
+extern void   permute(int *J, int n);
+extern void   roworder(double *x, int *byrow, int r, int c);
+extern void   vector2matrix(double *x, double **y, int N, int d, int isroworder);
+
+extern void   distance(double **bxy, double **D, int N, int d);
+extern void   Euclidean_distance(double *x, double **Dx, int n, int d);
+extern void   index_distance(double *x, double **Dx, int n, int d, double index);
+extern void   sumdist(double *x, int *byrow, int *nrow, int *ncol, double *lowersum);
 
 
 void mvnEstat(double *y, int *byrow, int *nobs, int *dim, double *stat)
@@ -273,33 +275,6 @@ void ksampleEtest(double *x, int *byrow,
 }
 
 
-void sumdist(double *x, int *byrow, int *nrow, int *ncol, double *lowersum)
-{
-    /*
-       sum all pairwise distances between rows of x
-       equivalent to this in R:  h <- sum(dist(x))
-       x must be in row order: x=as.double(t(x))
-    */
-
-    int i, j, k, p, q, n=(*nrow), d=(*ncol);
-    double sum, dsum, dif;
-    if (*byrow == FALSE)
-        roworder(x, byrow, n, d);
-    sum = 0.0;
-    for (i=1; i<n; i++) {
-        p = i*d;
-        for (j=0; j<i; j++) {
-            dsum = 0.0;
-            q = j*d;
-            for (k=0; k<d; k++) {
-                dif = *(x+p+k) - *(x+q+k);
-                dsum += dif*dif;
-            }
-            sum += sqrt(dsum);
-        }
-    }
-    (*lowersum) = sum;
-}
 
 double E2(double **x, int *sizes, int *start, int ncol, int *perm)
 {
@@ -435,120 +410,3 @@ double edist(double **D, int m, int n)
     return (double)(m*n)/((double)(m+n)) * (2*sumxy - sumxx - sumyy);
 }
 
-
-double **alloc_matrix(int r, int c)
-{
-    /* allocate a matrix with r rows and c columns */
-    int i;
-    double **matrix;
-    matrix = Calloc(r, double *);
-    for (i = 0; i < r; i++)
-    matrix[i] = Calloc(c, double);
-    return matrix;
-}
-
-
-int **alloc_int_matrix(int r, int c)
-{
-    /* allocate an integer matrix with r rows and c columns */
-    int i;
-    int **matrix;
-    matrix = Calloc(r, int *);
-    for (i = 0; i < r; i++)
-    matrix[i] = Calloc(c, int);
-    return matrix;
-}
-
-void free_matrix(double **matrix, int r, int c)
-{
-    /* free a matrix with r rows and c columns */
-    int i;
-    for (i = 0; i < r; i++) Free(matrix[i]);
-    Free(matrix);
-}
-
-void free_int_matrix(int **matrix, int r, int c)
-{
-    /* free an integer matrix with r rows and c columns */
-    int i;
-    for (i = 0; i < r; i++) Free(matrix[i]);
-    Free(matrix);
-}
-
-void permute(int *J, int n)
-{
-    /*
-       permute the first n integers of J
-       if n is length(J), equivalent to R:
-            J <- rev(sample(J, length(J), replace=FALSE))
-    */
-    int i, j, j0, m=n;
-    for (i=0; i<n-1; i++) {
-        j = m * unif_rand();
-        m--;
-        j0 = J[j];
-        J[j] = J[m];
-        J[m] = j0;
-    }
-}
-
-void vector2matrix(double *x, double **y, int N, int d, int isroworder) {
-    /* copy a d-variate sample into a matrix, N samples in rows */
-    int i, k;
-    if (isroworder == TRUE) {
-        for (k=0; k<d; k++)
-            for (i=0; i<N; i++)
-                y[i][k] = (*(x+i*d+k));
-        }
-    else {
-        for (k=0; k<N; k++)
-            for (i=0; i<d; i++)
-                y[i][k] = (*(x+k*N+i));
-        }
-    return;
-}
-
-void distance(double **data, double **D, int N, int d) {
-    /*
-       compute the distance matrix of sample in N by d matrix data
-       equivalent R code is:  D <- as.matrix(dist(data))
-    */
-    int    i, j, k;
-    double dif;
-    for (i=0; i<N; i++) {
-        D[i][i] = 0.0;
-        for (j=i+1; j<N; j++) {
-            D[i][j] = 0.0;
-            for (k=0; k<d; k++) {
-                dif = data[i][k] - data[j][k];
-                D[i][j] += dif*dif;
-            }
-            D[i][j] = sqrt(D[i][j]);
-            D[j][i] = D[i][j];
-        }
-    }
-    return;
-}
-
-void roworder(double *x, int *byrow, int r, int c) {
-    /*
-      utility to convert a vector from column order to row order
-      assume that x is r by c matrix as a vector in column order
-    */
-    int    i, j, k, n=r*c;
-    double *y;
-    if (*byrow == TRUE) return;
-    y = Calloc(n, double);
-    i = 0;
-    for (j=0; j<r; j++) {
-        for (k=0; k<n; k+=r) {
-            y[i] = x[k+j];
-            i++;
-        }
-    }
-    for (i=0; i<n; i++)
-        x[i] = y[i];
-    Free(y);
-    *byrow = TRUE;
-    return;
-}

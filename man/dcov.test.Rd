@@ -1,0 +1,111 @@
+\name{dcov.test}
+\alias{distance covariance}
+\alias{dcov.test}
+\title{ Distance Covariance Test}
+\description{
+ Distance covariance test of multivariate independence.
+ Distance covariance and distance correlation are
+ multivariate measures of dependence.}
+\usage{
+dcov.test(x, y, index = 1.0, R = 199)
+}
+\arguments{
+  \item{x}{ matrix: first sample, observations in rows}
+  \item{y}{ matrix: second sample, observations in rows}
+  \item{R}{ number of replicates}
+  \item{index}{ exponent on Euclidean distance, in (0,2]}
+}
+\details{
+ \code{dcov.test} performs a nonparametric 
+ test of multivariate independence. The test decision is 
+ obtained via bootstrap, with \code{R} replicates.
+ 
+ The sample sizes (number of rows) of the two samples must 
+ agree, and samples must not contain missing values. The 
+ statistic is
+ \eqn{n \mathcal V_n^2}{nV_n^2} where
+ \eqn{\mathcal V_n(x,y)}{V_n(x,y)} = dcov(x,y),
+ which is based on interpoint Euclidean distances
+ \eqn{\|x_{i}-y_{j}\|}{||x_{i}-y_{j}||}. 
+ 
+
+Distance correlation is a new measure of dependence between random
+vectors introduced by Szekely, Rizzo, and Bakirov (2007).
+For all distributions with finite first moments, distance
+correlation \eqn{\mathcal R}{R} generalizes the idea of correlation in two
+fundamental ways:
+ (1) \eqn{\mathcal R(X,Y)}{R(X,Y)} is defined for \eqn{X} and \eqn{Y} in arbitrary dimension.
+ (2) \eqn{\mathcal R(X,Y)=0}{R(X,Y)=0} characterizes independence of \eqn{X} and
+ \eqn{Y}.
+
+Distance correlation satisfies \eqn{0 \le \mathcal R \le 1}{0 \le R \le 1}, and
+\eqn{\mathcal R = 0}{R = 0} only if \eqn{X} and \eqn{Y} are independent. Distance
+covariance \eqn{\mathcal V}{V} provides a new approach to the problem of
+testing the joint independence of random vectors. The formal
+definitions of the population coefficients \eqn{\mathcal V}{V} and
+\eqn{\mathcal R}{R} are given in (SRB 2007). The definitions of the
+empirical coefficients are given in the energy  
+\code{\link{dcov}} topic.
+
+For all values of the index in (0,2) (all except 2), 
+the asymptotic distribution of \eqn{n\mathcal V_n^2}{V_n^2} is a quadratic form
+of centered Gaussian random variables, with coefficients that depend
+on the distributions of \eqn{X} and \eqn{Y}. For the general problem of
+testing independence when the distributions of \eqn{X} and \eqn{Y} are
+unknown, the test based on \eqn{n\mathcal V^2_n}{n V_n^2} can be implemented as a
+permutation test. See (SRB 2007) for theoretical properties of the 
+test, including statistical consistency. 
+}
+\value{
+\code{dcov.test} returns a list with class \code{htest} containing
+   \item{     method}{ description of test}
+   \item{  statistic}{ observed value of the test statistic}
+   \item{   estimate}{ dCov(x,y)}
+   \item{  estimates}{ a vector: [dCov(x,y), dCor(x,y), dVar(x), dVar(y)]}
+   \item{ replicates}{ replicates of the test statistic}
+   \item{    p.value}{ approximate p-value of the test}
+   \item{  data.name}{ description of data}
+}
+\note{For the test of independence,
+the distance covariance test statistic is the V-statistic
+\eqn{\mathrm{n\, dCov^2} = n \mathcal{V}_n^2}{n V_n^2} (not dCov). 
+}
+\seealso{
+ \code{\link{dcov} } \code{\link{dcor} } \code{\link{DCOR}}
+ }
+\references{
+ Szekely, G.J., Rizzo, M.L., and Bakirov, N.K. (2007), 
+ Measuring and Testing Dependence by Correlation of Distances, 
+ \emph{Annals of Statistics}, Vol. 35 No. 6, pp. 2769-2794.
+ \cr \url{http://dx.doi.org/10.1214/009053607000000505}
+ }
+\author{ Maria L. Rizzo \email{mrizzo@bgnet.bgsu.edu} and
+Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}
+}
+\examples{
+
+ ## independent multivariate data
+ x <- matrix(rnorm(60), nrow=20, ncol=3)
+ y <- matrix(rnorm(40), nrow=20, ncol=2)
+ dcov.test(x, y, R = 99)
+ 
+ \dontrun{
+ ## dependent multivariate data
+ library(MASS)
+ Sigma <- matrix(c(1, .1, 0, 0 , 1, 0, 0 ,.1, 1), 3, 3)
+ x <- mvrnorm(30, c(0, 0, 0), .1 * diag(3))
+ y <- mvrnorm(30, c(0, 0, 0), Sigma) * x
+ set.seed(123); dcov.test(x, y, index = 1.5)
+ set.seed(123); dcov.test(x, y)
+ detach("package:MASS")
+ }
+ }
+\keyword{ htest }
+\keyword{ multivariate }
+\keyword{ nonparametric }
+\concept{ independence }
+\concept{ multivariate }
+\concept{ distance correlation }
+\concept{ distance covariance }
+\concept{ energy statistics }
+

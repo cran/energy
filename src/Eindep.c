@@ -1,13 +1,11 @@
 /*
    Eindep.c: energy package
-   E-statistics and test for multivariate independence
+   E-statistics and test for multivariate independence (coef. I_n)
+   Distance covariance and distance correlation: see dcov.c
 
    Author:   Maria Rizzo <mrizzo @ bgnet.bgsu.edu>
    Created:  June 15, 2004  (development)
-   Modified: July 28, 2004  (local use)
-   Updated:  March 26, 2005 (energy 1.0-3)
-             Sept 06, 2006  (energy 1.0-4)
-             Sept 07, 2006  (energy 1.0-5)
+   Last Modified:  April 5, 2008
 */
 
 #include <R.h>
@@ -17,7 +15,6 @@ void   indepE(double *x, double *y, int *byrow, int *dims, double *Istat);
 void   indepEtest(double *x, double *y, int *byrow, int *dims,
                 double *Istat, double *reps, double *pval);
 
-void   Euclidean_distance(double *x, double **D, int n, int d);
 void   squared_distance(double *x, double **D, int n, int d);
 
 extern double **alloc_matrix(int r, int c);
@@ -26,12 +23,13 @@ extern void   free_matrix(double **matrix, int r, int c);
 extern void   free_int_matrix(int **matrix, int r, int c);
 extern void   permute(int *J, int n);
 extern void   roworder(double *x, int *byrow, int r, int c);
+extern void   Euclidean_distance(double *x, double **D, int n, int d);
 
 void indepE(double *x, double *y, int *byrow, int *dims, double *Istat)
 {
     /*
         E statistic for multiv. indep. of X in R^p and Y in R^q
-        statistic is I_n [nI_n has a limit dist under indep]
+        statistic returned is I_n^2 [nI_n^2 has a limit dist under indep]
         dims[0] = n (sample size)
         dims[1] = p (dimension of X)
         dims[2] = q (dimension of Y)
@@ -97,7 +95,7 @@ void indepEtest(double *x, double *y, int *byrow, int *dims,
                 double *Istat, double *reps, double *pval) {
     /*
         approx permutation E test for multiv. indep. of X in R^p and Y in R^q
-        statistic is I_n, where nI_n -> Q
+        statistic is I_n^2, where nI_n^2 -> Q
         dims[0] = n (sample size)
         dims[1] = p (dimension of X)
         dims[2] = q (dimension of Y)
@@ -210,29 +208,6 @@ void squared_distance(double *x, double **D2, int n, int d)
                 dsum += dif*dif;
             }
             D2[i][j] = D2[j][i] = dsum;
-        }
-    }
-}
-
-void Euclidean_distance(double *x, double **Dx, int n, int d)
-{
-    /*
-        interpret x as an n by d matrix, in row order (n vectors in R^d)
-        compute the Euclidean distance matrix Dx
-    */
-    int i, j, k, p, q;
-    double dsum, dif;
-    for (i=1; i<n; i++) {
-        Dx[i][i] = 0.0;
-        p = i*d;
-        for (j=0; j<i; j++) {
-            dsum = 0.0;
-            q = j*d;
-            for (k=0; k<d; k++) {
-                dif = *(x+p+k) - *(x+q+k);
-                dsum += dif*dif;
-            }
-            Dx[i][j] = Dx[j][i] = sqrt(dsum);
         }
     }
 }

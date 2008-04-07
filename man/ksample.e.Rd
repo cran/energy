@@ -82,6 +82,5 @@ Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}}
 }
 
 \keyword{ multivariate }
-\keyword{ htest }
 \keyword{ nonparametric }
 \concept{ energy statistics }

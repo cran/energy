@@ -66,8 +66,8 @@
 \references{ 
      Szekely, G. J. and Rizzo, M. L. (2005) Hierarchical Clustering
      via Joint Between-Within Distances: Extending Ward's Minimum
-     Variance Method, \emph{Journal of Classification} 22(2) 151-183, 
-     http://dx.doi.org/10.1007/s00357-005-0012-9.
+     Variance Method, \emph{Journal of Classification} 22(2) 151-183.
+     \cr \url{http://dx.doi.org/10.1007/s00357-005-0012-9}
 
      Szekely, G. J. and Rizzo, M. L. (2004) Testing for Equal
      Distributions in High Dimension, \emph{InterStat}, November (5).

@@ -1,9 +1,9 @@
-\name{Independence E-test}
+\name{indep.etest}
 \alias{indep.e}
 \alias{indep.etest}
-\title{ Energy Statistic Tests of Independence}
-\description{
- Computes the multivariate nonparametric E-statistic and test of independence.}
+\title{ Energy Statistic Test of Independence}
+\description{Deprecated: use \code{indep.test} with \code{method = mvI}.
+ Computes a multivariate nonparametric E-statistic and test of independence.}
 \usage{
 indep.e(x, y)
 indep.etest(x, y, R=199)
@@ -25,7 +25,7 @@ indep.etest(x, y, R=199)
  
 }
 \value{
- The value of the test statistic is returned by \code{indep.e}.
+ The sample coefficient \eqn{\mathcal I}{I} is returned by \code{indep.e}.
  The function \code{indep.etest} returns a list with class 
  \code{htest} containing
  \item{method}{description of test}
@@ -36,13 +36,14 @@ indep.etest(x, y, R=199)
 \references{
  Bakirov, N.K., Rizzo, M.L., and Szekely, G.J. (2006), A Multivariate
  Nonparametric Test of Independence, \emph{Journal of Multivariate Analysis} 
- 93/1, 58-80, http://dx.doi.org/10.1016/j.jmva.2005.10.005 
+ 93/1, 58-80, 
+ \cr \url{http://dx.doi.org/10.1016/j.jmva.2005.10.005} 
  }
 \author{ Maria L. Rizzo \email{mrizzo @ bgnet.bgsu.edu} and
 Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}
 }
 \examples{
-
+ \dontrun{
  ## independent univariate data
  x <- sin(runif(30, 0, 2*pi) * 2)
  y <- sin(runif(30, 0, 2*pi) * 4)
@@ -82,8 +83,8 @@ Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}
  x <- mvrnorm(30, c(0, 0, 0), diag(3))
  y <- mvrnorm(30, c(0, 0, 0), Sigma) * x
  indep.etest(x, y, R = 99)
+ }
 }
-
 \keyword{ htest }
 \keyword{ multivariate }
 \concept{ energy statistics }

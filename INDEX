@@ -1,11 +1,16 @@
+dcor                    Distance Correlation and Covariance Statistics
+dcov.test               Distance Covariance Test
 edist                   E-distance
 energy.hclust           Hierarchical Clustering by Minimum (Energy)
                         E-distance
 eqdist.etest            Multisample E-statistic (Energy) Test of Equal
                         Distributions
-indep.e                 Energy Statistic Tests of Independence
+indep.etest             Energy Statistic Test of Independence
+indep.test              Energy Statistic Tests of Independence
 ksample.e               E-statistic (Energy Statistic) for Multivariate
                         k-sample Test of Equal Distributions
+mvI                     Multivariate Independence Coefficient I
+mvI.test                Energy Statistic Test of Independence
 mvnorm.etest            E-statistic (Energy) Test of Multivariate
                         Normality
 poisson.mtest           Mean Distance Test for Poisson Distribution

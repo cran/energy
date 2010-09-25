@@ -73,32 +73,31 @@ the distance covariance test statistic is the V-statistic
 \seealso{
  \code{\link{dcov} } \code{\link{dcor} } \code{\link{DCOR}}
  }
+
 \references{
  Szekely, G.J., Rizzo, M.L., and Bakirov, N.K. (2007), 
  Measuring and Testing Dependence by Correlation of Distances, 
  \emph{Annals of Statistics}, Vol. 35 No. 6, pp. 2769-2794.
  \cr \url{http://dx.doi.org/10.1214/009053607000000505}
- }
-\author{ Maria L. Rizzo \email{mrizzo@bgnet.bgsu.edu} and
-Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}
+
+ Szekely, G.J. and Rizzo, M.L. (2009), 
+ Brownian Distance Covariance, 
+ \emph{Annals of Applied Statistics}, 
+ Vol. 3, No. 4, 1236-1265.  
+ \cr \url{http://dx.doi.org/10.1214/09-AOAS312}
+ 
+ Szekely, G.J. and Rizzo, M.L. (2009), 
+ Rejoinder: Brownian Distance Covariance, 
+ \emph{Annals of Applied Statistics}, Vol. 3, No. 4, 1303-1308.  
+  } 
+  \author{ Maria L. Rizzo \email{mrizzo @ bgsu.edu} and
+Gabor J. Szekely 
 }
 \examples{
-
- ## independent multivariate data
- x <- matrix(rnorm(60), nrow=20, ncol=3)
- y <- matrix(rnorm(40), nrow=20, ncol=2)
- dcov.test(x, y, R = 99)
- 
- \dontrun{
  ## dependent multivariate data
- library(MASS)
- Sigma <- matrix(c(1, .1, 0, 0 , 1, 0, 0 ,.1, 1), 3, 3)
- x <- mvrnorm(30, c(0, 0, 0), .1 * diag(3))
- y <- mvrnorm(30, c(0, 0, 0), Sigma) * x
- set.seed(123); dcov.test(x, y, index = 1.5)
- set.seed(123); dcov.test(x, y)
- detach("package:MASS")
- }
+ x <- matrix(rlnorm(60), nrow=20, ncol=3)
+ y <- x[,1:2]*matrix(rlnorm(40), nrow=20, ncol=2)
+ dcov.test(x, y, R = 199)
  }
 \keyword{ htest }
 \keyword{ multivariate }

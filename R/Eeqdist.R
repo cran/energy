@@ -1,80 +1,38 @@
-ksample.e <- 
-function(x, sizes, distance = FALSE, ix = 1:sum(sizes)) {
-    ## computes the k-sample E-statistic for equal distributions
-    ##   x:          pooled sample or distance matrix
-    ##   sizes:      vector of sample sizes
-    ##   distance:   TRUE if x is a distance matrix, otherwise FALSE
-    ##   ix:         a permutation of row indices of x
-    ##   
-    ## NOT much error checking here: for test use eqdist.etest
-    ## This version can be sourced R, but may be slower than the 
-    ## eqdist.e() version
-    ## 
-    k <- length(sizes)
-    if (k == 1) return (0.0)
-    if (k < 2) return (NA)
-    e <- e0 <- 0
-    if (!is.null(attr(x, "Size"))) distance <- TRUE
-    x <- as.matrix(x)
-    
-    if (distance == TRUE) {
-        ##  same as test with 0 replicates
-        b <- .C("ksampleEtest", 
-        x = as.double(t(x)), 
-        byrow = as.integer(1),
-        nsamples = as.integer(length(sizes)), 
-        sizes = as.integer(sizes),
-        dim = as.integer(0), 
-        R = as.integer(0), 
-        e0 = as.double(e),
-        e = as.double(e), 
-        pval = as.double(e), 
-        PACKAGE = "energy")           
-        return (b$e0)
-    }
-
-    ##  compute e directly, without storing distances
-    d <- ncol(x)
-    n <- cumsum(sizes)
-    m <- 1 + c(0, n[1:(k-1)])
-    for (i in 1:(k - 1)) {
-        for (j in (i + 1):k) {
-            n1 <- sizes[i]
-            n2 <- sizes[j]
-            ii <- ix[m[i]:n[i]]
-            jj <- ix[m[j]:n[j]]
-                if (d == 1) y <- as.matrix(c(x[ii], x[jj]))
-                else y <- rbind(x[ii,], x[jj,])
-                e <- e + .C("E2sample",
-                        x = as.double(t(y)), 
-                        sizes = as.integer(c(n1, n2)), 
-                        dim = as.integer(d), 
-                        e = as.double(e0),
-                        PACKAGE = "energy")$e
-            }
-        }
-    e
-}
-
-
 eqdist.e <- 
-function(x, sizes, distance = FALSE) {
+function(x, sizes, distance = FALSE, method = c("original","disco")) 
+{
     ## multivariate E-statistic for testing equal distributions
     ##   x:          matrix of pooled sample or distance matrix
     ##   sizes:      vector of sample sizes
     ##   distance:   logical, TRUE if x is a distance matrix, otherwise false
-    return(as.double(eqdist.etest(x, sizes, distance = FALSE, R = 0)$statistic))
+    ##   method:     original (default) or disco components
+    
+    method <-match.arg(method)
+    if (method=="disco") {
+        g <- as.factor(rep(1:length(sizes), sizes))
+        return(sum(disco(x, factors=g, distance)$between)) 
+        } else
+    return(as.double(eqdist.etest(x, sizes, distance = FALSE,
+           method = method, R=0)$statistic))
 }    
 
 eqdist.etest <- 
-function(x, sizes, distance = FALSE, R = 999) {
+function(x, sizes, distance = FALSE, method = c("original","disco"), R = 999) 
+{
     ## multivariate E-test of the multisample hypothesis of equal distributions
     ##   x:          matrix of pooled sample or distance matrix
     ##   sizes:      vector of sample sizes
     ##   distance:   logical, TRUE if x is a distance matrix, otherwise false
+    ##   method:     original (default) or disco between components
     ##   R:          number of replicates
     ##   
     
+    method <-match.arg(method)
+    if (method=="disco") {
+      g <- as.factor(rep(1:length(sizes), sizes))
+      return(disco(x, factors=g, distance, R))
+      }
+
     nsamples <- length(sizes)
     if (nsamples < 2) return (NA)
     if (min(sizes) < 1) return (NA)
@@ -120,3 +78,22 @@ function(x, sizes, distance = FALSE, R = 999) {
     e
 }
  
+ksample.e <- 
+function(x, sizes, distance = FALSE, method = c("original","disco"),
+         ix = 1:sum(sizes))
+{
+    ## computes k-sample E-statistics for equal distributions
+    ## retained for backward compatibility or use with boot
+    ## (this function simply passes arguments to eqdist.e)
+    ## 
+    ##   x:          pooled sample or distance matrix
+    ##   sizes:      vector of sample sizes
+    ##   distance:   TRUE if x is a distance matrix, otherwise FALSE
+    ##   method:     default (original) or disco between components
+    ##   ix:         a permutation of row indices of x
+    ##   
+    x <- as.matrix(x)
+    method <- match.arg(method)
+    eqdist.e(x[ix,], sizes, distance, method)
+}
+

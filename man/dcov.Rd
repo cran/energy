@@ -129,9 +129,19 @@ return all four statistics.
  Measuring and Testing Dependence by Correlation of Distances, 
  \emph{Annals of Statistics}, Vol. 35 No. 6, pp. 2769-2794.
  \cr \url{http://dx.doi.org/10.1214/009053607000000505}
- }
-\author{ Maria L. Rizzo \email{mrizzo@bgnet.bgsu.edu} and
-Gabor J. Szekely \email{gabors@bgnet.bgsu.edu}
+
+ Szekely, G.J. and Rizzo, M.L. (2009), 
+ Brownian Distance Covariance, 
+ \emph{Annals of Applied Statistics}, 
+ Vol. 3, No. 4, 1236-1265.  
+ \cr \url{http://dx.doi.org/10.1214/09-AOAS312}
+ 
+ Szekely, G.J. and Rizzo, M.L. (2009), 
+ Rejoinder: Brownian Distance Covariance, 
+ \emph{Annals of Applied Statistics}, Vol. 3, No. 4, 1303-1308.  
+  } 
+\author{ Maria L. Rizzo \email{mrizzo @ bgsu.edu} and
+Gabor J. Szekely 
 }
 \examples{
  ## independent multivariate data

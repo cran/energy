@@ -39,8 +39,8 @@ indep.etest(x, y, R=199)
  93/1, 58-80, 
  \cr \url{http://dx.doi.org/10.1016/j.jmva.2005.10.005} 
  }
-\author{ Maria L. Rizzo \email{mrizzo @ bgnet.bgsu.edu} and
-Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}
+\author{ Maria L. Rizzo \email{mrizzo @ bgsu.edu} and
+Gabor J. Szekely
 }
 \examples{
  \dontrun{
@@ -48,35 +48,6 @@ Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}
  x <- sin(runif(30, 0, 2*pi) * 2)
  y <- sin(runif(30, 0, 2*pi) * 4)
  indep.etest(x, y, R = 99)
-
- ## dependent univariate data
- u <- runif(30, 0, 2*pi)
- x <- sin(2 * u)
- y <- sin(3 * u)
- indep.etest(x, y, R = 99)
- 
- u <- runif(50, 0, 2*pi)
- x <- sin(2 * u)
- y <- sin(4 * u)
- indep.etest(x, y, R = 99)
- 
- ## independent multivariate data
- x <- matrix(rnorm(60), nrow=20, ncol=3)
- y <- matrix(rnorm(40), nrow=20, ncol=2)
- indep.e(x, y)
- indep.etest(x, y, R = 99)
- 
- ## independent bivariate data
- x <- matrix(rnorm(50), nrow=25, ncol=2)
- y <- matrix(rnorm(50), nrow=25, ncol=2)
- indep.e(x, y)
- indep.etest(x, y, R = 99)
- 
- ## dependent bivariate data
- library(MASS)
- Sigma <- matrix(c(1, .5, .5, 1), 2, 2)
- x <- mvrnorm(30, c(0, 0), Sigma)
- indep.etest(x[,1], x[,2], R = 99)
  
  ## dependent multivariate data
  Sigma <- matrix(c(1, .1, 0, 0 , 1, 0, 0 ,.1, 1), 3, 3)

@@ -15,6 +15,7 @@
    n*dCov^2 or nV^2. We use dCov^2 in the test
    and return the estimates dCov, dCor, dVarX, dVarY
    in dCOVtest.
+
    2. dCOVtest is much faster than dCovTest
    The two methods of computing dCov^2 are algebraically
    equivalent. dCovTest is not used in the dcov package
@@ -35,7 +36,7 @@ void   dCovTest(double *x, double *y, int *byrow, int *dims,
 
 void   dCOV(double *x, double *y, int *byrow, int *dims,
             double *index, int *idx, double *DCOV);
-void   Akl(double **akl, double **A, int *n);
+double Akl(double **akl, double **A, int *n);
 
 /* functions in utilities.c */
 extern double **alloc_matrix(int r, int c);
@@ -58,12 +59,12 @@ void dCOVtest(double *x, double *y, int *byrow, int *dims,
         dims[2] = q (dimension of Y)
         dims[3] = R (number of replicates)
         index : exponent for distance
-        DCOV  : vector [dCov, dCor, dVar(x), dVar(y)]
+        DCOV  : vector [dCov, dCor, dVar(x), dVar(y), mean(A), mean(B)]
      */
     int    i, j, k, n, n2, p, q, r, J, K, M, N, R;
     int*   perm;
     double **Dx, **Dy, **A, **B;
-    double dcov, V;
+    double dcov, V, abar, bbar;
 
     n = dims[0];
     p = dims[1];
@@ -81,12 +82,12 @@ void dCOVtest(double *x, double *y, int *byrow, int *dims,
     Dx = alloc_matrix(n, n);
     index_distance(x, Dx, n, p, *index);
     A = alloc_matrix(n, n);
-    Akl(Dx, A, dims);
+    abar = Akl(Dx, A, dims);
     free_matrix(Dx, n, n);
     Dy = alloc_matrix(n, n);
     index_distance(y, Dy, n, q, *index);
     B = alloc_matrix(n, n);
-    Akl(Dy, B, dims);
+    bbar = Akl(Dy, B, dims);
     free_matrix(Dy, n, n);
 
     n2 = ((double) n) * n;
@@ -109,6 +110,8 @@ void dCOVtest(double *x, double *y, int *byrow, int *dims,
     if (V > DBL_EPSILON)
         DCOV[1] = DCOV[0] / sqrt(V);
         else DCOV[1] = 0.0;
+    DCOV[4] = abar;
+    DCOV[5] = bbar;
 
     /* compute the replicates */
     if (R > 0) {
@@ -130,7 +133,7 @@ void dCOVtest(double *x, double *y, int *byrow, int *dims,
            reps[r] = dcov;
            if (dcov >= DCOV[0]) M++;
         }
-        *pval = (double) M / (double) (R);
+        *pval = (double) (M+1) / (double) (R+1);
         Free(perm);
     }
 
@@ -188,7 +191,9 @@ void dCOV(double *x, double *y, int *byrow, int *dims,
 
     for (k=0; k<4; k++) {
         DCOV[k] /= n2;
-        DCOV[k] = sqrt(DCOV[k]);
+        if (DCOV[k] > 0)
+            DCOV[k] = sqrt(DCOV[k]);
+            else DCOV[k] = 0.0;
     }
     /* compute dCor(x, y) */
     V = DCOV[2]*DCOV[3];
@@ -203,7 +208,7 @@ void dCOV(double *x, double *y, int *byrow, int *dims,
     return;
 }
 
-void Akl(double **akl, double **A, int *n) {
+double Akl(double **akl, double **A, int *n) {
     /* -computes the A_{kl} or B_{kl} distances from the
         distance matrix (a_{kl}) or (b_{kl}) for dCov, dCor, dVar
         dCov = mean(Akl*Bkl), dVar(X) = mean(Akl^2), etc.
@@ -231,6 +236,7 @@ void Akl(double **akl, double **A, int *n) {
             A[j][k] = A[k][j];
         }
     Free(akbar);
+    return(abar);
 }
 
 void dCovTest(double *x, double *y, int *byrow, int *dims,
@@ -323,7 +329,7 @@ void dCovTest(double *x, double *y, int *byrow, int *dims,
             reps[b] = (S1 + S2 - 2*S3);
             if (reps[b] >= (*Dstat)) M++;
         }
-        *pval = (double) M / (double) (B);
+        *pval = (double) (M+1) / (double) (B+1);
         Free(perm);
     }
     /* test statistic (the V-statistic) is nV_n^2 = n*Dstat[0]

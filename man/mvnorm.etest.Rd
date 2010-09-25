@@ -62,8 +62,9 @@
  Szekely, G. J. (1989) Potential and Kinetic Energy in Statistics, 
  Lecture Notes, Budapest Institute of Technology (Technical University). 
 } 
-\author{ Maria L. Rizzo \email{mrizzo @ bgnet.bgsu.edu} and
-Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}}
+\author{ Maria L. Rizzo \email{mrizzo @ bgsu.edu} and
+Gabor J. Szekely 
+}
 \examples{
  ## compute normality test statistics for iris Setosa data
  data(iris)

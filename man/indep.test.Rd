@@ -23,7 +23,7 @@ indep.test(x, y, method = c("dcov","mvI"), index = 1, R = 199)
  the Euclidean distances. Valid choices for \code{index} are in (0,2],
  with default value 1 (Euclidean distance). The arguments are passed
  to the \code{dcov.test} function. See the help topic \code{\link{dcov.test}} for 
- the description and documentation and also see the reference (2007) below.
+ the description and documentation and also see the references below.
 
  \code{indep.test} with \code{method = "mvI"} 
  computes the coefficient \eqn{\mathcal I_n}{I_n} and performs a nonparametric 
@@ -71,18 +71,24 @@ The original \code{indep.etest} applied the independence coefficient
  \code{ \link{mvI} }
  }
 \references{
- Bakirov, N.K., Rizzo, M.L., and Szekely, G.J. (2006), A Multivariate
- Nonparametric Test of Independence, \emph{Journal of Multivariate Analysis} 
- 93/1, 58-80, \cr 
- \url{http://dx.doi.org/10.1016/j.jmva.2005.10.005}
+  Szekely, G.J. and Rizzo, M.L. (2009), 
+  Brownian Distance Covariance,
+ \emph{Annals of Applied Statistics}, Vol. 3 No. 4, pp.
+ 1236-1265. (Also see discussion and rejoinder.)
+ \cr \url{http://dx.doi.org/10.1214/09-AOAS312}
  
   Szekely, G.J., Rizzo, M.L., and Bakirov, N.K. (2007), 
   Measuring and Testing Dependence by Correlation of Distances, 
  \emph{Annals of Statistics}, Vol. 35 No. 6, pp. 2769-2794.
  \cr \url{http://dx.doi.org/10.1214/009053607000000505}
+ 
+ Bakirov, N.K., Rizzo, M.L., and Szekely, G.J. (2006), A Multivariate
+ Nonparametric Test of Independence, \emph{Journal of Multivariate Analysis} 
+ 93/1, 58-80, \cr 
+ \url{http://dx.doi.org/10.1016/j.jmva.2005.10.005}
  }
-\author{ Maria L. Rizzo \email{mrizzo @ bgnet.bgsu.edu} and
-Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}
+\author{ Maria L. Rizzo \email{mrizzo @ bgsu.edu} and
+Gabor J. Szekely
 }
 \examples{
  ## independent multivariate data
@@ -92,7 +98,6 @@ Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}
  indep.test(x, y, method = "mvI", R = 99)
  
  ## dependent multivariate data
- library(MASS)
  Sigma <- matrix(c(1, .1, 0, 0 , 1, 0, 0 ,.1, 1), 3, 3)
  x <- mvrnorm(30, c(0, 0, 0), diag(3))
  y <- mvrnorm(30, c(0, 0, 0), Sigma) * x
@@ -108,8 +113,6 @@ Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}
  set.seed(123)
  system.time(indep.test(x, y, method = "mvI", R = 1000))
  }
-
- detach("package:MASS")
 }
 
 \keyword{ htest }

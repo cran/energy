@@ -77,8 +77,9 @@
  Statistical Samples, Department of Mathematics and Statistics, Bowling
  Green State University.
 } 
-\author{ Maria L. Rizzo \email{mrizzo @ bgnet.bgsu.edu} and
-  Gabor J. Szekely \email{gabors @ bgnet.bgsu.edu}}
+\author{ Maria L. Rizzo \email{mrizzo @ bgsu.edu} and
+  Gabor J. Szekely 
+  }
 \seealso{
   \code{\link{edist}} \code{\link{ksample.e}} \code{\link{eqdist.etest}} \code{hclust}}
 \examples{

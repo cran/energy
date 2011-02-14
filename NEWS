@@ -1,0 +1,28 @@
+Changes to Version 1.3-0
+
+	o  In distance correlation, distance covariance functions 
+	   (dcov, dcor, DCOR) and dcov.test, arguments x and y can now 
+	   optionally be distance objects (result of dist function or
+	   as.dist). Matrices x and y will always be treated as data.
+	   
+	o  Functions in dcov.c and utilities.c were modified to support
+	   arguments that are distances rather than data. In utilities.c
+	   the index_distance function changed. In dcov.c there are many
+	   changes. Most importantly for the exported objects, there is
+	   now an extra required parameter in the dims argument passed
+	   from R. In dCOVtest dims must be a vector c(n, p, q, dst, R)
+	   where n is sample size, p and q are dimensions of x and y,
+	   dst is logical (TRUE if distances) and R is number of replicates.
+	   For dCOV dims must be c(n, p, q, dst).
+	   
+Changes to Version 1.2-0	   
+	   
+	o  disco (distance components) added for one-way layout.
+	   
+	o  A method argument was added to ksample.e, eqdist.e, and
+	   eqdist.etest, method = c("original", "disco").
+	   
+        o  A method argument was added to edist, which summarizes cluster
+           distances in a table:
+               method = c("cluster","discoB","discoF"))
+               

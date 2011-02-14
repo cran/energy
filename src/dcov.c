@@ -22,6 +22,13 @@
    but kept here for validation and historical reasons.
    Also note that the returned objects are different
    types.
+
+ energy 1.3-0: Changes to support optionally passing
+   distance matrices as arguments are made in dcov.c
+   (and in utilities.c index_distance is revised).
+
+
+   Note: arguments "dims" have changed in version 1.3-0
 */
 
 #include <R.h>
@@ -36,7 +43,7 @@ void   dCovTest(double *x, double *y, int *byrow, int *dims,
 
 void   dCOV(double *x, double *y, int *byrow, int *dims,
             double *index, int *idx, double *DCOV);
-double Akl(double **akl, double **A, int *n);
+double Akl(double **akl, double **A, int n);
 
 /* functions in utilities.c */
 extern double **alloc_matrix(int r, int c);
@@ -46,7 +53,8 @@ extern void   free_int_matrix(int **matrix, int r, int c);
 extern void   permute(int *J, int n);
 extern void   roworder(double *x, int *byrow, int r, int c);
 extern void   Euclidean_distance(double *x, double **Dx, int n, int d);
-extern void   index_distance(double *x, double **Dx, int n, int d, double index);
+extern void   index_distance(double **Dx, int n, double index);
+extern void   vector2matrix(double *x, double **y, int N, int d, int isroworder);
 
 
 void dCOVtest(double *x, double *y, int *byrow, int *dims,
@@ -57,19 +65,22 @@ void dCOVtest(double *x, double *y, int *byrow, int *dims,
         dims[0] = n (sample size)
         dims[1] = p (dimension of X)
         dims[2] = q (dimension of Y)
-        dims[3] = R (number of replicates)
+        dims[3] = dst (logical, TRUE if x, y are distances)
+        dims[4] = R (number of replicates)
         index : exponent for distance
         DCOV  : vector [dCov, dCor, dVar(x), dVar(y), mean(A), mean(B)]
      */
     int    i, j, k, n, n2, p, q, r, J, K, M, N, R;
+    int    dst;
     int*   perm;
     double **Dx, **Dy, **A, **B;
-    double dcov, V, abar, bbar;
+    double dcov, V;
 
     n = dims[0];
     p = dims[1];
     q = dims[2];
-    R = dims[3];
+    dst = dims[3];
+    R = dims[4];
     N = n * n;
 
     if (*byrow == FALSE) {
@@ -79,18 +90,29 @@ void dCOVtest(double *x, double *y, int *byrow, int *dims,
         roworder(y, byrow, n, q);
     }
 
+    /* critical to pass correct flag dst from R */
     Dx = alloc_matrix(n, n);
-    index_distance(x, Dx, n, p, *index);
-    A = alloc_matrix(n, n);
-    abar = Akl(Dx, A, dims);
-    free_matrix(Dx, n, n);
     Dy = alloc_matrix(n, n);
-    index_distance(y, Dy, n, q, *index);
+    if (dst) {
+		vector2matrix(x, Dx, n, n, 1);
+		vector2matrix(y, Dy, n, n, 1);
+	}
+	else {
+		Euclidean_distance(x, Dx, n, p);
+		Euclidean_distance(y, Dy, n, q);
+	}
+	index_distance(Dx, n, *index);
+	index_distance(Dy, n, *index);
+
+    A = alloc_matrix(n, n);
     B = alloc_matrix(n, n);
-    bbar = Akl(Dy, B, dims);
+    Akl(Dx, A, n);
+    Akl(Dy, B, n);
+    free_matrix(Dx, n, n);
     free_matrix(Dy, n, n);
 
     n2 = ((double) n) * n;
+
     /* compute dCov(x,y), dVar(x), dVar(y) */
     for (k=0; k<4; k++)
         DCOV[k] = 0.0;
@@ -103,15 +125,15 @@ void dCOVtest(double *x, double *y, int *byrow, int *dims,
 
     for (k=0; k<4; k++) {
         DCOV[k] /= n2;
-        DCOV[k] = sqrt(DCOV[k]);
+        if (DCOV[k] > 0)
+            DCOV[k] = sqrt(DCOV[k]);
+            else DCOV[k] = 0.0;
     }
     /* compute dCor(x, y) */
     V = DCOV[2]*DCOV[3];
     if (V > DBL_EPSILON)
         DCOV[1] = DCOV[0] / sqrt(V);
         else DCOV[1] = 0.0;
-    DCOV[4] = abar;
-    DCOV[5] = bbar;
 
     /* compute the replicates */
     if (R > 0) {
@@ -149,17 +171,20 @@ void dCOV(double *x, double *y, int *byrow, int *dims,
         dims[0] = n (sample size)
         dims[1] = p (dimension of X)
         dims[2] = q (dimension of Y)
+        dims[3] = dst (logical, TRUE if x, y are distances)
         index : exponent for distance
         idx   : index vector, a permutation of sample indices
         DCOV  : vector [dCov, dCor, dVar(x), dVar(y)]
      */
-    int    j, k, n, n2, p, q, N;
+
+    int    j, k, n, n2, p, q, N, dst;
     double **Dx, **Dy, **A, **B;
     double V;
 
     n = dims[0];
     p = dims[1];
     q = dims[2];
+    dst = dims[3];
     N = n * n;
 
     if (*byrow == FALSE) {
@@ -169,16 +194,30 @@ void dCOV(double *x, double *y, int *byrow, int *dims,
         roworder(y, byrow, n, q);
     }
 
+
+    /* critical to pass correct flag dst from R */
     Dx = alloc_matrix(n, n);
     Dy = alloc_matrix(n, n);
+    if (dst) {
+		vector2matrix(x, Dx, n, n, 1);
+		vector2matrix(y, Dy, n, n, 1);
+	}
+	else {
+		Euclidean_distance(x, Dx, n, p);
+		Euclidean_distance(y, Dy, n, q);
+	}
+	index_distance(Dx, n, *index);
+	index_distance(Dy, n, *index);
+
     A = alloc_matrix(n, n);
     B = alloc_matrix(n, n);
+    Akl(Dx, A, n);
+    Akl(Dy, B, n);
+    free_matrix(Dx, n, n);
+    free_matrix(Dy, n, n);
 
-    index_distance(x, Dx, n, p, *index);
-    index_distance(y, Dy, n, q, *index);
-    Akl(Dx, A, dims);
-    Akl(Dy, B, dims);
     n2 = ((double) n) * n;
+
     /* compute dCov(x,y), dVar(x), dVar(y) */
     for (k=0; k<4; k++)
         DCOV[k] = 0.0;
@@ -201,37 +240,34 @@ void dCOV(double *x, double *y, int *byrow, int *dims,
         DCOV[1] = DCOV[0] / sqrt(V);
         else DCOV[1] = 0.0;
 
-    free_matrix(Dx, n, n);
-    free_matrix(Dy, n, n);
     free_matrix(A, n, n);
     free_matrix(B, n, n);
     return;
 }
 
-double Akl(double **akl, double **A, int *n) {
+double Akl(double **akl, double **A, int n) {
     /* -computes the A_{kl} or B_{kl} distances from the
         distance matrix (a_{kl}) or (b_{kl}) for dCov, dCor, dVar
         dCov = mean(Akl*Bkl), dVar(X) = mean(Akl^2), etc.
     */
-    int j, k, N;
+    int j, k;
     double *akbar;
     double abar;
 
-    N = *n;
-    akbar = Calloc(N, double);
+    akbar = Calloc(n, double);
     abar = 0.0;
-    for (k=0; k<N; k++) {
+    for (k=0; k<n; k++) {
         akbar[k] = 0.0;
-        for (j=0; j<N; j++) {
+        for (j=0; j<n; j++) {
             akbar[k] += akl[k][j];
         }
         abar += akbar[k];
-        akbar[k] /= (double) N;
+        akbar[k] /= (double) n;
     }
-    abar /= (double) (N*N);
+    abar /= (double) (n*n);
 
-    for (k=0; k<N; k++)
-        for (j=k; j<N; j++) {
+    for (k=0; k<n; k++)
+        for (j=k; j<n; j++) {
             A[k][j] = akl[k][j] - akbar[k] - akbar[j] + abar;
             A[j][k] = A[k][j];
         }
@@ -276,8 +312,8 @@ void dCovTest(double *x, double *y, int *byrow, int *dims,
     Dx = alloc_matrix(n, n);
     Dy = alloc_matrix(n, n);
 
-    index_distance(x, Dx, n, p, *index);
-    index_distance(y, Dy, n, q, *index);
+    index_distance(Dx, n, *index);
+    index_distance(Dy, n, *index);
 
     Cx = Cy = Cxy = C3 = 0.0;
     n2 = ((double) n) * n;

@@ -13,8 +13,8 @@ dcor(x, y, index = 1.0)
 DCOR(x, y, index = 1.0)
 }
 \arguments{
-  \item{x}{ matrix: first sample, observations in rows}
-  \item{y}{ matrix: second sample, observations in rows}
+  \item{x}{ data or distances of first sample}
+  \item{y}{ data or distances of second sample}
   \item{index}{ exponent on Euclidean distance, in (0,2]}
 }
 \details{
@@ -24,8 +24,10 @@ DCOR(x, y, index = 1.0)
  statistics. \code{dcor} execution is faster than \code{DCOR}
  (see examples).
  
- The sample sizes (number of rows) of the two samples must 
- agree, and samples must not contain missing values. 
+  The sample sizes (number of rows) of the two samples must 
+  agree, and samples must not contain missing values. Arguments
+  \code{x}, \code{y} can optionally be \code{dist} objects;
+ otherwise these arguments are treated as data. 
  
 Distance correlation is a new measure of dependence between random
 vectors introduced by Szekely, Rizzo, and Bakirov (2007).
@@ -144,17 +146,18 @@ return all four statistics.
 Gabor J. Szekely 
 }
 \examples{
- ## independent multivariate data
- x <- matrix(rnorm(30), nrow=20, ncol=3)
- y <- matrix(rnorm(40), nrow=20, ncol=2)
+ x <- iris[1:50, 1:4]
+ y <- iris[51:100, 1:4]
+ dcov(x, y)
+ dcov(dist(x), dist(y))  #same thing
  
  ## C implementation
  dcov(x, y, 1.5)
  dcor(x, y, 1.5)
- .dcov(x, y, 1.5)
+ .dcov(dist(x), dist(y), 1.5)
  ## R implementation
  DCOR(x, y, 1.5)
-
+  
  \dontrun{
  ## compare speed of R version and C version 
  set.seed(111)

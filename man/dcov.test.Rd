@@ -10,8 +10,8 @@
 dcov.test(x, y, index = 1.0, R = 199)
 }
 \arguments{
-  \item{x}{ matrix: first sample, observations in rows}
-  \item{y}{ matrix: second sample, observations in rows}
+  \item{x}{ data or distances of first sample}
+  \item{y}{ data or distances of second sample}
   \item{R}{ number of replicates}
   \item{index}{ exponent on Euclidean distance, in (0,2]}
 }
@@ -21,13 +21,15 @@ dcov.test(x, y, index = 1.0, R = 199)
  obtained via bootstrap, with \code{R} replicates.
  
  The sample sizes (number of rows) of the two samples must 
- agree, and samples must not contain missing values. The 
- statistic is
+ agree, and samples must not contain missing values. Arguments
+ \code{x}, \code{y} can optionally be \code{dist} objects;
+ otherwise these arguments are treated as data. 
+ 
+ The statistic is
  \eqn{n \mathcal V_n^2}{nV_n^2} where
  \eqn{\mathcal V_n(x,y)}{V_n(x,y)} = dcov(x,y),
  which is based on interpoint Euclidean distances
  \eqn{\|x_{i}-y_{j}\|}{||x_{i}-y_{j}||}. 
- 
 
 Distance correlation is a new measure of dependence between random
 vectors introduced by Szekely, Rizzo, and Bakirov (2007).
@@ -94,10 +96,16 @@ the distance covariance test statistic is the V-statistic
 Gabor J. Szekely 
 }
 \examples{
- ## dependent multivariate data
- x <- matrix(rlnorm(60), nrow=20, ncol=3)
- y <- x[,1:2]*matrix(rlnorm(40), nrow=20, ncol=2)
- dcov.test(x, y, R = 199)
+ x <- iris[1:50, 1:4]
+ y <- iris[51:100, 1:4]
+ set.seed(1)
+ dcov.test(x, y)
+ set.seed(1)
+ dcov.test(dist(x), dist(y))  #same thing
+ set.seed(1)
+ dcov.test(x, y, index=.5)
+ set.seed(1)
+ dcov.test(dist(x), dist(y), index=.5)  #same thing
  }
 \keyword{ htest }
 \keyword{ multivariate }

@@ -15,6 +15,10 @@
    Euclidean_distance computes Euclidean distance matrix from double*
    index_distance     computes Euclidean distance matrix D then D^index
    sumdist            sums the distance matrix without creating the matrix
+
+   Notes:
+   1. index_distance (declaration and body of the function) revised in
+      energy 1.3-0, 2/2011.
 */
 
 #include <R.h>
@@ -31,7 +35,7 @@ void   vector2matrix(double *x, double **y, int N, int d, int isroworder);
 
 void   distance(double **bxy, double **D, int N, int d);
 void   Euclidean_distance(double *x, double **Dx, int n, int d);
-void   index_distance(double *x, double **Dx, int n, int d, double index);
+void   index_distance(double **Dx, int n, double index);
 void   sumdist(double *x, int *byrow, int *nrow, int *ncol, double *lowersum);
 
 
@@ -180,18 +184,13 @@ void Euclidean_distance(double *x, double **Dx, int n, int d)
 }
 
 
-
-
-void index_distance(double *x, double **Dx, int n, int d, double index)
+void index_distance(double **Dx, int n, double index)
 {
     /*
-        interpret x as an n by d matrix, in row order (n vectors in R^d)
-        compute the Euclidean distance matrix (case index==1)
-        then if index NEQ 1, compute D^index
+        Dx is an n by n Euclidean distance matrix
+        if index NEQ 1, compute D^index
     */
     int i, j;
-
-    Euclidean_distance(x, Dx, n, d);
 
     if (fabs(index - 1) > DBL_EPSILON) {
         for (i=0; i<n; i++)
@@ -201,7 +200,6 @@ void index_distance(double *x, double **Dx, int n, int d, double index)
             }
     }
 }
-
 
 
 void sumdist(double *x, int *byrow, int *nrow, int *ncol, double *lowersum)

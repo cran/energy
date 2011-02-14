@@ -1,11 +1,14 @@
 dcov.test <- 
 function(x, y, index=1.0, R=199) {
     # distance covariance test for multivariate independence
+    if (!(class(x) == "dist")) x <- dist(x)
+    if (!(class(y) == "dist")) y <- dist(y)
     x <- as.matrix(x)
     y <- as.matrix(y)
+    dst <- TRUE  
     n <- nrow(x)
     m <- nrow(y)
-    if (n != m || n < 2) stop("Sample sizes must agree")
+    if (n != m) stop("Sample sizes must agree")
     if (! (all(is.finite(c(x, y))))) 
         stop("Data contains missing or infinite values")
 
@@ -13,7 +16,7 @@ function(x, y, index=1.0, R=199) {
     dcov <- rep(0, 4)
     if (R > 0) reps <- rep(0, R)
     pval <- 1
-    dims <- c(n, ncol(x), ncol(y), R)
+    dims <- c(n, ncol(x), ncol(y), dst, R)
     
     # dcov = [dCov,dCor,dVar(x),dVar(y)]
     a <- .C("dCOVtest", 
@@ -28,12 +31,11 @@ function(x, y, index=1.0, R=199) {
             PACKAGE = "energy")
     # test statistic is n times the square of dCov statistic
     stat <- n * a$DCOV[1]^2
-    dcorr <- DCOR(x, y, index)
+    dcorr <- a$DCOV
     V <- dcorr[[1]]
-	names(stat) <- "nV^2"
+    names(stat) <- "nV^2"
     names(V) <- "dCov"
-    dataname <- paste("x (",n," by ",ncol(x), "), y(",n," by ", ncol(y), 
-        "), index ", index, ", replicates ", R, sep="")
+    dataname <- paste("index ", index, ", replicates ", R, sep="")
     e <- list(
         method = paste("dCov test of independence", sep = ""),
         statistic = stat, 
@@ -51,11 +53,14 @@ function(x, y, index=1.0, R=199) {
     # distance covariance test for multivariate independence
     # this version uses an alternate method for computing
     # the V-statistic - much slower execution than dCov method
+    if (!(class(x) == "dist")) x <- dist(x)
+    if (!(class(y) == "dist")) y <- dist(y)
     x <- as.matrix(x)
     y <- as.matrix(y)
+    dst <- TRUE
     n <- nrow(x)
     m <- nrow(y)
-    if (n != m || n < 2) stop("Sample sizes must agree")
+    if (n != m) stop("Sample sizes must agree")
     if (! (all(is.finite(c(x, y))))) 
         stop("Data contains missing or infinite values")
 
@@ -63,7 +68,7 @@ function(x, y, index=1.0, R=199) {
     dcov <- rep(0, 4)
     if (R > 0) reps <- rep(0, R)
     pval <- 1
-    dims <- c(n, ncol(x), ncol(y), R)
+    dims <- c(n, ncol(x), ncol(y), dst, R)
     
     # dcov = [dCov^2,S1,S2,S3]
     a <- .C("dCovTest", 
@@ -78,7 +83,7 @@ function(x, y, index=1.0, R=199) {
             PACKAGE = "energy")
     # test statistic is n times the square of dCov statistic
     stat <- n * a$dcov[1]
-    dcorr <- DCOR(x, y, index)
+    dcorr <- a$dcov
     V <- dcorr[[1]]
     names(stat) <- "nV^2"
     names(V) <- "dCov"
@@ -102,7 +107,17 @@ function(x, y, index=1.0) {
     # dcov = [dCov,dCor,dVar(x),dVar(y)]   (vector)
     # this function provides the fast method for computing dCov
     # it is called by the dcov and dcor functions
-    dims <- c(NROW(x), NCOL(x), NCOL(y))
+    if (!(class(x) == "dist")) x <- dist(x)
+    if (!(class(y) == "dist")) y <- dist(y)
+    x <- as.matrix(x)
+    y <- as.matrix(y)
+    dst <- TRUE  
+    n <- nrow(x)
+    m <- nrow(y)
+    if (n != m) stop("Sample sizes must agree")
+    if (! (all(is.finite(c(x, y))))) 
+        stop("Data contains missing or infinite values")
+    dims <- c(n, NCOL(x), NCOL(y), dst)
     idx <- 1:dims[1]
     DCOV <- numeric(4)
     a <- .C("dCOV", 
@@ -137,11 +152,13 @@ function(x, y, index=1.0) {
     # distance covariance and correlation statistics
     # alternate method, implemented in R without .C call
     # this method is usually slower than the C version
+    if (!(class(x) == "dist")) x <- dist(x)
+    if (!(class(y) == "dist")) y <- dist(y)
     x <- as.matrix(x)
     y <- as.matrix(y)
     n <- nrow(x)
     m <- nrow(y)
-    if (n != m || n < 2) stop("Sample sizes must agree")
+    if (n != m) stop("Sample sizes must agree")
     if (! (all(is.finite(c(x, y)))))
         stop("Data contains missing or infinite values")
     if (index < 0 || index > 2) {
@@ -152,7 +169,7 @@ function(x, y, index=1.0) {
     dims <- c(n, ncol(x), ncol(y))
     
     Akl <- function(x) {
-        d <- as.matrix(dist(x))^index
+        d <- as.matrix(x)^index
         m <- rowMeans(d)
         M <- mean(d)
         a <- sweep(d, 1, m)
@@ -165,7 +182,9 @@ function(x, y, index=1.0) {
     dCov <- sqrt(mean(A * B))
     dVarX <- sqrt(mean(A * A))
     dVarY <- sqrt(mean(B * B))
-    dCor <- dCov / sqrt(dVarX * dVarY)
+    V <- sqrt(dVarX * dVarY)
+    if (V > 0)
+      dCor <- dCov / V else dCor <- 0
     return(list(dCov=dCov, dCor=dCor, dVarX=dVarX, dVarY=dVarY))
 }
   

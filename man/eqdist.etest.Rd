@@ -8,18 +8,18 @@
  for equality of multivariate distributions. 
 }
 \usage{
- eqdist.etest(x, sizes, distance = FALSE, method=c("original","disco"), 
-              R = 999)
- eqdist.e(x, sizes, distance = FALSE, method=c("original","disco"))
- 
- ksample.e(x, sizes, distance = FALSE, method = c("original","disco"),
-           ix = 1:sum(sizes))
+eqdist.etest(x, sizes, distance = FALSE,
+    method=c("original","discoB","discoF"), R = 999)
+eqdist.e(x, sizes, distance = FALSE, 
+    method=c("original","discoB","discoF"))
+ksample.e(x, sizes, distance = FALSE, 
+    method=c("original","discoB","discoF"), ix = 1:sum(sizes))
 }
 \arguments{
   \item{x}{ data matrix of pooled sample}
   \item{sizes}{ vector of sample sizes}
   \item{distance}{logical: if TRUE, first argument is a distance matrix}
-  \item{method}{ use original (default) or distance components (disco)}
+  \item{method}{ use original (default) or distance components (discoB, discoF)}
   \item{R}{ number of bootstrap replicates }
   \item{ix}{ a permutation of the row indices of x }
 }
@@ -66,15 +66,18 @@
     }{\emph{E} = sum[i<j] e(S_i,S_j).}  
     Large values of \eqn{\mathcal{E}}{\emph{E}} are significant.
     
-    The \code{disco} method computes the between-sample distance.component.
+    The \code{discoB} method computes the between-sample disco statistic.
     For a one-way analysis, it is related to the original statistic as follows. 
     In the above equation, the weights \eqn{\frac{n_i n_j}{n_i+n_j}}{n_i n_j/(n_i+n_j)}
     are replaced with 
     \deqn{\frac{n_i + n_j}{2N}\frac{n_i n_j}{n_i+n_j} = 
     \frac{n_i n_j}{2N}}{(n_i + n_j)/(2N) n_i n_j/(n_i+n_j) = n_i n_j/(2N)} 
     where N is the total number of observations: \eqn{N=n_1+...+n_k}{N=n_1+...+n_k}. 
+	
+	The \code{discoF} method is based on the disco F ratio, while the \code{discoB}
+	method is based on the between sample component.
   
-  Also see \code{disco} and \code{disco.test} functions.
+  Also see \code{disco} and \code{disco.between} functions.
 }
 \value{
  A list with class \code{htest} containing
@@ -111,6 +114,7 @@ Gabor J. Szekely
  \code{\link{ksample.e}},
  \code{\link{edist}},
  \code{\link{disco}},
+ \code{\link{disco.between}},
  \code{\link{energy.hclust}}.
  }
 \examples{
@@ -119,7 +123,29 @@ Gabor J. Szekely
  ## test if the 3 varieties of iris data (d=4) have equal distributions
  eqdist.etest(iris[,1:4], c(50,50,50), R = 199)
 
-\dontshow{
+ ## example that uses method="disco" 
+  x <- matrix(rnorm(100), nrow=20)
+  y <- matrix(rnorm(100), nrow=20)
+  X <- rbind(x, y)
+  d <- dist(X)
+  
+  # should match edist default statistic
+  set.seed(1234)
+  eqdist.etest(d, sizes=c(20, 20), distance=TRUE, R = 199)
+  
+  # comparison with edist
+  edist(d, sizes=c(20, 10), distance=TRUE)
+      
+  # for comparison
+  g <- as.factor(rep(1:2, c(20, 20)))
+  set.seed(1234)
+  disco(d, factors=g, distance=TRUE, R=199)
+ 
+  # should match statistic in edist method="discoB", above
+  set.seed(1234)
+  disco.between(d, factors=g, distance=TRUE, R=199)
+ 
+ \dontshow{
   eqdist.e(iris[,1:4], c(50,50,50))
   x <- matrix(rnorm(200), nrow=40)
   y <- matrix(rnorm(250, mean=5), nrow=50)

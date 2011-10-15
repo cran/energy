@@ -106,6 +106,11 @@ Gabor J. Szekely
  dcov.test(x, y, index=.5)
  set.seed(1)
  dcov.test(dist(x), dist(y), index=.5)  #same thing
+ 
+ ## Example with dvar=0 (so dcov=0 and pval=1)
+ x <- rep.int(1, 10)
+ y <- 1:10
+ dcov.test(x, y, R=199)
  }
 \keyword{ htest }
 \keyword{ multivariate }

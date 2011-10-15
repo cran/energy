@@ -27,8 +27,10 @@
    distance matrices as arguments are made in dcov.c
    (and in utilities.c index_distance is revised).
 
-
    Note: arguments "dims" have changed in version 1.3-0
+   
+ energy 1.3-1: In case dcov=0, bypass the unnecessary
+   loop to generate replicates (in dCOVtest and dCovTest)
 */
 
 #include <R.h>
@@ -70,7 +72,7 @@ void dCOVtest(double *x, double *y, int *byrow, int *dims,
         index : exponent for distance
         DCOV  : vector [dCov, dCor, dVar(x), dVar(y), mean(A), mean(B)]
      */
-    int    i, j, k, n, n2, p, q, r, J, K, M, N, R;
+    int    i, j, k, n, n2, p, q, r, J, K, M, R;
     int    dst;
     int*   perm;
     double **Dx, **Dy, **A, **B;
@@ -81,7 +83,6 @@ void dCOVtest(double *x, double *y, int *byrow, int *dims,
     q = dims[2];
     dst = dims[3];
     R = dims[4];
-    N = n * n;
 
     if (*byrow == FALSE) {
         /* avoid this step: use as.double(t(x)) in R */
@@ -135,29 +136,33 @@ void dCOVtest(double *x, double *y, int *byrow, int *dims,
         DCOV[1] = DCOV[0] / sqrt(V);
         else DCOV[1] = 0.0;
 
-    /* compute the replicates */
-    if (R > 0) {
-        perm = Calloc(n, int);
-        M = 0;
-        for (i=0; i<n; i++) perm[i] = i;
-        for (r=0; r<R; r++) {
-           permute(perm, n);
-           dcov = 0.0;
-           for (k=0; k<n; k++) {
-               K = perm[k];
-               for (j=0; j<n; j++) {
-                   J = perm[j];
-                   dcov += A[k][j]*B[K][J];
-               }
-           }
-           dcov /= n2;
-           dcov = sqrt(dcov);
-           reps[r] = dcov;
-           if (dcov >= DCOV[0]) M++;
-        }
-        *pval = (double) (M+1) / (double) (R+1);
-        Free(perm);
-    }
+	if (R > 0) {
+		/* compute the replicates */
+		if (DCOV[1] > 0.0) {
+			perm = Calloc(n, int);
+			M = 0;
+			for (i=0; i<n; i++) perm[i] = i;
+			for (r=0; r<R; r++) {
+			   permute(perm, n);
+			   dcov = 0.0;
+			   for (k=0; k<n; k++) {
+				   K = perm[k];
+				   for (j=0; j<n; j++) {
+					   J = perm[j];
+					   dcov += A[k][j]*B[K][J];
+				   }
+			   }
+			   dcov /= n2;
+			   dcov = sqrt(dcov);
+			   reps[r] = dcov;
+			   if (dcov >= DCOV[0]) M++;
+			}
+			*pval = (double) (M+1) / (double) (R+1);
+			Free(perm);
+		} else {
+		    *pval = 1.0;
+			}
+	}
 
     free_matrix(A, n, n);
     free_matrix(B, n, n);
@@ -177,7 +182,7 @@ void dCOV(double *x, double *y, int *byrow, int *dims,
         DCOV  : vector [dCov, dCor, dVar(x), dVar(y)]
      */
 
-    int    j, k, n, n2, p, q, N, dst;
+    int    j, k, n, n2, p, q, dst;
     double **Dx, **Dy, **A, **B;
     double V;
 
@@ -185,7 +190,6 @@ void dCOV(double *x, double *y, int *byrow, int *dims,
     p = dims[1];
     q = dims[2];
     dst = dims[3];
-    N = n * n;
 
     if (*byrow == FALSE) {
         /* avoid this step: use as.double(t(x)) in R */
@@ -291,7 +295,7 @@ void dCovTest(double *x, double *y, int *byrow, int *dims,
         index : exponent for distance
         Dstat : the statistic dCov^2 (V_n^2) and S1, S2, S3
      */
-    int    b, i, j, k, n, p , q, B, I, J, M, N;
+    int    b, i, j, k, n, p , q, B, I, J, M;
     int    *perm;
     double Cx, Cy, Cxy, C3, S1, S2, S3, n2, n3;
     double **Dx, **Dy;
@@ -300,7 +304,6 @@ void dCovTest(double *x, double *y, int *byrow, int *dims,
     p = dims[1];
     q = dims[2];
     B = dims[3];
-    N = n * n;
 
     if (*byrow == FALSE) {
         /* avoid this step: use as.double(t(x)) in R */
@@ -343,32 +346,37 @@ void dCovTest(double *x, double *y, int *byrow, int *dims,
        permute the indices of the second sample only
     */
     if (B > 0) {
-        perm = Calloc(n, int);
-        M = 0;
-        for (i=0; i<n; i++)
-            perm[i] = i;
-        for (b = 0; b < B; b++) {
-            permute(perm, n);
-            C3 = 0.0;
-            Cxy = 0.0;
-            for (i=0; i<n; i++) {
-                I = perm[i];
-                for (j=0; j<n; j++) {
-                    J = perm[j];
-                    Cxy += (Dx[i][j] * Dy[I][J]);
-                    for (k=0; k<n; k++)
-                        C3 += (Dx[k][i] * Dy[I][J]);
-                }
-            }
-            S1 = Cxy / n2;
-            S3 = C3 / n3;
-            reps[b] = (S1 + S2 - 2*S3);
-            if (reps[b] >= (*Dstat)) M++;
-        }
-        *pval = (double) (M+1) / (double) (B+1);
-        Free(perm);
-    }
-    /* test statistic (the V-statistic) is nV_n^2 = n*Dstat[0]
+	    if (Dstat[0] > 0.0) {
+			perm = Calloc(n, int);
+			M = 0;
+			for (i=0; i<n; i++)
+				perm[i] = i;
+			for (b = 0; b < B; b++) {
+				permute(perm, n);
+				C3 = 0.0;
+				Cxy = 0.0;
+				for (i=0; i<n; i++) {
+					I = perm[i];
+					for (j=0; j<n; j++) {
+						J = perm[j];
+						Cxy += (Dx[i][j] * Dy[I][J]);
+						for (k=0; k<n; k++)
+							C3 += (Dx[k][i] * Dy[I][J]);
+					}
+				}
+				S1 = Cxy / n2;
+				S3 = C3 / n3;
+				reps[b] = (S1 + S2 - 2*S3);
+				if (reps[b] >= (*Dstat)) M++;
+			}
+			*pval = (double) (M+1) / (double) (B+1);
+			Free(perm);
+		} else {
+			*pval = 1.0;
+			}
+	}
+
+		/* test statistic (the V-statistic) is nV_n^2 = n*Dstat[0]
        a normalized version is n*Dstat[0]/Dstat[2]
     */
 

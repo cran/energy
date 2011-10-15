@@ -88,7 +88,7 @@ void permute(int *J, int n)
     */
     int i, j, j0, m=n;
     for (i=0; i<n-1; i++) {
-        j = m * unif_rand();
+		j = floor(runif(0.0, (double) m));
         m--;
         j0 = J[j];
         J[j] = J[m];

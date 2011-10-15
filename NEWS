@@ -1,3 +1,23 @@
+Changes to Version 1.4-0
+
+	o  NAMESPACE added. 
+	o  (dcov.c, Eindep.c) Unused N was removed. 
+	o  (dcov.c) In case dcov=0, bypass the unnecessary loop
+	   that generates replicates (in dCOVtest and dCovTest). 
+	   In this case dcor=0 and test is not significant.
+	   (dcov=0 if one of the samples is constant.)
+	o  (Eqdist.R) in eqdist.e and eqdist.etest, method="disco" 
+	   is replaced by two options: "discoB" (between sample 
+	   components) and "discoF" (disco F ratio). 
+	o  (disco.R) Added disco.between and internal functions
+	   that compute the disco between-sample component and 
+	   corresponding test. 
+	o  (utilities.c) In permute function replaced rand_unif 
+	   with runif. 
+	o  (energy.c) In ksampleEtest the pval computation
+	   changed from ek/B to (ek+1)/(B+1) as it should be for
+	   a permutation test, and unneeded int* n removed.
+
 Changes to Version 1.3-0
 
 	o  In distance correlation, distance covariance functions 

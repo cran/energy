@@ -1,12 +1,14 @@
 \name{disco}
 \alias{disco}
+\alias{disco.between}
 \alias{print.disco}
 \title{ distance components (DISCO)}
 \description{
   E-statistics DIStance COmponents and tests, analogous to variance components
 }
 \usage{
-disco(x, factors, distance, index=1.0, R=0) 
+disco(x, factors, distance, index=1.0, R=0, method=c("disco","discoB","discoF")) 
+disco.between(x, factors, distance, index=1.0, R=0) 
 }
 \arguments{
   \item{x}{ data matrix or distance matrix}
@@ -14,17 +16,21 @@ disco(x, factors, distance, index=1.0, R=0)
   \item{distance}{ logical, TRUE if x is distance matrix}
   \item{index}{ exponent on Euclidean distance in (0,2]}
   \item{R}{ number of replicates for a permutation test} 
+  \item{method}{ test statistic }
 }
 \details{
   \code{disco} calculates the distance components decomposition of 
-  total dispersion and if R > 0 tests for significance using the 
-  disco F ratio implemented by permutation test.
+  total dispersion and if R > 0 tests for significance using the test statistic 
+  disco "F" ratio (default \code{method="disco"}),
+  or using the between component statistic (\code{method="discoB"}), 
+  each implemented by permutation test.
   
   In the current release \code{disco} computes the decomposition for one-way models
   only.   
 }
 \value{
-\code{disco} returns a class disco object, which is a list containing
+  When \code{method="discoF"},
+\code{disco} returns a class \code{disco} object, which is a list containing
 \item{call}{call}
 \item{method}{method}
 \item{statistic}{vector of observed statistics}
@@ -42,6 +48,13 @@ disco(x, factors, distance, index=1.0, R=0)
 \item{factor.levels}{factor levels}
 \item{sample.sizes}{sample sizes}
 \item{stats}{matrix containing decomposition}
+
+When \code{method="discoB"}, \code{disco} passes the arguments to 
+\code{disco.between}, which returns a class \code{htest} object.
+
+\code{disco.between} returns a class \code{htest} object, where the test
+statistic is the between-sample statistic (proportional to the numerator of the F ratio
+of the \code{disco} test.
 }
 \references{ 
 M. L. Rizzo and G. J. Szekely (2010).
@@ -52,9 +65,8 @@ Vol. 4, No. 2, 1034-1055.
 }
 \note{
 The current version does all calculations via matrix arithmetic and 
-boot function; the C library is not used. The faster C version will
-be added in the next release. Support for more general additive models
-and a formula interface is also under development.
+boot function. Support for more general additive models
+and a formula interface is under development.
 
 \code{disco} methods have been added to the cluster distance summary
 function \code{edist}, and energy tests for equality of distribution
@@ -72,11 +84,11 @@ function \code{edist}, and energy tests for equality of distribution
       ## warpbreaks one-way decompositions
       data(warpbreaks)
       attach(warpbreaks)
-      disco(breaks, factors=wool, R=199)
+      disco(breaks, factors=wool, R=99)
       
-      ## When index=2 for univariate data, we get ANOVA
-      disco(breaks, factors=tension, index=2.0, R=199)
-      anova(lm(breaks ~ tension))
+      ## When index=2 for univariate data, we get ANOVA decomposition
+      disco(breaks, factors=tension, index=2.0, R=99)
+      aov(breaks ~ tension)
       
       ## Multivariate response
       ## Example on producing plastic film from Krzanowski (1998, p. 381)
@@ -88,10 +100,21 @@ function \code{edist}, and energy tests for equality of distribution
                    2.8, 4.1, 3.8, 1.6, 3.4, 8.4, 5.2, 6.9, 2.7, 1.9)
       Y <- cbind(tear, gloss, opacity)
       rate <- factor(gl(2,10), labels=c("Low", "High"))  
-      disco(Y, factors=rate, R=199)     
+	  
+	  ## test for equal distributions by rate
+      disco(Y, factors=rate, R=99)     
+	  disco(Y, factors=rate, R=99, method="discoB")
       
       ## Just extract the decomposition table
-      disco(Y, factors=rate)$stats      
+      disco(Y, factors=rate)$stats    
+	  
+	  ## Compare eqdist.e methods for rate
+	  ## disco between stat is half of original when sample sizes equal
+	  eqdist.e(Y, sizes=c(10, 10), method="original")
+	  eqdist.e(Y, sizes=c(10, 10), method="discoB")
+
+      ## The between-sample distance component
+      disco.between(Y, factors=rate)	  
 }
 \keyword{ htest }
 \keyword{ multivariate }

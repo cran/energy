@@ -233,13 +233,12 @@ void ksampleEtest(double *x, int *byrow,
 
     int    b, ek, i, k;
     int    B = (*R), K = (*nsamples), d=(*dim), N;
-    int    *n, *perm;
+    int    *perm;
     double **data, **D;
 
     N = 0;
     for (k=0; k<K; k++)
         N += sizes[k];
-    n = Calloc(K, int);
     perm = Calloc(N, int);
     for (i=0; i<N; i++)
         perm[i] = i;
@@ -265,13 +264,11 @@ void ksampleEtest(double *x, int *byrow,
             if ((*e0) < e[b]) ek++;
         }
         PutRNGstate();
-        (*pval) = ((double) ek) / ((double) B);
+        (*pval) = ((double) (ek + 1)) / ((double) (B + 1));
     }
 
     free_matrix(D, N, N);
     Free(perm);
-    Free(n);
-
 }
 
 

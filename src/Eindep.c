@@ -102,7 +102,7 @@ void indepEtest(double *x, double *y, int *byrow, int *dims,
         dims[3] = B (number of replicates, dimension of reps)
         Istat : the statistic I_n (normalized)
      */
-    int    b, i, j, k, m, n, p, q, B, M, N;
+    int    b, i, j, k, m, n, p, q, B, M;
     int    *perm;
     double Cx, Cy, Cz, C3, C4, n2, n3, n4, v;
     double **D2x, **D2y;
@@ -111,7 +111,6 @@ void indepEtest(double *x, double *y, int *byrow, int *dims,
     p = dims[1];
     q = dims[2];
     B = dims[3];
-    N = n * n;
 
     if (*byrow == FALSE) {
         /* avoid this step: use as.double(t(x)) in R */

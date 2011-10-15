@@ -8,24 +8,36 @@
 ### this release supports one way models
 ### this version does not use the C library
 ###
-### disco: computes the decomposition
+### disco: computes the decomposition and test using F ratio
+### disco.between: statistic and test using between component
 ### .disco1: internal computations for one factor
-### .disco1stat: provided for use with boot function
+### .disco1stat, .disco1Bstat: internal for boot function
+### 
 ### 
 
 
-disco <- function(x, factors, distance=FALSE, index=1.0, R=0) {
+disco <- function(x, factors, distance=FALSE, index=1.0, R=0, method=c("disco","discoB","discoF")) {
     ## x is response or Euclidean distance matrix or dist() object
     ## factors is a matrix or data frame of group labels
     ## distance=TRUE if x is distance, otherwise FALSE
     ## index is the exponent on distance, in (0,2]
+	## R is number of replicates for test
+	## method: use F ratio (default) or between component (discoB)
+	##         disco method is currently alias for discoF
 
+	
+    method <-match.arg(method)	
     factors <- data.frame(factors)
+    if (method=="discoB") 
+		return(disco.between(x, factors=factors, distance=distance, index=index, R=R))
+      
     nfactors <- NCOL(factors)
-    N <- NROW(x)
-    if (distance && NCOL(x)==N)
+    if (distance)
         dst <- as.matrix(x) else
         dst <- as.matrix(dist(x))
+	N <- NROW(dst)
+	if (NCOL(dst) != N)
+	    stop("distance==TRUE but first argument is not distance")
     if(!isTRUE(all.equal(index, 1)))
         dst <- dst^index
 
@@ -39,15 +51,14 @@ disco <- function(x, factors, distance=FALSE, index=1.0, R=0) {
             b <- boot(data = dst, statistic = .disco1stat, sim = "permutation",
                 R = R, trt = trt)
             stats[j, 5] <- b$t0
-            r <- c(b$t0, b$t)
-            stats[j, 6] <- mean(r >= b$t0)
+            stats[j, 6] <- (sum(b$t > b$t0) + 1) / (R + 1)
         } else {
     		stats[j, 5] <- .disco1stat(dst, i=1:nrow(dst), trt=trt)
     		stats[j, 6] <- NA
     		}
     	}
 
-    methodname <- "DISCO"
+    methodname <- "DISCO (F ratio)"
     dataname <- deparse(substitute(x))
     total <- sum(stats[1,1:2])
     within <- total - sum(stats[ ,1])
@@ -78,6 +89,58 @@ disco <- function(x, factors, distance=FALSE, index=1.0, R=0) {
     e
 }
 
+disco.between <- function(x, factors, distance=FALSE, index=1.0, R=0) {
+    ## disco test based on the between-sample component
+    ## similar to disco except that "disco" test is based on the F ratio
+    ## disco.between test for one factor (balanced) is asymptotically 
+	##   equivalent to k-sample E test (test statistics are proportional 
+	##   in that case but not in general).
+    ## x is response or Euclidean distance matrix or dist() object
+    ## factors is a matrix or data frame of group labels
+    ## distance=TRUE if x is distance, otherwise FALSE
+    ## index is the exponent on distance, in (0,2]
+
+    factors <- data.frame(factors)
+    nfactors <- NCOL(factors)
+	if (nfactors > 1) 
+	  stop("More than one factor is not implemented in disco.between")
+    if (distance)
+        dst <- as.matrix(x) else
+        dst <- as.matrix(dist(x))
+	N <- NROW(dst)
+	if (NCOL(dst) != N)
+	    stop("distance==TRUE but first argument is not distance")
+	if(!isTRUE(all.equal(index, 1)))
+        dst <- dst^index
+	
+	trt <- factors[, 1]
+    if (R > 0) {
+        b <- boot(data = dst, statistic = .disco1Bstat, sim = "permutation",
+            R = R, trt = trt)
+            between <- b$t0
+            reps <- b$t
+            pval <- mean(reps >= between)
+        } else {
+    		between <- .disco1Bstat(dst, i=1:nrow(dst), trt=trt)
+    		pval <- NA
+    		}
+    if (R == 0) return (between)
+	
+    methodname <- "DISCO (Between-sample)"
+    dataname <- deparse(substitute(x))
+
+    names(between) <- "DISCO between statistic"
+    e <- list(
+		call = match.call(),
+        method = methodname,
+        statistic = between,
+        p.value = pval,
+        data.name = dataname)
+    
+    class(e) <- "htest"        
+    e
+}
+
 .disco1 <- function(trt, dst) {
 	## dst is Euclidean distance matrix or power of it
 	## trt is the treatment, a factor
@@ -100,11 +163,20 @@ disco <- function(x, factors, distance=FALSE, index=1.0, R=0) {
 	## i is permuation vector supplied by bootstrap
 	## dst is Euclidean distance matrix or power of it
 	## trt is the treatment, a factor
+	## returns the disco "F" ratio
     idx <- 1:nrow(dst)
     d <- .disco1(trt=trt[idx[i]], dst=dst)
     statistic <- (d[1]/d[3]) / (d[2]/d[4])
 }
-
+	
+.disco1Bstat <- function(dst, i, trt) {
+	## i is permuation vector supplied by bootstrap
+	## dst is Euclidean distance matrix or power of it
+	## trt is the treatment, a factor
+	## returns the between-sample component (for one factor)
+    idx <- 1:nrow(dst)
+    .disco1(trt=trt[idx[i]], dst=dst)[1]
+}
 	
 print.disco <-
 function(x, ...) {

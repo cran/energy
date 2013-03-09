@@ -1,11 +1,29 @@
 useDynLib(energy)
 
-export(dcor, DCOR, dcov, .dcov, dcov.test, .dCov.test,
-  disco, disco.between, edist, energy.hclust, 
-  eqdist.e, eqdist.etest, indep.test,
-  ksample.e, mvI, mvI.test,
-  mvnorm.e, mvnorm.etest, normal.e,
-  poisson.m, poisson.mtest)
+export(
+  dcor, 
+  DCOR, 
+  dcov, 
+  .dcov, 
+  dcov.test, 
+  .dCov.test,
+  disco, 
+  disco.between, 
+  edist, 
+  energy.hclust, 
+  eqdist.e, 
+  eqdist.etest, 
+  indep.test,
+  ksample.e, 
+  mvI, 
+  mvI.test,
+  mvnorm.e, 
+  mvnorm.etest, 
+  normal.e,
+  poisson.m, 
+  poisson.mtest
+)
 
 S3method(print,disco)
+
 

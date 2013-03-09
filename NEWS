@@ -1,3 +1,7 @@
+Changes to Version 1.5-0
+
+   	o  NAMESPACE: insert UseDynLib; remove zzz.R, .First.Lib()
+   	
 Changes to Version 1.4-0
 
 	o  NAMESPACE added. 
@@ -38,10 +42,8 @@ Changes to Version 1.3-0
 Changes to Version 1.2-0	   
 	   
 	o  disco (distance components) added for one-way layout.
-	   
 	o  A method argument was added to ksample.e, eqdist.e, and
 	   eqdist.etest, method = c("original", "disco").
-	   
         o  A method argument was added to edist, which summarizes cluster
            distances in a table:
                method = c("cluster","discoB","discoF"))

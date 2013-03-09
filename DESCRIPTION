@@ -1,7 +1,7 @@
 Package: energy
 Title: E-statistics (energy statistics)
-Version: 1.4-0
-Date: 2011-10-15
+Version: 1.5.0
+Date: 2013-03-09
 Author: Maria L. Rizzo and Gabor J. Szekely
 Description: E-statistics (energy) tests and statistics for comparing
         distributions: multivariate normality, multivariate distance
@@ -13,6 +13,7 @@ Description: E-statistics (energy) tests and statistics for comparing
 Maintainer: Maria Rizzo <mrizzo@bgsu.edu>
 Depends: boot, MASS
 License: GPL (>= 2)
-Packaged: 2011-10-15 20:14:39 UTC; Maria
+Packaged: 2013-03-09 17:53:09 UTC; Maria
+NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2011-10-16 07:38:00
+Date/Publication: 2013-03-10 08:32:23

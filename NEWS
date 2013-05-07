@@ -1,6 +1,14 @@
-Changes to Version 1.5-0
+Changes to Version 1.6.0
 
-   	o  NAMESPACE: insert UseDynLib; remove zzz.R, .First.Lib()
+  o  implementation of high-dim distance correlation t-test
+     introduced in JMVA Volume 117, pp. 193-213 (2013).
+  o  new functions dcor.t, dcor.ttest in dcorT.R
+  o  minor changes to tidy other code in dcov.R
+  o  removed unused internal function .dcov.test
+
+Changes to Version 1.5.0
+
+	o  NAMESPACE: insert UseDynLib; remove zzz.R, .First.Lib()
    	
 Changes to Version 1.4-0
 

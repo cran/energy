@@ -18,27 +18,32 @@ dcov.test(x, y, index = 1.0, R = 199)
 \details{
  \code{dcov.test} performs a nonparametric 
  test of multivariate independence. The test decision is 
- obtained via bootstrap, with \code{R} replicates.
+ obtained via permutation bootstrap, with \code{R} replicates.
  
  The sample sizes (number of rows) of the two samples must 
  agree, and samples must not contain missing values. Arguments
- \code{x}, \code{y} can optionally be \code{dist} objects;
+ \code{x}, \code{y} can optionally be \code{\link{dist}} objects;
  otherwise these arguments are treated as data. 
  
  The statistic is
  \eqn{n \mathcal V_n^2}{nV_n^2} where
  \eqn{\mathcal V_n(x,y)}{V_n(x,y)} = dcov(x,y),
  which is based on interpoint Euclidean distances
- \eqn{\|x_{i}-y_{j}\|}{||x_{i}-y_{j}||}. 
+ \eqn{\|x_{i}-x_{j}\|}{||x_{i}-x_{j}||}. The \code{index}
+ is an optional exponent on Euclidean distance. 
 
 Distance correlation is a new measure of dependence between random
 vectors introduced by Szekely, Rizzo, and Bakirov (2007).
 For all distributions with finite first moments, distance
 correlation \eqn{\mathcal R}{R} generalizes the idea of correlation in two
 fundamental ways:
+
  (1) \eqn{\mathcal R(X,Y)}{R(X,Y)} is defined for \eqn{X} and \eqn{Y} in arbitrary dimension.
+ 
  (2) \eqn{\mathcal R(X,Y)=0}{R(X,Y)=0} characterizes independence of \eqn{X} and
  \eqn{Y}.
+
+Characterization (2) also holds for powers of Euclidean distance \eqn{\|x_i-x_j\|^s}{|x_i-x_j|^s}, where \eqn{0<s<2}, but (2) does not hold when \eqn{s=2}.
 
 Distance correlation satisfies \eqn{0 \le \mathcal R \le 1}{0 \le R \le 1}, and
 \eqn{\mathcal R = 0}{R = 0} only if \eqn{X} and \eqn{Y} are independent. Distance
@@ -49,14 +54,11 @@ definitions of the population coefficients \eqn{\mathcal V}{V} and
 empirical coefficients are given in the energy  
 \code{\link{dcov}} topic.
 
-For all values of the index in (0,2) (all except 2), 
-the asymptotic distribution of \eqn{n\mathcal V_n^2}{V_n^2} is a quadratic form
-of centered Gaussian random variables, with coefficients that depend
-on the distributions of \eqn{X} and \eqn{Y}. For the general problem of
-testing independence when the distributions of \eqn{X} and \eqn{Y} are
-unknown, the test based on \eqn{n\mathcal V^2_n}{n V_n^2} can be implemented as a
-permutation test. See (SRB 2007) for theoretical properties of the 
-test, including statistical consistency. 
+For all values of the index in (0,2), under independence 
+the asymptotic distribution of \eqn{n\mathcal V_n^2}{nV_n^2} 
+is a quadratic form of centered Gaussian random variables, 
+with coefficients that depend on the distributions of \eqn{X} and \eqn{Y}. For the general problem of testing independence when the distributions of \eqn{X} and \eqn{Y} are unknown, the test based on \eqn{n\mathcal V^2_n}{n V_n^2} can be implemented as a permutation test. See (SRB 2007) for 
+theoretical properties of the test, including statistical consistency. 
 }
 \value{
 \code{dcov.test} returns a list with class \code{htest} containing
@@ -74,6 +76,7 @@ the distance covariance test statistic is the V-statistic
 }
 \seealso{
  \code{\link{dcov} } \code{\link{dcor} } \code{\link{DCOR}}
+ \code{\link{dcor.ttest}}
  }
 
 \references{

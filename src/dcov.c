@@ -27,7 +27,7 @@
    distance matrices as arguments are made in dcov.c
    (and in utilities.c index_distance is revised).
 
-   Note: arguments "dims" have changed in version 1.3-0
+   Note: argument "dims" has changed in version 1.3-0
    
  energy 1.3-1: In case dcov=0, bypass the unnecessary
    loop to generate replicates (in dCOVtest and dCovTest)
@@ -282,7 +282,10 @@ double Akl(double **akl, double **A, int n) {
 void dCovTest(double *x, double *y, int *byrow, int *dims,
               double *index, double *reps,
               double *Dstat, double *pval) {
-    /*  this provides an alternate, algebraically
+    /*  
+        x, y are the DATA matrices (not distance)
+        dims argument differs from dCOVtest
+        this provides an alternate, algebraically
         equivalent (but much slower) method for computing
         dCov^2 and the dCov test of independence
 
@@ -295,6 +298,7 @@ void dCovTest(double *x, double *y, int *byrow, int *dims,
         index : exponent for distance
         Dstat : the statistic dCov^2 (V_n^2) and S1, S2, S3
      */
+     
     int    b, i, j, k, n, p , q, B, I, J, M;
     int    *perm;
     double Cx, Cy, Cxy, C3, S1, S2, S3, n2, n3;
@@ -314,6 +318,9 @@ void dCovTest(double *x, double *y, int *byrow, int *dims,
 
     Dx = alloc_matrix(n, n);
     Dy = alloc_matrix(n, n);
+        
+    Euclidean_distance(x, Dx, n, p);
+    Euclidean_distance(y, Dy, n, q);
 
     index_distance(Dx, n, *index);
     index_distance(Dy, n, *index);
@@ -337,6 +344,7 @@ void dCovTest(double *x, double *y, int *byrow, int *dims,
     S1 = Cxy / n2;
     S2 = Cx * Cy;
     S3 = C3 / n3;
+    
     *Dstat = (S1 + S2 - 2*S3);
     Dstat[1] = S1;
     Dstat[2] = S2;

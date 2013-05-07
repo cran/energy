@@ -36,71 +36,19 @@ function(x, y, index=1.0, R=199) {
     names(stat) <- "nV^2"
     names(V) <- "dCov"
     dataname <- paste("index ", index, ", replicates ", R, sep="")
+    pval <- ifelse (R < 1, NA, a$pval)
     e <- list(
         method = paste("dCov test of independence", sep = ""),
         statistic = stat, 
         estimate = V,
         estimates = dcorr,
-        p.value = a$pval, 
+        p.value = pval,
         replicates = n* a$reps^2,
         data.name = dataname)
     class(e) <- "htest"                   
     return(e)
 }
   
-.dCov.test <- 
-function(x, y, index=1.0, R=199) {
-    # distance covariance test for multivariate independence
-    # this version uses an alternate method for computing
-    # the V-statistic - much slower execution than dCov method
-    if (!(class(x) == "dist")) x <- dist(x)
-    if (!(class(y) == "dist")) y <- dist(y)
-    x <- as.matrix(x)
-    y <- as.matrix(y)
-    dst <- TRUE
-    n <- nrow(x)
-    m <- nrow(y)
-    if (n != m) stop("Sample sizes must agree")
-    if (! (all(is.finite(c(x, y))))) 
-        stop("Data contains missing or infinite values")
-
-    stat <- dcorr <- reps <- 0
-    dcov <- rep(0, 4)
-    if (R > 0) reps <- rep(0, R)
-    pval <- 1
-    dims <- c(n, ncol(x), ncol(y), dst, R)
-    
-    # dcov = [dCov^2,S1,S2,S3]
-    a <- .C("dCovTest", 
-            x = as.double(t(x)),
-            y = as.double(t(y)),
-            byrow = as.integer(TRUE),
-            dims = as.integer(dims), 
-            index = as.double(index),
-            reps = as.double(reps),
-            dcov = as.double(dcov), 
-            pval = as.double(pval),
-            PACKAGE = "energy")
-    # test statistic is n times the square of dCov statistic
-    stat <- n * a$dcov[1]
-    dcorr <- a$dcov
-    V <- dcorr[[1]]
-    names(stat) <- "nV^2"
-    names(V) <- "dCov"
-    dataname <- paste("x (",n," by ",ncol(x), "), y(",n," by ", ncol(y), 
-        "), index ", index, ", replicates ", R, sep="")
-    e <- list(
-        method = paste("dCov test of independence", sep = ""),
-        statistic = stat, 
-        estimate = V,
-        estimates = dcorr,
-        p.value = a$pval, 
-        replicates = n* a$reps^2,
-        data.name = dataname)
-    class(e) <- "htest"                   
-    return(e)
-}
-
 .dcov <- 
 function(x, y, index=1.0) {
     # distance covariance statistic for independence
@@ -132,7 +80,6 @@ function(x, y, index=1.0) {
     return(a$DCOV)
 }
  
-
 dcov <- 
 function(x, y, index=1.0) {
     # distance correlation statistic for independence
@@ -188,7 +135,3 @@ function(x, y, index=1.0) {
     return(list(dCov=dCov, dCor=dCor, dVarX=dVarX, dVarY=dVarY))
 }
   
-            
-            
-  
-                        

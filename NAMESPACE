@@ -1,12 +1,14 @@
 useDynLib(energy)
 
 export(
+  bcdcor,
   dcor, 
   DCOR, 
+  dcor.t,
+  dcor.ttest,
   dcov, 
   .dcov, 
   dcov.test, 
-  .dCov.test,
   disco, 
   disco.between, 
   edist, 

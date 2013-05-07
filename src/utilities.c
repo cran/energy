@@ -30,6 +30,7 @@ void   free_matrix(double **matrix, int r, int c);
 void   free_int_matrix(int **matrix, int r, int c);
 
 void   permute(int *J, int n);
+void   permute_check(int *J, int *N);
 void   roworder(double *x, int *byrow, int r, int c);
 void   vector2matrix(double *x, double **y, int N, int d, int isroworder);
 
@@ -94,6 +95,16 @@ void permute(int *J, int n)
         J[j] = J[m];
         J[m] = j0;
     }
+}
+
+void permute_check(int *J, int *N)
+{
+    /*
+	the permute function can be called from R using this
+	wrapper - the purpose is to check on a reported bug
+    */
+	int n = *N;
+	permute(J, n);
 }
 
 void vector2matrix(double *x, double **y, int N, int d, int isroworder) {

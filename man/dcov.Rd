@@ -26,7 +26,7 @@ DCOR(x, y, index = 1.0)
  
   The sample sizes (number of rows) of the two samples must 
   agree, and samples must not contain missing values. Arguments
-  \code{x}, \code{y} can optionally be \code{dist} objects;
+  \code{x}, \code{y} can optionally be \code{\link{dist}} objects;
  otherwise these arguments are treated as data. 
  
 Distance correlation is a new measure of dependence between random
@@ -124,7 +124,7 @@ For this reason, both \code{.dcov} and \code{DCOR} compute and
 return all four statistics.
 }
 \seealso{
-\code{\link{dcov.test}}
+\code{\link{dcov.test}} \code{\link{dcor.ttest}}
 }
 \references{
  Szekely, G.J., Rizzo, M.L., and Bakirov, N.K. (2007), 

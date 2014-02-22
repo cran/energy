@@ -97,12 +97,16 @@ Gabor J. Szekely
  indep.test(x, y, method = "dcov", R = 99)
  indep.test(x, y, method = "mvI", R = 99)
  
+ \dontrun{
  ## dependent multivariate data
- Sigma <- matrix(c(1, .1, 0, 0 , 1, 0, 0 ,.1, 1), 3, 3)
- x <- mvrnorm(30, c(0, 0, 0), diag(3))
- y <- mvrnorm(30, c(0, 0, 0), Sigma) * x
- indep.test(x, y, R = 99)    #dcov method
- indep.test(x, y, method = "mvI", R = 99)
+ if (require(MASS)) {
+   Sigma <- matrix(c(1, .1, 0, 0 , 1, 0, 0 ,.1, 1), 3, 3)
+   x <- mvrnorm(30, c(0, 0, 0), diag(3))
+   y <- mvrnorm(30, c(0, 0, 0), Sigma) * x
+   indep.test(x, y, R = 99)    #dcov method
+   indep.test(x, y, method = "mvI", R = 99)
+  }
+ }
  
  \dontrun{
  ## compare the computing time

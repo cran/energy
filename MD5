@@ -1,6 +1,6 @@
-3f016324a5e43f8866cbcc93a4bc7f3d *DESCRIPTION
-6add02c64c83b2e557625282cf6bac7d *NAMESPACE
-6c0d3a2cc87d61c512a0b9f587b34632 *NEWS
+6ad0d62ac30c40541bfe11ad7f6e61fa *DESCRIPTION
+059e8192ea9ded88953dc96dc3373553 *NAMESPACE
+b69e55b140939f1a2e4b3792da705f32 *NEWS
 f38c6e603fdd6d5c1616fb1e4c6d7e1c *R/Ecluster.R
 c961a1fc1fe587f581de6d2789075a44 *R/Eeqdist.R
 4823032fab93b6671c67286c2b414e8b *R/Eindep.R
@@ -18,7 +18,7 @@ f4b523fbfc9ad1611a257a0a056ae110 *man/energy-deprecated.Rd
 cf155ebd69899bf543305400811fd946 *man/energy-package.Rd
 38b26115e680d4073c6f68c738d3a9f4 *man/energy.hclust.Rd
 6a5cde435655fa69be0bf3bde21a1386 *man/eqdist.etest.Rd
-d5f81881d709baac4ecdf4c9e8539ef8 *man/indep.test.Rd
+842258d5d238e776421f6feb555ea045 *man/indep.test.Rd
 a720827f5d0e53c550193f02af2707e3 *man/mvI.test.Rd
 682acba195e9396a00d091a2fc21f6fa *man/mvnorm.etest.Rd
 75861231b6bc360fd6f311445445c627 *man/poisson.mtest.Rd

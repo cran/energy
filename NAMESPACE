@@ -1,5 +1,7 @@
 useDynLib(energy)
 
+importFrom(boot,boot)
+
 export(
   bcdcor,
   dcor, 

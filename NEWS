@@ -1,3 +1,7 @@
+Changes to Version 1.6.1
+
+  o  replace Depends with Imports in DESCRIPTION file
+
 Changes to Version 1.6.0
 
   o  implementation of high-dim distance correlation t-test

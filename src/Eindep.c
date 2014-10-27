@@ -159,6 +159,7 @@ void indepEtest(double *x, double *y, int *byrow, int *dims,
     M = 0;
     /* compute the replicates */
     if (B > 0) {
+        GetRNGstate();
         perm = Calloc(n, int);
         for (i=0; i<n; i++)
             perm[i] = i;
@@ -179,6 +180,7 @@ void indepEtest(double *x, double *y, int *byrow, int *dims,
             if (reps[b] >= (*Istat)) M++;
         }
         *pval = (double) M / (double) B;
+        PutRNGstate();
         Free(perm);
     }
 

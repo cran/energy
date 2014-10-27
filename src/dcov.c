@@ -31,6 +31,9 @@
    
  energy 1.3-1: In case dcov=0, bypass the unnecessary
    loop to generate replicates (in dCOVtest and dCovTest)
+   
+ energy 1.6.2: Insert GetRNGstate() ... PutRNGstate()
+   around replication loop
 */
 
 #include <R.h>
@@ -142,7 +145,8 @@ void dCOVtest(double *x, double *y, int *byrow, int *dims,
 			perm = Calloc(n, int);
 			M = 0;
 			for (i=0; i<n; i++) perm[i] = i;
-			for (r=0; r<R; r++) {
+      GetRNGstate();
+      for (r=0; r<R; r++) {
 			   permute(perm, n);
 			   dcov = 0.0;
 			   for (k=0; k<n; k++) {
@@ -158,6 +162,7 @@ void dCOVtest(double *x, double *y, int *byrow, int *dims,
 			   if (dcov >= DCOV[0]) M++;
 			}
 			*pval = (double) (M+1) / (double) (R+1);
+      PutRNGstate();
 			Free(perm);
 		} else {
 		    *pval = 1.0;
@@ -354,6 +359,7 @@ void dCovTest(double *x, double *y, int *byrow, int *dims,
        permute the indices of the second sample only
     */
     if (B > 0) {
+      GetRNGstate();
 	    if (Dstat[0] > 0.0) {
 			perm = Calloc(n, int);
 			M = 0;
@@ -378,6 +384,7 @@ void dCovTest(double *x, double *y, int *byrow, int *dims,
 				if (reps[b] >= (*Dstat)) M++;
 			}
 			*pval = (double) (M+1) / (double) (B+1);
+      PutRNGstate();
 			Free(perm);
 		} else {
 			*pval = 1.0;

@@ -1,6 +1,6 @@
-6ad0d62ac30c40541bfe11ad7f6e61fa *DESCRIPTION
+16d02681c12f3fc1b1cebb17bfcf7465 *DESCRIPTION
 059e8192ea9ded88953dc96dc3373553 *NAMESPACE
-b69e55b140939f1a2e4b3792da705f32 *NEWS
+56e91775e3e09e8d38ff57bf6ea5dc1c *NEWS
 f38c6e603fdd6d5c1616fb1e4c6d7e1c *R/Ecluster.R
 c961a1fc1fe587f581de6d2789075a44 *R/Eeqdist.R
 4823032fab93b6671c67286c2b414e8b *R/Eindep.R
@@ -25,7 +25,7 @@ a720827f5d0e53c550193f02af2707e3 *man/mvI.test.Rd
 727842fcced81550ab308552381b5b1b *src/ECl.cc
 60f2661bf08b2295e345cf799b8bb28e *src/ECl.h
 f93deb94d53b0be60435ac02150a8009 *src/Ecluster.cc
-2c981ac1d79d17e39413f062b722ce5a *src/Eindep.c
-102ea51463cc109cf951cbc66b1f76b4 *src/dcov.c
+2a0d7e13abeedc9d58e8c8b438d93f50 *src/Eindep.c
+da0b2398098bc08ae54f647b29cf60b5 *src/dcov.c
 808baf42556a58eedb172fe3882a0aa2 *src/energy.c
 9ad5c89ba30013de49a6cd0fd94c7396 *src/utilities.c

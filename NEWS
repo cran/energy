@@ -1,3 +1,8 @@
+Changes to version 1.6.2
+
+  o  inserted GetRNGstate() .. PutRNGState around repl.
+     loop in dcov.c.
+
 Changes to Version 1.6.1
 
   o  replace Depends with Imports in DESCRIPTION file
@@ -56,7 +61,7 @@ Changes to Version 1.2-0
 	o  disco (distance components) added for one-way layout.
 	o  A method argument was added to ksample.e, eqdist.e, and
 	   eqdist.etest, method = c("original", "disco").
-        o  A method argument was added to edist, which summarizes cluster
-           distances in a table:
-               method = c("cluster","discoB","discoF"))
+  o  A method argument was added to edist, which summarizes cluster
+     distances in a table:
+         method = c("cluster","discoB","discoF"))
                

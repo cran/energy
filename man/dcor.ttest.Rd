@@ -1,14 +1,12 @@
 \name{dcor.ttest}
 \alias{dcor.ttest}
 \alias{dcor.t}
-\alias{bcdcor}
 \title{ Distance Correlation t-Test}
 \description{
  Distance correlation t-test of multivariate independence.}
 \usage{
 dcor.ttest(x, y, distance=FALSE)
 dcor.t(x, y, distance=FALSE)
-bcdcor(x, y, distance=FALSE)
 }
 \arguments{
   \item{x}{ data or distances of first sample}
@@ -16,29 +14,25 @@ bcdcor(x, y, distance=FALSE)
   \item{distance}{ logical: TRUE if x and y are distances}
 }
 \details{
- \code{dcor.ttest} performs a nonparametric t-test of 
- multivariate independence in high dimension (dimension is close to 
+ \code{dcor.ttest} performs a nonparametric t-test of
+ multivariate independence in high dimension (dimension is close to
  or larger than sample size). The distribution of
  the test statistic is approximately Student t with \eqn{n(n-3)/2-1}
- degrees of freedom and for \eqn{n \geq 10} the statistic is approximately   
- distributed as standard normal. 
- 
- \code{dcor.t} returns the t statistic and \code{bcdcor} returns
- the bias corrected distance correlation statistic.
- 
- The sample sizes (number of rows) of the two samples must 
+ degrees of freedom and for \eqn{n \geq 10} the statistic is approximately
+ distributed as standard normal.
+
+ The sample sizes (number of rows) of the two samples must
  agree, and samples must not contain missing values. Arguments
  \code{x}, \code{y} can optionally be \code{dist} objects
  or distance matrices (in this case set \code{distance=TRUE}).
- 
+
  The t statistic is a transformation of a bias corrected version of distance
  correlation (see SR 2013 for details).
- 
+
  Large values (upper tail) of the t statistic are significant.
 }
 \value{
-\code{dcor.t} returns the t statistic, \code{bcdcor} returns the
-bias corrected dcor statistic, and 
+\code{dcor.t} returns the t statistic, and
 \code{dcor.ttest} returns a list with class \code{htest} containing
    \item{     method}{ description of test}
    \item{  statistic}{ observed value of the test statistic}
@@ -48,27 +42,27 @@ bias corrected dcor statistic, and
    \item{  data.name}{ description of data}
 }
 \seealso{
- \code{\link{dcov.test} } \code{\link{dcor} } \code{\link{DCOR}}
- }
+ \code{\link{bcdcor}} \code{\link{dcov.test}} \code{\link{dcor}} \code{\link{DCOR}}
+}
 
 \references{
  Szekely, G.J. and Rizzo, M.L. (2013). The distance correlation t-test of  independence in high dimension. \emph{Journal of Multivariate Analysis},  Volume 117, pp. 193-213. \cr
  \url{http://dx.doi.org/10.1016/j.jmva.2013.02.012}
 
-Szekely, G.J., Rizzo, M.L., and Bakirov, N.K. (2007), 
- Measuring and Testing Dependence by Correlation of Distances, 
+Szekely, G.J., Rizzo, M.L., and Bakirov, N.K. (2007),
+ Measuring and Testing Dependence by Correlation of Distances,
  \emph{Annals of Statistics}, Vol. 35 No. 6, pp. 2769-2794.
  \cr \url{http://dx.doi.org/10.1214/009053607000000505}
 
- Szekely, G.J. and Rizzo, M.L. (2009), 
- Brownian Distance Covariance, 
- \emph{Annals of Applied Statistics}, 
- Vol. 3, No. 4, 1236-1265.  
+ Szekely, G.J. and Rizzo, M.L. (2009),
+ Brownian Distance Covariance,
+ \emph{Annals of Applied Statistics},
+ Vol. 3, No. 4, 1236-1265.
  \cr \url{http://dx.doi.org/10.1214/09-AOAS312}
-} 
-\author{ 
+}
+\author{
 Maria L. Rizzo \email{mrizzo @ bgsu.edu} and
-Gabor J. Szekely 
+Gabor J. Szekely
 }
 \examples{
  x <- matrix(rnorm(100), 10, 10)
@@ -76,7 +70,6 @@ Gabor J. Szekely
  dx <- dist(x)
  dy <- dist(y)
  dcor.t(x, y)
- bcdcor(dx, dy, distance=TRUE)
  dcor.ttest(x, y)
 }
 

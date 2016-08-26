@@ -7,7 +7,7 @@
  Performs the E-statistic (energy) test of multivariate or univariate normality.
 }
 \usage{
- mvnorm.etest(x, R = 999)
+ mvnorm.etest(x, R=0)
  mvnorm.e(x)
  normal.e(x)
 }
@@ -19,30 +19,30 @@
  If \code{x} is a matrix, each row is a multivariate observation. The
  data will be standardized to zero mean and identity covariance matrix
  using the sample mean vector and sample covariance matrix. If \code{x}
- is a vector, the univariate statistic \code{normal.e(x)} is returned. 
- If the data contains missing values or the sample covariance matrix is 
+ is a vector, the univariate statistic \code{normal.e(x)} is returned.
+ If the data contains missing values or the sample covariance matrix is
  singular, NA is returned.
- 
+
  The \eqn{\mathcal{E}}{E}-test of multivariate normality was proposed
- and implemented by Szekely and Rizzo (2005). The test statistic for 
+ and implemented by Szekely and Rizzo (2005). The test statistic for
  d-variate normality is given by
- \deqn{\mathcal{E} = n (\frac{2}{n} \sum_{i=1}^n E\|y_i-Z\| - 
+ \deqn{\mathcal{E} = n (\frac{2}{n} \sum_{i=1}^n E\|y_i-Z\| -
  E\|Z-Z'\| - \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1}^n \|y_i-y_j\|),
  }{E = n((2/n) sum[1:n] E||y_i-Z|| - E||Z-Z'|| - (1/n^2) sum[1:n,1:n]
  ||y_i-y_j||),}
- where \eqn{y_1,\ldots,y_n} is the standardized sample, 
+ where \eqn{y_1,\ldots,y_n} is the standardized sample,
  \eqn{Z, Z'} are iid standard d-variate normal, and
  \eqn{\| \cdot \|}{|| ||} denotes Euclidean norm.
- 
+
    The \eqn{\mathcal{E}}{E}-test of multivariate (univariate) normality
-  is implemented by parametric bootstrap with \code{R} replicates. 
+  is implemented by parametric bootstrap with \code{R} replicates.
 }
 \value{
  The value of the \eqn{\mathcal{E}}{E}-statistic for univariate
- normality is returned by \code{normal.e}. 
+ normality is returned by \code{normal.e}.
  The value of the \eqn{\mathcal{E}}{E}-statistic for multivariate
  normality is returned by \code{mvnorm.e}.
- 
+
  \code{mvnorm.etest} returns a list with class \code{htest} containing
  \item{method}{description of test}
  \item{statistic}{observed value of the test statistic}
@@ -50,20 +50,20 @@
  \item{data.name}{description of data}
 }
 
-\references{ 
- Szekely, G. J. and Rizzo, M. L. (2005) A New Test for 
+\references{
+ Szekely, G. J. and Rizzo, M. L. (2005) A New Test for
  Multivariate Normality, \emph{Journal of Multivariate Analysis},
  93/1, 58-80,
  \url{http://dx.doi.org/10.1016/j.jmva.2003.12.002}.
- 
+
  Rizzo, M. L. (2002). A New Rotation Invariant Goodness-of-Fit Test,
  Ph.D. dissertation, Bowling Green State University.
- 
- Szekely, G. J. (1989) Potential and Kinetic Energy in Statistics, 
- Lecture Notes, Budapest Institute of Technology (Technical University). 
-} 
+
+ Szekely, G. J. (1989) Potential and Kinetic Energy in Statistics,
+ Lecture Notes, Budapest Institute of Technology (Technical University).
+}
 \author{ Maria L. Rizzo \email{mrizzo @ bgsu.edu} and
-Gabor J. Szekely 
+Gabor J. Szekely
 }
 \examples{
  ## compute normality test statistics for iris Setosa data
@@ -73,7 +73,7 @@ Gabor J. Szekely
 
  ## test if the iris Setosa data has multivariate normal distribution
  mvnorm.etest(iris[1:50,1:4], R = 199)
- 
+
  ## test a univariate sample for normality
  x <- runif(50, 0, 10)
  mvnorm.etest(x, R = 199)

@@ -1,14 +1,14 @@
-indep.test<- 
-function(x, y, method = c("dcov","mvI"), index = 1, R = 199) {
+indep.test<-
+function(x, y, method = c("dcov","mvI"), index = 1, R = 0) {
     # two energy tests for multivariate independence
     type <- match.arg(method)
     if (type == "dcov")
         return(dcov.test(x, y, index, R)) else
     if (type == "mvI")
-        return(mvI.test(x, y, R))          
+        return(mvI.test(x, y, R))
 }
 
-mvI <-             
+mvI <-
 function(x, y) {
     # energy statistic for multivariate independence
     # returns dependence coefficient I_n
@@ -19,46 +19,46 @@ function(x, y) {
     if (n != m || n < 2) stop("Sample sizes must agree")
     if (! (all(is.finite(c(x, y)))))
         stop("Data contains missing or infinite values")
-    
+
     stat <- 0
     dims <- c(n, ncol(x), ncol(y))
-   
-    e <- .C("indepE", 
+
+    e <- .C("indepE",
             x = as.double(t(x)),
             y = as.double(t(y)),
             byrow = as.integer(TRUE),
-            dims = as.integer(dims), 
-            stat = as.double(stat), 
+            dims = as.integer(dims),
+            stat = as.double(stat),
             PACKAGE = "energy")
     sqrt(e$stat)
 }
-  
-mvI.test<- 
-function(x, y, R=199) {
+
+mvI.test<-
+function(x, y, R=0) {
     # energy test for multivariate independence
     x <- as.matrix(x)
     y <- as.matrix(y)
     n <- nrow(x)
     m <- nrow(y)
     if (n != m || n < 2) stop("Sample sizes must agree")
-    if (! (all(is.finite(c(x, y))))) 
+    if (! (all(is.finite(c(x, y)))))
         stop("Data contains missing or infinite values")
 
     stat <- reps <- 0
     if (R > 0) reps <- rep(0, R)
     pval <- 1
     dims <- c(n, ncol(x), ncol(y), R)
-    
-    a <- .C("indepEtest", 
+
+    a <- .C("indepEtest",
             x = as.double(t(x)),
             y = as.double(t(y)),
             byrow = as.integer(TRUE),
-            dims = as.integer(dims), 
-            stat = as.double(stat), 
+            dims = as.integer(dims),
+            stat = as.double(stat),
             reps = as.double(reps),
             pval = as.double(pval),
             PACKAGE = "energy")
-    
+
     stat <- n*a$stat
     est <- sqrt(a$stat)
     names(est) <- "I"
@@ -66,19 +66,19 @@ function(x, y, R=199) {
     dataname <- paste("x (",n," by ",ncol(x), "), y(",n," by ", ncol(y), "), replicates ", R, sep="")
     e <- list(
         method = "mvI energy test of independence",
-        statistic = stat, 
+        statistic = stat,
         estimate = est,
         replicates = n*reps,
-        p.value = a$pval, 
+        p.value = a$pval,
         data.name = dataname)
-    class(e) <- "htest"                   
+    class(e) <- "htest"
     e
 }
-  
 
-               
-                        
-indep.e<- 
+
+
+
+indep.e<-
 function(x, y) {
     # energy statistic for multivariate independence (deprecated)
     .Deprecated(new = "mvI", package = "energy")
@@ -89,46 +89,46 @@ function(x, y) {
     if (n != m || n < 2) stop("Sample sizes must agree")
     if (! (all(is.finite(c(x, y)))))
         stop("Data contains missing or infinite values")
-    
+
     stat <- 0
     dims <- c(n, ncol(x), ncol(y))
-   
-    e <- .C("indepE", 
+
+    e <- .C("indepE",
             x = as.double(t(x)),
             y = as.double(t(y)),
             byrow = as.integer(TRUE),
-            dims = as.integer(dims), 
-            stat = as.double(stat), 
+            dims = as.integer(dims),
+            stat = as.double(stat),
             PACKAGE = "energy")
-    
+
     sqrt(e$stat)
 }
-  
-            
-indep.etest<- 
-function(x, y, R=199) {
+
+
+indep.etest<-
+function(x, y, R=0) {
     # energy test for multivariate independence (deprecated)
-    .Deprecated(new = "indep.test", package = "energy", 
-        msg = "indep.etest will become defunct in future release. Use indep.test with method mvI.")    
+    .Deprecated(new = "indep.test", package = "energy",
+        msg = "indep.etest will become defunct in future release. Use indep.test with method mvI.")
     x <- as.matrix(x)
     y <- as.matrix(y)
     n <- nrow(x)
     m <- nrow(y)
     if (n != m || n < 2) stop("Sample sizes must agree")
-    if (! (all(is.finite(c(x, y))))) 
+    if (! (all(is.finite(c(x, y)))))
         stop("Data contains missing or infinite values")
 
     stat <- reps <- 0
     if (R > 0) reps <- rep(0, R)
     pval <- 1
     dims <- c(n, ncol(x), ncol(y), R)
-    
-    a <- .C("indepEtest", 
+
+    a <- .C("indepEtest",
             x = as.double(t(x)),
             y = as.double(t(y)),
             byrow = as.integer(TRUE),
-            dims = as.integer(dims), 
-            stat = as.double(stat), 
+            dims = as.integer(dims),
+            stat = as.double(stat),
             reps = as.double(reps),
             pval = as.double(pval),
             PACKAGE = "energy")
@@ -137,12 +137,11 @@ function(x, y, R=199) {
     dataname <- paste("x (",n," by ",ncol(x), "), y(",n," by ", ncol(y), "), replicates ", R, sep="")
     e <- list(
         method = paste("Energy test of independence", sep = ""),
-        statistic = stat, 
-        p.value = a$pval, 
+        statistic = stat,
+        p.value = a$pval,
         data.name = dataname)
-    class(e) <- "htest"  
+    class(e) <- "htest"
     e
 }
-  
-  
-                        
+
+

@@ -1,33 +1,44 @@
 useDynLib(energy)
 
-importFrom(boot,boot)
+importFrom(Rcpp, evalCpp)
+importFrom("stats", "as.dist", "dist", "dnorm", "hclust", "model.matrix",
+           "pnorm", "pt", "rnorm", "rpois", "var")
+importFrom(boot, boot)
 
 export(
   bcdcor,
-  dcor, 
-  DCOR, 
+  D_center,
+  Dcenter,
+  dcor,
+  DCOR,
   dcor.t,
   dcor.ttest,
-  dcov, 
-  .dcov, 
-  dcov.test, 
-  disco, 
-  disco.between, 
-  edist, 
-  energy.hclust, 
-  eqdist.e, 
-  eqdist.etest, 
+  dcov,
+  dcov.test,
+  dcovU,
+  dcovU_stats,
+  disco,
+  disco.between,
+  edist,
+  energy.hclust,
+  eqdist.e,
+  eqdist.etest,
   indep.test,
-  ksample.e, 
-  mvI, 
+  ksample.e,
+  mvI,
   mvI.test,
-  mvnorm.e, 
-  mvnorm.etest, 
+  mvnorm.e,
+  mvnorm.etest,
   normal.e,
-  poisson.m, 
-  poisson.mtest
+  pdcor,
+  pdcor.test,
+  pdcov,
+  pdcov.test,
+  poisson.m,
+  poisson.mtest,
+  U_center,
+  U_product,
+  Ucenter
 )
 
-S3method(print,disco)
-
-
+S3method(print, disco)

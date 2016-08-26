@@ -3,10 +3,9 @@
 
    Author:  Maria Rizzo <mrizzo @ bgnet.bgsu.edu>
    Created: 4 Jan 2004
-   Last Updated: 2 April 2008
-   some functions moved to utilities.c
+   Updated: 2 April 2008    some functions moved to utilities.c
+   Updated: 25 August 2016  mvnEstat converted to c++ in mvnorm.cpp
 
-   mvnEstat()     computes the E-test of multivariate normality
    ksampleEtest() performs the multivariate E-test for equal distributions,
                   complete version, from data matrix
    E2sample()     computes the 2-sample E-statistic without creating distance
@@ -16,7 +15,6 @@
 #include <R.h>
 #include <Rmath.h>
 
-void   mvnEstat(double *y, int *byrow, int *nobs, int *dim, double *stat);
 void   poisMstat(int *x, int *nx, double *stat);
 void   ksampleEtest(double *x, int *byrow, int *nsamples, int *sizes, int *dim,
             int *R, double *e0, double *e, double *pval);
@@ -44,70 +42,6 @@ extern void   Euclidean_distance(double *x, double **Dx, int n, int d);
 extern void   index_distance(double *x, double **Dx, int n, int d, double index);
 extern void   sumdist(double *x, int *byrow, int *nrow, int *ncol, double *lowersum);
 
-
-void mvnEstat(double *y, int *byrow, int *nobs, int *dim, double *stat)
-{
-    /*
-      compute E test statistic for multivariate normality
-      y is *standardized* multivariate sample
-      best to have y in row order:  e.g. y=as.double(t(y))
-    */
-
-    int    d=(*dim), n=(*nobs);
-    int    i, j, k, p, maxterms=2000;
-    double D=(double)(*dim);
-    double meanyy, meanyz, meanzz;
-    double delta, eps=1.0e-7;
-    double normy, yy, dif, sum, sum0, term;
-    double lg0, lg1,logak, loggk;
-
-    if (*byrow == FALSE)
-        roworder(y, byrow, n, d);
-
-    lg0 = lgammafn(D/2.0);
-    lg1 = lgammafn((D+1.0)/2.0);
-    meanzz = 2.0 * exp(lg1 - lg0);  /* second mean */
-
-    meanyz = 0.0;    /* computing the first mean as series */
-    for (i=0; i<n; i++) {
-        yy = 0.0;
-        p = i * d;
-        for (j=0; j<d; j++) {
-            dif = (*(y+p+j)) * (*(y+p+j));
-            yy += dif;
-        }
-        normy = sqrt(yy);
-        delta = 1.0;
-        sum = 0.0;
-        k = 0;
-        while (delta > eps && k < maxterms) {
-            sum0 = sum;
-            logak = (k+1)*log(yy) - lgammafn(k+1) - k*M_LN2 -
-                    log(2*k+1) - log(2*k+2);
-            loggk = lg1 + lgammafn(k+1.5) - lgammafn(k+D/2+1);
-            term = exp(logak + loggk);
-            if (k % 2 == 0)
-                sum += term;
-                else
-                    sum -= term;
-            delta = fabs(sum - sum0);
-            k++;
-        }
-        if (delta < eps)
-            meanyz += meanzz/M_SQRT2 + M_SQRT_2dPI * sum;
-            else {
-                meanyz += normy;
-                Rf_warning("E|y-Z| did not converge, replaced by %f", normy);
-            }
-    }
-    meanyz /= (double) n;
-
-    sumdist(y, byrow, nobs, dim, &meanyy);  /* computing third mean */
-    meanyy *= (2.0/(double)(n*n));
-
-    *stat = ((double) n)*(2.0*meanyz - meanzz - meanyy);
-    return;
-}
 
 void poisMstat(int *x, int *nx, double *stat)
 {

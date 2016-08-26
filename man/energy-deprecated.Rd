@@ -6,7 +6,7 @@
  Computes a multivariate nonparametric E-statistic and test of independence.}
 \usage{
 indep.e(x, y)
-indep.etest(x, y, R=199)
+indep.etest(x, y, R=0)
 }
 \arguments{
   \item{x}{ matrix: first sample, observations in rows}
@@ -14,19 +14,19 @@ indep.etest(x, y, R=199)
   \item{R}{ number of replicates}
 }
 \details{
- Computes the coefficient \eqn{\mathcal I}{I_n} and performs a nonparametric 
- \eqn{\mathcal E}{E}-test of independence. The test decision is obtained via 
+ Computes the coefficient \eqn{\mathcal I}{I_n} and performs a nonparametric
+ \eqn{\mathcal E}{E}-test of independence. The test decision is obtained via
  bootstrap, with \code{R} replicates.
  The sample sizes (number of rows) of the two samples must agree, and
- samples must not contain missing values. The statistic 
- \eqn{\mathcal E = n \mathcal I^2}{E = I^2} is a ratio of V-statistics based 
- on interpoint distances \eqn{\|x_{i}-y_{j}\|}{||x_{i}-y_{j}||}. 
- See the reference below for details. 
- 
+ samples must not contain missing values. The statistic
+ \eqn{\mathcal E = n \mathcal I^2}{E = I^2} is a ratio of V-statistics based
+ on interpoint distances \eqn{\|x_{i}-y_{j}\|}{||x_{i}-y_{j}||}.
+ See the reference below for details.
+
 }
 \value{
  The sample coefficient \eqn{\mathcal I}{I} is returned by \code{indep.e}.
- The function \code{indep.etest} returns a list with class 
+ The function \code{indep.etest} returns a list with class
  \code{htest} containing
  \item{method}{description of test}
  \item{statistic}{observed value of the coefficient \eqn{\mathcal I}{I}}
@@ -35,9 +35,9 @@ indep.etest(x, y, R=199)
 }
 \references{
  Bakirov, N.K., Rizzo, M.L., and Szekely, G.J. (2006), A Multivariate
- Nonparametric Test of Independence, \emph{Journal of Multivariate Analysis} 
- 93/1, 58-80, 
- \cr \url{http://dx.doi.org/10.1016/j.jmva.2005.10.005} 
+ Nonparametric Test of Independence, \emph{Journal of Multivariate Analysis}
+ 93/1, 58-80,
+ \cr \url{http://dx.doi.org/10.1016/j.jmva.2005.10.005}
  }
 \author{ Maria L. Rizzo \email{mrizzo @ bgsu.edu} and
 Gabor J. Szekely
@@ -48,7 +48,7 @@ Gabor J. Szekely
  x <- sin(runif(30, 0, 2*pi) * 2)
  y <- sin(runif(30, 0, 2*pi) * 4)
  indep.etest(x, y, R = 99)
- 
+
  ## dependent multivariate data
  Sigma <- matrix(c(1, .1, 0, 0 , 1, 0, 0 ,.1, 1), 3, 3)
  x <- mvrnorm(30, c(0, 0, 0), diag(3))

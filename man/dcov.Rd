@@ -18,17 +18,17 @@ DCOR(x, y, index = 1.0)
   \item{index}{ exponent on Euclidean distance, in (0,2]}
 }
 \details{
- \code{dcov} and \code{dcor} or \code{DCOR} compute distance 
+ \code{dcov} and \code{dcor} or \code{DCOR} compute distance
  covariance and distance correlation statistics.
  \code{DCOR} is a self-contained R function returning a list of
  statistics. \code{dcor} execution is faster than \code{DCOR}
  (see examples).
- 
-  The sample sizes (number of rows) of the two samples must 
+
+  The sample sizes (number of rows) of the two samples must
   agree, and samples must not contain missing values. Arguments
   \code{x}, \code{y} can optionally be \code{\link{dist}} objects;
- otherwise these arguments are treated as data. 
- 
+ otherwise these arguments are treated as data.
+
 Distance correlation is a new measure of dependence between random
 vectors introduced by Szekely, Rizzo, and Bakirov (2007).
 For all distributions with finite first moments, distance
@@ -44,9 +44,9 @@ covariance \eqn{\mathcal V}{V} provides a new approach to the problem of
 testing the joint independence of random vectors. The formal
 definitions of the population coefficients \eqn{\mathcal V}{V} and
 \eqn{\mathcal R}{R} are given in (SRB 2007). The definitions of the
-empirical coefficients are as follows. 
+empirical coefficients are as follows.
 
-The empirical distance covariance \eqn{\mathcal{V}_n(\mathbf{X,Y})}{V_n(X,Y)}  
+The empirical distance covariance \eqn{\mathcal{V}_n(\mathbf{X,Y})}{V_n(X,Y)}
 with index 1 is
 the nonnegative number defined by
 \deqn{
@@ -57,7 +57,7 @@ V^2_n (X,Y) = (1/n^2) sum_{k,l=1:n}
  A_{kl}B_{kl}
  }
  where \eqn{A_{kl}} and \eqn{B_{kl}} are
- \deqn{ 
+ \deqn{
 A_{kl} = a_{kl}-\bar a_{k.}- \bar a_{.l} + \bar a_{..}
 }
 \deqn{
@@ -68,18 +68,18 @@ Here
 a_{kl} = \|X_k - X_l\|_p, \quad b_{kl} = \|Y_k - Y_l\|_q, \quad
 k,l=1,\dots,n,
 }{
-a_{kl} = ||X_k - X_l||_p, b_{kl} = ||Y_k - Y_l||_q, 
+a_{kl} = ||X_k - X_l||_p, b_{kl} = ||Y_k - Y_l||_q,
 k,l=1,\dots,n,
 }
 and the subscript \code{.} denotes that the mean is computed for the
 index that it replaces.  Similarly,
 \eqn{\mathcal{V}_n(\mathbf{X})}{V_n(X)} is the nonnegative number defined by
 \deqn{
- \mathcal{V}^2_n (\mathbf{X}) = \mathcal{V}^2_n (\mathbf{X,X}) = 
+ \mathcal{V}^2_n (\mathbf{X}) = \mathcal{V}^2_n (\mathbf{X,X}) =
  \frac{1}{n^2} \sum_{k,\,l=1}^n
  A_{kl}^2.
  }{
-V^2_n (X) = V^2_n (X,X) = 
+V^2_n (X) = V^2_n (X,X) =
  (1/n^2) sum_{k,l=1:n}
  A_{kl}^2.
  }
@@ -109,65 +109,55 @@ based on the distance covariance statistic.
 \note{
 Two methods of computing the statistics are provided. \code{DCOR}
 is a stand-alone R function that returns a list of statistics.
-\code{dcov} and \code{dcor} provide R interfaces to the C 
+\code{dcov} and \code{dcor} provide R interfaces to the C
 implementation, which is usually faster. \code{dcov} and \code{dcor}
-call an internal function \code{.dcov}. 
+call an internal function \code{.dcov}.
 
-Note that it is inefficient to compute dCor by: 
+Note that it is inefficient to compute dCor by:
 
 square root of
-\code{dcov(x,y)/sqrt(dcov(x,x)*dcov(y,y))} 
+\code{dcov(x,y)/sqrt(dcov(x,x)*dcov(y,y))}
 
 because the individual
 calls to \code{dcov} involve unnecessary repetition of calculations.
-For this reason, both \code{.dcov} and \code{DCOR} compute and
-return all four statistics.
+For this reason, \code{DCOR} computes and returns all four statistics.
 }
 \seealso{
-\code{\link{dcov.test}} \code{\link{dcor.ttest}}
+\code{\link{bcdcor}}  \code{\link{dcovU}}  \code{\link{pdcor}}
+\code{\link{dcov.test}} \code{\link{dcor.ttest}}  \code{\link{pdcor.test}}
 }
 \references{
- Szekely, G.J., Rizzo, M.L., and Bakirov, N.K. (2007), 
- Measuring and Testing Dependence by Correlation of Distances, 
+ Szekely, G.J., Rizzo, M.L., and Bakirov, N.K. (2007),
+ Measuring and Testing Dependence by Correlation of Distances,
  \emph{Annals of Statistics}, Vol. 35 No. 6, pp. 2769-2794.
  \cr \url{http://dx.doi.org/10.1214/009053607000000505}
 
- Szekely, G.J. and Rizzo, M.L. (2009), 
- Brownian Distance Covariance, 
- \emph{Annals of Applied Statistics}, 
- Vol. 3, No. 4, 1236-1265.  
+ Szekely, G.J. and Rizzo, M.L. (2009),
+ Brownian Distance Covariance,
+ \emph{Annals of Applied Statistics},
+ Vol. 3, No. 4, 1236-1265.
  \cr \url{http://dx.doi.org/10.1214/09-AOAS312}
- 
- Szekely, G.J. and Rizzo, M.L. (2009), 
- Rejoinder: Brownian Distance Covariance, 
- \emph{Annals of Applied Statistics}, Vol. 3, No. 4, 1303-1308.  
-  } 
+
+ Szekely, G.J. and Rizzo, M.L. (2009),
+ Rejoinder: Brownian Distance Covariance,
+ \emph{Annals of Applied Statistics}, Vol. 3, No. 4, 1303-1308.
+  }
 \author{ Maria L. Rizzo \email{mrizzo @ bgsu.edu} and
-Gabor J. Szekely 
+Gabor J. Szekely
 }
 \examples{
  x <- iris[1:50, 1:4]
  y <- iris[51:100, 1:4]
  dcov(x, y)
  dcov(dist(x), dist(y))  #same thing
- 
+
  ## C implementation
  dcov(x, y, 1.5)
  dcor(x, y, 1.5)
- .dcov(dist(x), dist(y), 1.5)
+
  ## R implementation
  DCOR(x, y, 1.5)
-  
- \dontrun{
- ## compare speed of R version and C version 
- set.seed(111)
- ## R version
- system.time(replicate(1000, DCOR(x, y)))
- set.seed(111)
- ## C version
- system.time(replicate(1000, .dcov(x, y)))
- }
-} 
+}
 \keyword{ multivariate }
 \concept{ independence }
 \concept{ distance correlation }

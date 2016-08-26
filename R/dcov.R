@@ -1,15 +1,15 @@
-dcov.test <- 
-function(x, y, index=1.0, R=199) {
+dcov.test <-
+function(x, y, index=1.0, R=0) {
     # distance covariance test for multivariate independence
     if (!(class(x) == "dist")) x <- dist(x)
     if (!(class(y) == "dist")) y <- dist(y)
     x <- as.matrix(x)
     y <- as.matrix(y)
-    dst <- TRUE  
+    dst <- TRUE
     n <- nrow(x)
     m <- nrow(y)
     if (n != m) stop("Sample sizes must agree")
-    if (! (all(is.finite(c(x, y))))) 
+    if (! (all(is.finite(c(x, y)))))
         stop("Data contains missing or infinite values")
 
     stat <- dcorr <- reps <- 0
@@ -17,16 +17,16 @@ function(x, y, index=1.0, R=199) {
     if (R > 0) reps <- rep(0, R)
     pval <- 1
     dims <- c(n, ncol(x), ncol(y), dst, R)
-    
+
     # dcov = [dCov,dCor,dVar(x),dVar(y)]
-    a <- .C("dCOVtest", 
+    a <- .C("dCOVtest",
             x = as.double(t(x)),
             y = as.double(t(y)),
             byrow = as.integer(TRUE),
-            dims = as.integer(dims), 
+            dims = as.integer(dims),
             index = as.double(index),
             reps = as.double(reps),
-            DCOV = as.double(dcov), 
+            DCOV = as.double(dcov),
             pval = as.double(pval),
             PACKAGE = "energy")
     # test statistic is n times the square of dCov statistic
@@ -39,17 +39,17 @@ function(x, y, index=1.0, R=199) {
     pval <- ifelse (R < 1, NA, a$pval)
     e <- list(
         method = paste("dCov test of independence", sep = ""),
-        statistic = stat, 
+        statistic = stat,
         estimate = V,
         estimates = dcorr,
         p.value = pval,
         replicates = n* a$reps^2,
         data.name = dataname)
-    class(e) <- "htest"                   
+    class(e) <- "htest"
     return(e)
 }
-  
-.dcov <- 
+
+.dcov <-
 function(x, y, index=1.0) {
     # distance covariance statistic for independence
     # dcov = [dCov,dCor,dVar(x),dVar(y)]   (vector)
@@ -59,42 +59,42 @@ function(x, y, index=1.0) {
     if (!(class(y) == "dist")) y <- dist(y)
     x <- as.matrix(x)
     y <- as.matrix(y)
-    dst <- TRUE  
+    dst <- TRUE
     n <- nrow(x)
     m <- nrow(y)
     if (n != m) stop("Sample sizes must agree")
-    if (! (all(is.finite(c(x, y))))) 
+    if (! (all(is.finite(c(x, y)))))
         stop("Data contains missing or infinite values")
     dims <- c(n, NCOL(x), NCOL(y), dst)
     idx <- 1:dims[1]
     DCOV <- numeric(4)
-    a <- .C("dCOV", 
+    a <- .C("dCOV",
             x = as.double(t(x)),
             y = as.double(t(y)),
             byrow = as.integer(TRUE),
-            dims = as.integer(dims), 
+            dims = as.integer(dims),
             index = as.double(index),
             idx = as.double(idx),
-            DCOV = as.double(DCOV), 
+            DCOV = as.double(DCOV),
             PACKAGE = "energy")
     return(a$DCOV)
 }
- 
-dcov <- 
+
+dcov <-
 function(x, y, index=1.0) {
     # distance correlation statistic for independence
     return(.dcov(x, y, index)[1])
-} 
+}
 
-dcor <- 
+dcor <-
 function(x, y, index=1.0) {
     # distance correlation statistic for independence
     return(.dcov(x, y, index)[2])
-} 
+}
 
-            
-  
-DCOR <- 
+
+
+DCOR <-
 function(x, y, index=1.0) {
     # distance covariance and correlation statistics
     # alternate method, implemented in R without .C call
@@ -111,17 +111,17 @@ function(x, y, index=1.0) {
     if (index < 0 || index > 2) {
         warning("index must be in [0,2), using default index=1")
         index=1.0}
-    
+
     stat <- 0
     dims <- c(n, ncol(x), ncol(y))
-    
+
     Akl <- function(x) {
         d <- as.matrix(x)^index
         m <- rowMeans(d)
         M <- mean(d)
         a <- sweep(d, 1, m)
         b <- sweep(a, 2, m)
-        return(b + M) 
+        return(b + M)
     }
 
     A <- Akl(x)
@@ -134,4 +134,4 @@ function(x, y, index=1.0) {
       dCor <- dCov / V else dCor <- 0
     return(list(dCov=dCov, dCor=dCor, dVarX=dVarX, dVarY=dVarY))
 }
-  
+

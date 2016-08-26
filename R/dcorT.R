@@ -19,11 +19,6 @@ Astar <- function(d) {
   (n / (n-1)) * A
 }
 
-bcdcor <- function(x, y, distance=FALSE) {
-  ## compute bias corrected distance correlation
-  BCDCOR(x, y, distance)$bcR
-}
-
 BCDCOR <- function(x, y, distance=FALSE) {
   ## compute bias corrected distance correlation
   ## attempt to check if distance flag is valid
@@ -81,4 +76,3 @@ dcor.ttest <- function(x, y, distance=FALSE) {
   class(rval) <- "htest"
   return(rval)
 }
-            

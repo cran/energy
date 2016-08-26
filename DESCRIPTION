@@ -1,19 +1,21 @@
 Package: energy
-Title: E-statistics (energy statistics)
-Version: 1.6.2
-Date: 2014-10-27
+Title: E-Statistics: Multivariate Inference via the Energy of Data
+Version: 1.7-0
+Date: 2016-08-25
 Author: Maria L. Rizzo and Gabor J. Szekely
-Description: E-statistics (energy) tests and statistics for comparing
-        distributions: multivariate normality, multivariate distance
-        components and k-sample test for equal distributions,
-        hierarchical clustering by e-distances, multivariate
-        independence tests, distance correlation, goodness-of-fit
-        tests. Energy- statistics concept based on a generalization of
-        Newton's potential energy is due to Gabor J. Szekely.
+Description: E-statistics (energy) tests and statistics for multivariate and univariate inference,
+             including distance correlation, one-sample, two-sample, and multi-sample tests for
+             comparing multivariate distributions, are implemented. Measuring and testing
+             multivariate independence based on distance correlation, partial distance correlation,
+             multivariate goodness-of-fit tests, clustering based on energy distance, testing for
+             multivariate normality, distance components (disco) for non-parametric analysis of
+             structured data, and other energy statistics/methods are implemented.
 Maintainer: Maria Rizzo <mrizzo@bgsu.edu>
-Imports: boot
+Imports: Rcpp (>= 0.12.6), stats, boot
+LinkingTo: Rcpp
+Suggests: MASS
 License: GPL (>= 2)
 NeedsCompilation: yes
 Repository: CRAN
-Packaged: 2014-10-27 20:17:58 UTC; Maria
-Date/Publication: 2014-10-28 08:06:43
+Packaged: 2016-08-26 00:41:32 UTC; Maria
+Date/Publication: 2016-08-26 07:34:19

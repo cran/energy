@@ -1,4 +1,4 @@
-mvnorm.etest <- function(x, R = 0) {
+mvnorm.etest <- function(x, R) {
   # parametric bootstrap E-test for multivariate normality
   if (is.vector(x)) {
     n <- length(x)
@@ -15,7 +15,8 @@ mvnorm.etest <- function(x, R = 0) {
                             return(matrix(rnorm(n * d), nrow = n, ncol = d))
                           })
   }
-  p <- 1 - mean(bootobj$t < bootobj$t0)
+  if (R > 0)
+    p <- 1 - mean(bootobj$t < bootobj$t0) else p <- NA
 
   names(bootobj$t0) <- "E-statistic"
   e <- list(statistic = bootobj$t0, p.value = p,

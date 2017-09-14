@@ -1,5 +1,5 @@
 indep.test<-
-function(x, y, method = c("dcov","mvI"), index = 1, R = 0) {
+function(x, y, method = c("dcov","mvI"), index = 1, R) {
     # two energy tests for multivariate independence
     type <- match.arg(method)
     if (type == "dcov")
@@ -34,7 +34,7 @@ function(x, y) {
 }
 
 mvI.test<-
-function(x, y, R=0) {
+function(x, y, R) {
     # energy test for multivariate independence
     x <- as.matrix(x)
     y <- as.matrix(y)
@@ -64,12 +64,14 @@ function(x, y, R=0) {
     names(est) <- "I"
     names(stat) <- "nI^2"
     dataname <- paste("x (",n," by ",ncol(x), "), y(",n," by ", ncol(y), "), replicates ", R, sep="")
+    if (R > 0)
+      p.value = a$pval else p.value = NA
     e <- list(
         method = "mvI energy test of independence",
         statistic = stat,
         estimate = est,
         replicates = n*reps,
-        p.value = a$pval,
+        p.value = p.value,
         data.name = dataname)
     class(e) <- "htest"
     e
@@ -106,7 +108,7 @@ function(x, y) {
 
 
 indep.etest<-
-function(x, y, R=0) {
+function(x, y, R) {
     # energy test for multivariate independence (deprecated)
     .Deprecated(new = "indep.test", package = "energy",
         msg = "indep.etest will become defunct in future release. Use indep.test with method mvI.")
@@ -135,10 +137,12 @@ function(x, y, R=0) {
     stat <- sqrt(a$stat)
     names(stat) <- "I"
     dataname <- paste("x (",n," by ",ncol(x), "), y(",n," by ", ncol(y), "), replicates ", R, sep="")
+    if (R > 0)
+      p.value <- a$pval else p.value <- NA
     e <- list(
         method = paste("Energy test of independence", sep = ""),
         statistic = stat,
-        p.value = a$pval,
+        p.value = p.value,
         data.name = dataname)
     class(e) <- "htest"
     e

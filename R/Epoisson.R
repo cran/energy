@@ -1,11 +1,12 @@
 poisson.mtest <-
-function(x, R = 0) {
+function(x, R) {
     # parametric bootstrap mean distance test of Poisson distribution
     n <- length(x)
     lambda <- mean(x)
     bootobj <- boot::boot(x, statistic = poisson.m, R = R, sim = "parametric",
             ran.gen = function(x, y) {rpois(n, lambda)})
-    p <- 1 - mean(bootobj$t < bootobj$t0)
+    if (R > 0)
+      p <- 1 - mean(bootobj$t < bootobj$t0) else p <- NA
     names(bootobj$t0) <- "test statistic"
     names(lambda) <- "mean"
     e <- list(

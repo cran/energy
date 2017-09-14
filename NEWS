@@ -1,3 +1,14 @@
+Changes to version 1.7-2
+
+  o  User level changes
+     -  Provided new dcor.test function, similar to dcov.test but using the
+        distance correlation as the test statistic. 
+     -  Number of replicates R for Monte Carlo and permutation tests now matches
+        the argument of the boot::boot function (no default value, user must specify).
+     -  If user runs a test with 0 replicates, p-value printed is NA
+  o  Internal changes
+     -  energy_init.c added for registering routines
+
 Changes to version 1.7-0
 
   o  Partial Distance Correlation statistics and tests added

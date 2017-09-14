@@ -18,7 +18,7 @@ function(x, sizes, distance = FALSE, method = c("original","discoB","discoF"))
 }
 
 eqdist.etest <-
-function(x, sizes, distance = FALSE, method = c("original","discoB","discoF"), R = 0)
+function(x, sizes, distance = FALSE, method = c("original","discoB","discoF"), R)
 {
     ## multivariate E-test of the multisample hypothesis of equal distributions
     ##   x:          matrix of pooled sample or distance matrix

@@ -7,7 +7,7 @@
  with unknown parameter.
 }
 \usage{
-poisson.mtest(x, R = 0)
+poisson.mtest(x, R)
 poisson.m(x)
 }
 \arguments{

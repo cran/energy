@@ -6,7 +6,7 @@
  Computes the multivariate nonparametric E-statistic and test of independence
  based on independence coefficient \eqn{\mathcal I_n}{I_n}.}
 \usage{
-    mvI.test(x, y, R=0)
+    mvI.test(x, y, R)
     mvI(x, y)
 }
 \arguments{

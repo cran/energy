@@ -7,7 +7,7 @@
  \code{\link{dcov.test}}.
  }
 \usage{
-indep.test(x, y, method = c("dcov","mvI"), index = 1, R=0)
+indep.test(x, y, method = c("dcov","mvI"), index = 1, R)
 }
 \arguments{
   \item{x}{ matrix: first sample, observations in rows}

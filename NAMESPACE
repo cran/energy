@@ -1,4 +1,4 @@
-useDynLib(energy)
+useDynLib(energy, .registration=TRUE)
 
 importFrom(Rcpp, evalCpp)
 importFrom("stats", "as.dist", "dist", "dnorm", "hclust", "model.matrix",
@@ -12,6 +12,7 @@ export(
   dcor,
   DCOR,
   dcor.t,
+  dcor.test,
   dcor.ttest,
   dcov,
   dcov.test,

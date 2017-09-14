@@ -7,7 +7,7 @@
  Performs the E-statistic (energy) test of multivariate or univariate normality.
 }
 \usage{
- mvnorm.etest(x, R=0)
+ mvnorm.etest(x, R)
  mvnorm.e(x)
  normal.e(x)
 }
@@ -36,6 +36,8 @@
 
    The \eqn{\mathcal{E}}{E}-test of multivariate (univariate) normality
   is implemented by parametric bootstrap with \code{R} replicates.
+  
+  If \code{R=0} the summary for the test gives the test statistic only (no p-value). 
 }
 \value{
  The value of the \eqn{\mathcal{E}}{E}-statistic for univariate

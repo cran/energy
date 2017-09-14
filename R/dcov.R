@@ -1,5 +1,16 @@
 dcov.test <-
-function(x, y, index=1.0, R=0) {
+function(x, y, index=1.0, R=NULL) {
+    ## check for valid number of replicates R
+    method <- "Specify the number of replicates R (R > 0) to perform the test of independence"
+    if (! is.null(R)) {
+      R <- floor(R)
+      if (R < 1) R <- 0
+      if (R > 0) 
+        method <- "dCov test of independence"
+    } else {
+      R <- 0
+    }
+
     # distance covariance test for multivariate independence
     if (!(class(x) == "dist")) x <- dist(x)
     if (!(class(y) == "dist")) y <- dist(y)
@@ -11,7 +22,7 @@ function(x, y, index=1.0, R=0) {
     if (n != m) stop("Sample sizes must agree")
     if (! (all(is.finite(c(x, y)))))
         stop("Data contains missing or infinite values")
-
+    
     stat <- dcorr <- reps <- 0
     dcov <- rep(0, 4)
     if (R > 0) reps <- rep(0, R)
@@ -38,16 +49,57 @@ function(x, y, index=1.0, R=0) {
     dataname <- paste("index ", index, ", replicates ", R, sep="")
     pval <- ifelse (R < 1, NA, a$pval)
     e <- list(
-        method = paste("dCov test of independence", sep = ""),
         statistic = stat,
+        method = method,
         estimate = V,
         estimates = dcorr,
         p.value = pval,
         replicates = n* a$reps^2,
+        n = n,
         data.name = dataname)
     class(e) <- "htest"
     return(e)
 }
+
+dcor.test <-
+  function(x, y, index=1.0, R) {
+    # distance correlation test for multivariate independence
+    # like dcov.test but using dcor as the test statistic
+    if (is.null(R)) R <- 0
+    R <- ifelse(R > 0, floor(R), 0)
+    RESULT <- dcov.test(x, y, index=1.0, R) 
+    # this test statistic is n times the square of dCov statistic
+    DCOVteststat <- RESULT$statistic
+    DCOVreplicates <- RESULT$replicates
+    
+    # RESULT$estimates = [dCov,dCor,dVar(x),dVar(y)]
+    # dVar are invariant under permutation of sample indices
+    
+    DCORteststat <- RESULT$estimates[2]
+    dvarX <- RESULT$estimates[3]
+    dvarY <- RESULT$estimates[4]
+    n <- RESULT$n
+    DCORreps <- sqrt(DCOVreplicates / n) / sqrt(dvarX * dvarY)
+    
+    if (R > 0)
+      p.value <- (1 + sum(DCORreps >= DCORteststat)) / (1 + R) else p.value <- NA
+    
+    names(DCORteststat) <- "dCor"
+    dataname <- paste("index ", index, ", replicates ", R, sep="")
+    method <- ifelse(R > 0, "dCor test of independence", 
+                     "Specify the number of replicates R>0 to perform the test of independence")
+    e <- list(
+      method = method,
+      statistic = DCORteststat,
+      estimates = RESULT$estimates,
+      p.value = p.value,
+      replicates = DCORreps,
+      n = n,
+      data.name = dataname)
+    class(e) <- "htest"
+    return(e)
+  }
+
 
 .dcov <-
 function(x, y, index=1.0) {

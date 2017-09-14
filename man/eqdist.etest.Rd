@@ -9,7 +9,7 @@
 }
 \usage{
 eqdist.etest(x, sizes, distance = FALSE,
-    method=c("original","discoB","discoF"), R = 0)
+    method=c("original","discoB","discoF"), R)
 eqdist.e(x, sizes, distance = FALSE,
     method=c("original","discoB","discoF"))
 ksample.e(x, sizes, distance = FALSE,

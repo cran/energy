@@ -6,7 +6,7 @@
  Computes a multivariate nonparametric E-statistic and test of independence.}
 \usage{
 indep.e(x, y)
-indep.etest(x, y, R=0)
+indep.etest(x, y, R)
 }
 \arguments{
   \item{x}{ matrix: first sample, observations in rows}

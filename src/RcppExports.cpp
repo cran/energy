@@ -5,6 +5,18 @@
 
 using namespace Rcpp;
 
+// Btree_sum
+NumericVector Btree_sum(IntegerVector y, NumericVector z);
+RcppExport SEXP _energy_Btree_sum(SEXP ySEXP, SEXP zSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type z(zSEXP);
+    rcpp_result_gen = Rcpp::wrap(Btree_sum(y, z));
+    return rcpp_result_gen;
+END_RCPP
+}
 // D_center
 NumericMatrix D_center(NumericMatrix Dx);
 RcppExport SEXP _energy_D_center(SEXP DxSEXP) {
@@ -36,6 +48,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericMatrix >::type Dx(DxSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Dy(DySEXP);
     rcpp_result_gen = Rcpp::wrap(dcovU_stats(Dx, Dy));
+    return rcpp_result_gen;
+END_RCPP
+}
+// kgroups_start
+List kgroups_start(NumericMatrix x, int k, IntegerVector clus, int iter_max, bool distance);
+RcppExport SEXP _energy_kgroups_start(SEXP xSEXP, SEXP kSEXP, SEXP clusSEXP, SEXP iter_maxSEXP, SEXP distanceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type k(kSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type clus(clusSEXP);
+    Rcpp::traits::input_parameter< int >::type iter_max(iter_maxSEXP);
+    Rcpp::traits::input_parameter< bool >::type distance(distanceSEXP);
+    rcpp_result_gen = Rcpp::wrap(kgroups_start(x, k, clus, iter_max, distance));
     return rcpp_result_gen;
 END_RCPP
 }

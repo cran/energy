@@ -100,8 +100,8 @@ the distance covariance test statistic is the V-statistic
  Szekely, G.J. and Rizzo, M.L. (2009),
  Rejoinder: Brownian Distance Covariance,
  \emph{Annals of Applied Statistics}, Vol. 3, No. 4, 1303-1308.
-  }
-  \author{ Maria L. Rizzo \email{mrizzo @ bgsu.edu} and
+}
+\author{ Maria L. Rizzo \email{mrizzo @ bgsu.edu} and
 Gabor J. Szekely
 }
 \examples{
@@ -111,21 +111,7 @@ Gabor J. Szekely
  dcor.test(dist(x), dist(y), R=199)
  set.seed(1)
  dcov.test(x, y, R=199)
-
- \dontrun{
-   set.seed(1)
-   dcov.test(dist(x), dist(y), R=199)  #same thing
-   set.seed(1)
-   dcov.test(x, y, index=.5, R=199)
-   set.seed(1)
-   dcov.test(dist(x), dist(y), index=.5, R=199)  #same thing
- }
-
- ## Example with dvar=0 (so dcov=0 and pval=1)
- x <- rep.int(1, 10)
- y <- 1:10
- dcov.test(x, y, R=199)
- }
+}
 \keyword{ htest }
 \keyword{ multivariate }
 \keyword{ nonparametric }

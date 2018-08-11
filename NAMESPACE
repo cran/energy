@@ -10,12 +10,14 @@ export(
   D_center,
   Dcenter,
   dcor,
+  dcor2d,
   DCOR,
   dcor.t,
   dcor.test,
   dcor.ttest,
   dcov,
   dcov.test,
+  dcov2d,
   dcovU,
   dcovU_stats,
   disco,
@@ -25,6 +27,7 @@ export(
   eqdist.e,
   eqdist.etest,
   indep.test,
+  kgroups,
   ksample.e,
   mvI,
   mvI.test,
@@ -37,9 +40,12 @@ export(
   pdcov.test,
   poisson.m,
   poisson.mtest,
+  sortrank,
   U_center,
   U_product,
   Ucenter
 )
 
 S3method(print, disco)
+S3method(print, kgroups)
+S3method(fitted, kgroups)

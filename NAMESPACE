@@ -2,7 +2,7 @@ useDynLib(energy, .registration=TRUE)
 
 importFrom(Rcpp, evalCpp)
 importFrom("stats", "as.dist", "dist", "dnorm", "hclust", "model.matrix",
-           "pnorm", "pt", "rnorm", "rpois", "var")
+           "pnorm", "pt", "rnorm", "rpois", "sd", "var")
 importFrom(boot, boot)
 
 export(
@@ -16,8 +16,8 @@ export(
   dcor.test,
   dcor.ttest,
   dcov,
-  dcov.test,
   dcov2d,
+  dcov.test,
   dcovU,
   dcovU_stats,
   disco,
@@ -33,7 +33,9 @@ export(
   mvI.test,
   mvnorm.e,
   mvnorm.etest,
+  mvnorm.test,
   normal.e,
+  normal.test,
   pdcor,
   pdcor.test,
   pdcov,

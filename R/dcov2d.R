@@ -47,11 +47,12 @@ dcov2d<- function(x, y, type=c("V", "U"), all.stats=FALSE) {
   return (rval)
 }
 
+
 .dcovSums2d <- function(x, y, all.sums = FALSE) {
   ## compute the sums S1, S2, S3 of distances for dcov^2
   ## dCov^2 <- S1/d1 - 2 * S2/d2 + S3/d3  
   ## denominators differ for U-statistic, V-statisic
-  ## if all==TRUE, also return the sums needed for dVar
+  ## if all.sums==TRUE, also return sums for dVar and kernel 
   if (is.matrix(x) || is.matrix(y)) {
     if (ncol(x) > 1 || ncol(y) > 1)
       stop("Found multivariate (x,y) in .dcovSums2d, expecting bivariate")
@@ -79,14 +80,19 @@ dcov2d<- function(x, y, type=c("V", "U"), all.stats=FALSE) {
   S1 <- sum(x * y * g_1 + g_xy - x * g_y - y * g_x)
 
   L <- list(S1=S1, S2=S2, S3=S3, 
-            S1a=NA, S1b=NA, S2a=NA, S2b=NA, S3a=NA, S3b=NA)
+            S1a=NA, S1b=NA, S2a=NA, S2b=NA, S3a=NA, S3b=NA,
+            rowsumsA=NA, rowsumsB=NA, sumA=NA, sumB=NA)
   if (all.sums) {
     L$S1a <- 2 * n * (n-1) * var(x)
     L$S1b <- 2 * n * (n-1) * var(y)
-    L$S2a=sum(a.^2)
-    L$S2b=sum(b.^2)
-    L$S3a=a..^2
-    L$S3b=b..^2
+    L$S2a <- sum(a.^2)
+    L$S2b <- sum(b.^2)
+    L$S3a <- a..^2
+    L$S3b <- b..^2
+    L$rowsumsA <- a.
+    L$rowsumsB <- b.
+    L$sumA <- a..
+    L$sumB <- b..
   }
   return (L);
 }
@@ -137,14 +143,13 @@ dcov2d<- function(x, y, type=c("V", "U"), all.stats=FALSE) {
   ranky1 <- SRy1$r     #rank(y1)
 
   ## the partial sums in the formula g_1
-  psumsy1 <- (cumsum(z1[iy1]) - z1[iy1])[ranky1]
-  psumsx1 <- cumsum(z1) - z1
+  psumsy1 <- (cumsum(as.numeric(z1[iy1])) - z1[iy1])[ranky1]
+  psumsx1 <- cumsum(as.numeric(z1)) - z1
 
   gamma1 <- Btree_sum(y=ranky1, z=z1)   #y1 replaced by rank(y1)
   g <- sum(z1) - z1 - 2 * psumsx1 - 2 * psumsy1 + 4 * gamma1
   g <- g[rankx]
 }
-
 
 .rowSumsDist1 <- function(x, Sx = NULL) {
   ## for univariate samples, equivalent to rowSums(as.matrix(dist(x)))
@@ -152,11 +157,10 @@ dcov2d<- function(x, y, type=c("V", "U"), all.stats=FALSE) {
   ## Sx is a sortrank object usually pre-computed here
   ## x is the data vector, Sx$x is sort(x)
   if (is.null(Sx))
-    Sx <- sortrank(x)
+  Sx <- sortrank(x)
   n <- length(x)
   r <- Sx$r  #ranks
   z <- Sx$x  #ordered sample x
-  psums1 <- (cumsum(z) - z)[r]
+  psums1 <- (cumsum(as.numeric(z)) - z)[r]
   (2*(r-1)-n)*x + sum(x) - 2*psums1
 }
-

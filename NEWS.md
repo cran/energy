@@ -1,3 +1,13 @@
+# energy 1.7-6
+
+*  User level changes:
+     - normality.test (new) implements the energy test of univariate 
+       normality based on the null limit distribution for the composite 
+       hypothesis (estimated parameters). 
+     - dataset EVnormal (new) of eigenvalues for energy test of normality.
+     - mvnorm.test replaces mvnorm.etest, and mvnorm.etest now is a
+       wrapper for mvnorm.test. 
+
 # energy 1.7-5
 
 *  User level changes:
@@ -5,7 +15,7 @@
        number k classes by energy distance criterion, analogous to the k 
        classes of the k-means algorithm.
      - dcov2d and dcor2d: (new) O(n log n) methods to compute the
-       squared U or V statistics for real x and y 
+       U or V statistics for real x and y 
      - sortrank() function added (a utility)
      
 *  Internal changes:

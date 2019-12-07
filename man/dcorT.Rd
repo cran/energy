@@ -1,43 +1,41 @@
-\name{dcor.ttest}
-\alias{dcor.ttest}
-\alias{dcor.t}
+\name{dcorT}
+\alias{dcorT.test}
+\alias{dcorT}
 \title{ Distance Correlation t-Test}
 \description{
- Distance correlation t-test of multivariate independence.}
+ Distance correlation t-test of multivariate independence for high dimension.}
 \usage{
-dcor.ttest(x, y, distance=FALSE)
-dcor.t(x, y, distance=FALSE)
+dcorT.test(x, y)
+dcorT(x, y)
 }
 \arguments{
   \item{x}{ data or distances of first sample}
   \item{y}{ data or distances of second sample}
-  \item{distance}{ logical: TRUE if x and y are distances}
 }
 \details{
- \code{dcor.ttest} performs a nonparametric t-test of
+ \code{dcorT.test} performs a nonparametric t-test of
  multivariate independence in high dimension (dimension is close to
- or larger than sample size). The distribution of
- the test statistic is approximately Student t with \eqn{n(n-3)/2-1}
- degrees of freedom and for \eqn{n \geq 10} the statistic is approximately
- distributed as standard normal.
+ or larger than sample size). As dimension goes to infinity, the
+ asymptotic distribution of the test statistic is approximately Student t with \eqn{n(n-3)/2-1} degrees of freedom and for \eqn{n \geq 10} the statistic is approximately distributed as standard normal.
 
  The sample sizes (number of rows) of the two samples must
- agree, and samples must not contain missing values. Arguments
- \code{x}, \code{y} can optionally be \code{dist} objects
- or distance matrices (in this case set \code{distance=TRUE}).
+ agree, and samples must not contain missing values.
 
- The t statistic is a transformation of a bias corrected version of distance
- correlation (see SR 2013 for details).
+ The t statistic (dcorT) is a transformation of a bias corrected 
+ version of distance correlation (see SR 2013 for details).
 
- Large values (upper tail) of the t statistic are significant.
+Large values (upper tail) of the dcorT statistic are significant.
+}
+\note{
+\code{dcor.t} and \code{dcor.ttest} are deprecated.
 }
 \value{
-\code{dcor.t} returns the t statistic, and
-\code{dcor.ttest} returns a list with class \code{htest} containing
+\code{dcorT} returns the dcor t statistic, and
+\code{dcorT.test} returns a list with class \code{htest} containing
    \item{     method}{ description of test}
    \item{  statistic}{ observed value of the test statistic}
    \item{  parameter}{ degrees of freedom}
-   \item{   estimate}{ (bias corrected) dCor(x,y)}
+   \item{   estimate}{ (bias corrected) squared dCor(x,y)}
    \item{    p.value}{ p-value of the t-test}
    \item{  data.name}{ description of data}
 }
@@ -67,10 +65,8 @@ Gabor J. Szekely
 \examples{
  x <- matrix(rnorm(100), 10, 10)
  y <- matrix(runif(100), 10, 10)
- dx <- dist(x)
- dy <- dist(y)
- dcor.t(x, y)
- dcor.ttest(x, y)
+ dcorT(x, y)
+ dcorT.test(x, y)
 }
 
 

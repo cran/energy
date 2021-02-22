@@ -1,3 +1,14 @@
+# energy 1.7-8
+
+*  User level changes:
+     - Poisson goodness-of-fit tests
+     - EVnormal (data) issue fixed
+     - gsl package required
+     
+*  Internal changes
+     - mvnorm.e: use gsl::hyperg_1F1  
+     - poisMstat in energy.c moved to Rcpp poisMstat.cpp
+  
 # energy 1.7-7
 
 *  User level changes:
@@ -13,7 +24,7 @@
 # energy 1.7-6
 
 *  User level changes:
-     - normality.test (new) implements the energy test of univariate 
+     - normal.test (new) implements the energy test of univariate 
        normality based on the null limit distribution for the composite 
        hypothesis (estimated parameters). 
      - dataset EVnormal (new) of eigenvalues for energy test of normality.

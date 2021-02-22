@@ -89,17 +89,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// mvnEstat
-double mvnEstat(NumericMatrix y);
-RcppExport SEXP _energy_mvnEstat(SEXP ySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(mvnEstat(y));
-    return rcpp_result_gen;
-END_RCPP
-}
 // partial_dcor
 NumericVector partial_dcor(NumericMatrix Dx, NumericMatrix Dy, NumericMatrix Dz);
 RcppExport SEXP _energy_partial_dcor(SEXP DxSEXP, SEXP DySEXP, SEXP DzSEXP) {
@@ -123,6 +112,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericMatrix >::type Dy(DySEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Dz(DzSEXP);
     rcpp_result_gen = Rcpp::wrap(partial_dcov(Dx, Dy, Dz));
+    return rcpp_result_gen;
+END_RCPP
+}
+// poisMstat
+NumericVector poisMstat(IntegerVector x);
+RcppExport SEXP _energy_poisMstat(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(poisMstat(x));
     return rcpp_result_gen;
 END_RCPP
 }

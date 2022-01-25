@@ -1,3 +1,9 @@
+# energy 1.7-9
+
+  *  bug fix in normal.test
+  *  pdcor.test now gives p.value=NA in degenerate case
+  *  DCOR is deprecated; use dcor or dcov
+
 # energy 1.7-8
 
 *  User level changes:

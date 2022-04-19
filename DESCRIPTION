@@ -1,7 +1,7 @@
 Package: energy
 Title: E-Statistics: Multivariate Inference via the Energy of Data
-Version: 1.7-9
-Date: 2022-01-24
+Version: 1.7-10
+Date: 2022-04-18
 Authors@R: c(
     person("Maria", "Rizzo", , "mrizzo@bgsu.edu", c("aut", "cre")),
     person("Gabor", "Szekely", , , "aut"))
@@ -22,8 +22,8 @@ LazyData: true
 NeedsCompilation: yes
 Repository: CRAN
 RoxygenNote: 7.1.2
-Packaged: 2022-01-25 00:51:42 UTC; maria
+Packaged: 2022-04-18 21:06:05 UTC; maria
 Author: Maria Rizzo [aut, cre],
   Gabor Szekely [aut]
 Maintainer: Maria Rizzo <mrizzo@bgsu.edu>
-Date/Publication: 2022-01-25 11:12:45 UTC
+Date/Publication: 2022-04-19 06:52:29 UTC

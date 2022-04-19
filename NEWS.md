@@ -1,3 +1,7 @@
+# energy 1.7-10
+
+  * update email address in docs
+  
 # energy 1.7-9
 
   *  bug fix in normal.test

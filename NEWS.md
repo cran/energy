@@ -1,3 +1,16 @@
+# energy 1.7-11
+
+*  User level changes
+     - more argument types supported in bcdcor, dcov, dcor, pdcov, pdcor functions and tests
+     - mutualIndep.test test of mutual independence (new)
+     - is.dmatrix() utility function is now exported
+     - calc_dist() (Rcpp export) is exported
+
+*  Internal changes
+     - C functions dCOVtest() and dCOV() simplified, now expect distance matrices, exponent handled in R
+     - unused C function dCovtest() removed
+     - .arg2dist.matrix() utility to convert valid types of args to distance matrices
+  
 # energy 1.7-10
 
   * update email address in docs
